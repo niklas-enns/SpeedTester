@@ -1,5 +1,6 @@
 #Compilation output
 out/
 
-#results
+#Application results and temp
 results.txt
+temp.data
