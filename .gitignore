@@ -44,3 +44,6 @@ Temporary Items
 
 #results file
 results.txt
+
+#Java bytecode
+*.class

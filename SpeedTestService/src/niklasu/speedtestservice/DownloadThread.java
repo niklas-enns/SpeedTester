@@ -63,7 +63,7 @@ public class DownloadThread extends Thread {
 
             String date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(dateOfDownload);
 
-            writer.write(""+date+" "+String.format( "%.2f", resultSpeed )+" Mbit/s"+'\n');
+            writer.write(""+date+" "+String.format( "%.2f", resultSpeed )+" Mbit/s");
             writer.write(System.getProperty("line.separator"));
 
             writer.flush();
