@@ -19,7 +19,8 @@ public class DownloadThread extends Thread {
     DownloadService host;
     Date startOfDownload = new Date();
 
-    public DownloadThread(int size, DownloadService h){
+    public DownloadThread(int size, DownloadService h, URL url){
+        targetFile=url;
         dlsize =size;
         host = h;
     }
@@ -40,7 +41,6 @@ public class DownloadThread extends Thread {
         try{
             //download a file
             System.out.println("Starting download...");
-            targetFile = new URL("http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso");
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
             FileOutputStream fos = new FileOutputStream("temp.data");
             fos.getChannel().transferFrom(rbc, 0, 1000 * 1000 * dlsize);

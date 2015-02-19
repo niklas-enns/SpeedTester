@@ -1,11 +1,10 @@
 package downloadTestService;
 
 import downloadTestService.interfaces.ServiceHost;
-import downloadTestService.listeners.ExitButtonListener;
-import downloadTestService.listeners.OpenButtonListener;
-import downloadTestService.listeners.PauseButtonListener;
+import downloadTestService.listeners.*;
 
 import java.awt.*;
+import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -17,8 +16,12 @@ public class DownloadService implements ServiceHost {
     static DownloadService dls = new DownloadService();
     static ScheduledFuture<?> beeperHandle;
     static ScheduledExecutorService scheduler;
-    static int dlsize = 50;
     static Menu results;
+
+    final static int defaultDownloadSize = 50;
+    static int dlsize = defaultDownloadSize;
+    final static String defaultURL = "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
+    static String url = defaultURL;
 
     public static void main(String[] args) {
         state = State.IDLE;
@@ -40,19 +43,62 @@ public class DownloadService implements ServiceHost {
 
     @Override
     public void startDownloadQueue() {
+        System.out.println("beeperHandle.start");
         beeperHandle=scheduler.scheduleAtFixedRate(downloadStarter, 0, 1, MINUTES);
     }
 
     @Override
     public void cancelDownloadQueue() {
+        System.out.println("beeperHandle.cancel");
         beeperHandle.cancel(true);
     }
+
+    @Override
+    public boolean setDownloadSize(int size) {
+        if (size > 0 && size <= 210){
+            System.out.println("DL size was set to "+size);
+            dlsize=size;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int getDefaultDownloadSize() {
+        return defaultDownloadSize;
+    }
+
+    @Override
+    public int getDownloadSize() {
+        return dlsize;
+    }
+
+    @Override
+    public boolean setDownloadLink(String url) {
+        this.url = url;
+        return true;
+    }
+
+    @Override
+    public String getDwonloadLink() {
+        return url;
+    }
+
+    @Override
+    public String getDefaultDownloadLink() {
+        return defaultURL;
+    }
+
 
     final Runnable downloadStarter = new Runnable() {
         public void run() {
             System.out.println("Starting Download of "+dlsize+" MB");
-            DownloadThread dl = new DownloadThread(dlsize,dls);
-            dl.start();
+            try {
+                DownloadThread dl = new DownloadThread(dlsize, dls, new URL(url));
+                dl.start();
+            }catch(Exception e){
+                System.out.println("Bad URL");
+            }
         }
     };
     private static boolean initSysTray() {
@@ -82,6 +128,7 @@ public class DownloadService implements ServiceHost {
         MenuItem aboutItem = new MenuItem("About");
         CheckboxMenuItem pauseMenu = new CheckboxMenuItem("Pause");
         MenuItem openItem = new MenuItem("Open working directory");
+        MenuItem optionsItem = new MenuItem("Options");
         MenuItem exitItem = new MenuItem("Exit");
         //Pseudo-menu:shows last results
         results = new Menu("Last 10 minutes");
@@ -91,6 +138,8 @@ public class DownloadService implements ServiceHost {
 
         popup.addSeparator();
         popup.add(pauseMenu);
+        popup.add(optionsItem);
+        popup.addSeparator();
         popup.add(openItem);
         popup.add(results);
 
@@ -99,6 +148,7 @@ public class DownloadService implements ServiceHost {
 
         //Set Listeners
         pauseMenu.addItemListener(new PauseButtonListener(dls));
+        optionsItem.addActionListener(new OptionsButtonListener(dls));
         openItem.addActionListener(new OpenButtonListener());
         exitItem.addActionListener(new ExitButtonListener());
 
