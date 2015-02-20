@@ -3,4 +3,5 @@ out/
 
 #Application results and temp
 results.txt
+targetIsBiggerThan.data
 temp.data

@@ -28,18 +28,18 @@ public class AcceptButtonListener implements ActionListener {
         try {
             boolean newFileIsBigEnough = (new DownloadFileSizeChecker().targetIsBiggerThan(new URL(host.getDownloadLink()),1));
             if (!newFileIsBigEnough){
-                if (continueAnyway()==0){
-                    dls.setDownloadLink(host.getDownloadLink());
-                    dls.setDownloadSize(host.getDownloadSize());
-                    dls.startDownloadQueue();
-                    host.dispose();
+                if (continueAnyway()!=0){
+                    return;
                 }
             }
         }catch (Exception b){
             System.out.println("Bad URL");
             informAboutBadURL();
         }
-
+        dls.setDownloadLink(host.getDownloadLink());
+        dls.setDownloadSize(host.getDownloadSize());
+        dls.startDownloadQueue();
+        host.dispose();
     }
     private int continueAnyway(){
         return JOptionPane.showConfirmDialog(
