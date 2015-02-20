@@ -35,7 +35,7 @@ public class OptionsFrame extends Frame implements OptionsChanger{
         setLayout(new GridLayout(3,1));
 
         JPanel p = new JPanel();
-        p.setBorder(new TitledBorder(new EtchedBorder(), "Download size"));
+        p.setBorder(new TitledBorder(new EtchedBorder(), "Download size [MB]"));
 
         downloadSizeSlider = new JSlider(JSlider.HORIZONTAL,
                 SIZE_MIN, SIZE_MAX, SIZE_INIT);
@@ -68,7 +68,7 @@ public class OptionsFrame extends Frame implements OptionsChanger{
         Button reset = new Button("Reset");
         reset.addActionListener(new ResetButtonListener(this));
         Button decline = new Button("Decline");
-        decline.addActionListener(new DeclineButtonListener(downloadSizeSlider));
+        decline.addActionListener(new DeclineButtonListener(dls,this));
         Button accept = new Button("Accept");
         accept.addActionListener(new AcceptButtonListener(dls,this));
 
