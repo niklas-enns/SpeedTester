@@ -1,17 +1,23 @@
 package downloadTestService;
 
 import downloadTestService.interfaces.ServiceHost;
-import downloadTestService.listeners.*;
+import downloadTestService.listeners.ExitButtonListener;
+import downloadTestService.listeners.OpenButtonListener;
+import downloadTestService.listeners.OptionsButtonListener;
+import downloadTestService.listeners.PauseButtonListener;
 
 import java.awt.*;
 import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Logger;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class DownloadService implements ServiceHost {
+    private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
+
     static State state;
     static DownloadService dls = new DownloadService();
     static ScheduledFuture<?> beeperHandle;
@@ -31,7 +37,7 @@ public class DownloadService implements ServiceHost {
         if (SystemTray.isSupported()) {
             initSysTray();
         }else{
-            System.out.println("TrayIcon could not be added.");
+            log.info("TrayIcon could not be added.");
         }
     }
 
@@ -43,20 +49,20 @@ public class DownloadService implements ServiceHost {
 
     @Override
     public void startDownloadQueue() {
-        System.out.println("beeperHandle.start");
+        log.finest("beeperHandle.start");
         beeperHandle=scheduler.scheduleAtFixedRate(downloadStarter, 0, 1, MINUTES);
     }
 
     @Override
     public void cancelDownloadQueue() {
-        System.out.println("beeperHandle.cancel");
+        log.finest("beeperHandle.cancel");
         beeperHandle.cancel(true);
     }
 
     @Override
     public boolean setDownloadSize(int size) {
         if (size > 0 && size <= 210){
-            System.out.println("DL size was set to "+size);
+            log.info("DL size was set to " + size);
             dlsize=size;
             return true;
         }
@@ -75,7 +81,7 @@ public class DownloadService implements ServiceHost {
 
     @Override
     public boolean setDownloadLink(String url) {
-        this.url = url;
+        DownloadService.url = url;
         return true;
     }
 
@@ -92,12 +98,12 @@ public class DownloadService implements ServiceHost {
 
     final Runnable downloadStarter = new Runnable() {
         public void run() {
-            System.out.println("Starting Download of "+dlsize+" MB");
+            log.info("Starting Download of "+dlsize+" MB");
             try {
                 DownloadThread dl = new DownloadThread(dlsize, dls, new URL(url));
                 dl.start();
             }catch(Exception e){
-                System.out.println("Bad URL");
+                log.severe("Bad URL");
             }
         }
     };
@@ -121,7 +127,7 @@ public class DownloadService implements ServiceHost {
     private static Image getImage(){
         Image image = Toolkit.getDefaultToolkit().getImage(dls.getClass().getResource("/Download_Icon.png"));
         image = image.getScaledInstance(15,15,Image.SCALE_SMOOTH);
-    return image;
+        return image;
     }
 
     private static boolean buildPopupMenu(PopupMenu popup){
@@ -152,7 +158,7 @@ public class DownloadService implements ServiceHost {
         openItem.addActionListener(new OpenButtonListener());
         exitItem.addActionListener(new ExitButtonListener());
 
-    return true;
+        return true;
     }
 
 }

@@ -9,11 +9,13 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * Created by enzo on 06.11.2014.
  */
 public class DownloadThread extends Thread {
+    private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
     URL targetFile;
     int dlsize;
     DownloadService host;
@@ -30,8 +32,8 @@ public class DownloadThread extends Thread {
         long startTime = startOfDownload.getTime();
         download();
         long runningTime = new Date().getTime() - startTime;
-        double resultSpeed=((double)dlsize/((double)runningTime/(double)1000))*8.;
-        System.out.println("Download of "+dlsize+" MB completed, calculated Speed: " + String.format( "%.2f", resultSpeed )  + " MBit/s");
+        double resultSpeed = ((double) dlsize / ((double) runningTime / (double) 1000)) * 8.;
+        log.info("Download of "+dlsize+" MB completed, calculated Speed: " + String.format( "%.2f", resultSpeed )  + " MBit/s");
         sendResultToHost(startOfDownload,resultSpeed);
         appendToLogFile(startOfDownload,resultSpeed);
 
@@ -39,12 +41,12 @@ public class DownloadThread extends Thread {
 
     private void download(){
         try{
-            System.out.println("Starting download...");
+            log.info("Starting download...");
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
             FileOutputStream fos = new FileOutputStream("temp.data");
             fos.getChannel().transferFrom(rbc, 0, 1000 * 1000 * dlsize);
         }catch (Exception e){
-            System.out.println("Could not download file");
+            log.severe("Could not download file");
         }
     }
     private void sendResultToHost(Date dateOfDownload, double resultSpeed){
