@@ -39,7 +39,6 @@ public class DownloadThread extends Thread {
 
     private void download(){
         try{
-            //download a file
             System.out.println("Starting download...");
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
             FileOutputStream fos = new FileOutputStream("temp.data");

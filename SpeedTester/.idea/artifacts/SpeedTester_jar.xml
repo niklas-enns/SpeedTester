@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SpeedTester:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SpeedTester_jar</output-path>
+    <root id="archive" name="SpeedTester.jar">
+      <element id="module-output" name="SpeedTester" />
+    </root>
+  </artifact>
+</component>
