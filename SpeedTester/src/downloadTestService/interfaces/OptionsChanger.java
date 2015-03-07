@@ -8,4 +8,8 @@ public interface OptionsChanger {
     public boolean resetDownloadLink();
     public int getDownloadSize();
     public boolean resetDownloadSize();
+
+    public int getDownloadInterval();
+
+    public boolean resetDownloadInterval();
 }

@@ -1,10 +1,7 @@
 package downloadTestService.frames;
 
 import downloadTestService.DownloadService;
-import downloadTestService.frames.impl.AcceptButtonListener;
-import downloadTestService.frames.impl.DeclineButtonListener;
-import downloadTestService.frames.impl.DownloadSizeSiderChangeListener;
-import downloadTestService.frames.impl.ResetButtonListener;
+import downloadTestService.frames.impl.*;
 import downloadTestService.interfaces.OptionsChanger;
 
 import javax.swing.*;
@@ -18,27 +15,33 @@ import java.awt.event.WindowEvent;
  * Created by enzo on 19.02.2015.
  */
 public class OptionsFrame extends Frame implements OptionsChanger{
-    DownloadService dls;
-    JSlider downloadSizeSlider;
-    TextField linkField;
     static final int SIZE_MIN = 0;
     static final int SIZE_MAX = 200;
-    int SIZE_INIT;
+    private static int DOWNLOAD_INTERVAL_INIT;
+    int DOWNLOAD_SIZE_INIT;
+    DownloadService dls;
+    JSlider downloadSizeSlider;
+    JSlider intervalSlider;
+    TextField linkField;
+
+    private Object downloadInterval;
 
     public OptionsFrame(DownloadService d){
         dls=d;
         dls.cancelDownloadQueue();
-        SIZE_INIT=dls.getDownloadSize();
+        DOWNLOAD_SIZE_INIT = dls.getDownloadSize();
+        DOWNLOAD_INTERVAL_INIT = dls.getDownloadInterval();
         setTitle("SpeedTester options");
         setSize(400,300);
 
-        setLayout(new GridLayout(3,1));
+        setLayout(new GridLayout(4, 1));
 
+        //filesize slider
         JPanel p = new JPanel();
         p.setBorder(new TitledBorder(new EtchedBorder(), "Download size [MB]"));
 
         downloadSizeSlider = new JSlider(JSlider.HORIZONTAL,
-                SIZE_MIN, SIZE_MAX, SIZE_INIT);
+                SIZE_MIN, SIZE_MAX, DOWNLOAD_SIZE_INIT);
 
 
         Font font = new Font("Serif", Font.ITALIC, 15);
@@ -53,6 +56,25 @@ public class OptionsFrame extends Frame implements OptionsChanger{
         downloadSizeSlider.addChangeListener(new DownloadSizeSiderChangeListener(downloadSizeSlider));
         p.add(downloadSizeSlider);
         add(p);
+
+        //intervalslider
+        JPanel p3 = new JPanel();
+        p3.setBorder(new TitledBorder(new EtchedBorder(), "Download interval [Minute]"));
+
+        intervalSlider = new JSlider(JSlider.HORIZONTAL,
+                SIZE_MIN, SIZE_MAX, DOWNLOAD_INTERVAL_INIT);
+
+        intervalSlider.setFont(font);
+
+        //Turn on labels at major tick marks.
+        intervalSlider.setMajorTickSpacing(100);
+        intervalSlider.setMinorTickSpacing(50);
+        intervalSlider.setPaintTicks(true);
+        intervalSlider.setPaintLabels(true);
+        //downloadSizeSlider.setSnapToTicks(true);
+        intervalSlider.addChangeListener(new DownloadIntervalSliderChangeListener(intervalSlider));
+        p3.add(intervalSlider);
+        add(p3);
 
         JPanel p2 = new JPanel();
         p2.setBorder(new TitledBorder(new EtchedBorder(), "Download file"));
@@ -91,7 +113,6 @@ public class OptionsFrame extends Frame implements OptionsChanger{
         linkField.setText(dls.getDefaultDownloadLink());
         return true;
     }
-
     @Override
     public int getDownloadSize() {
         return downloadSizeSlider.getValue();
@@ -102,6 +123,18 @@ public class OptionsFrame extends Frame implements OptionsChanger{
         downloadSizeSlider.setValue(dls.getDefaultDownloadSize());
         return true;
     }
+
+    @Override
+    public int getDownloadInterval() {
+        return intervalSlider.getValue();
+    }
+
+    @Override
+    public boolean resetDownloadInterval() {
+        intervalSlider.setValue(dls.getDefaultDownloadInterval());
+        return true;
+    }
+
 
     class OptionsWindowListener extends WindowAdapter
     {

@@ -13,4 +13,10 @@ public interface ServiceHost {
     public boolean setDownloadLink(String url);
     public String getDwonloadLink();
     public String getDefaultDownloadLink();
+
+    public boolean setDownloadInterval(int interval);
+
+    public int getDownloadInterval();
+
+    public int getDefaultDownloadInterval();
 }

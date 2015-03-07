@@ -4,11 +4,10 @@ import downloadTestService.DownloadFileSizeChecker;
 import downloadTestService.DownloadService;
 import downloadTestService.frames.OptionsFrame;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
-import javax.swing.JOptionPane;
 
 /**
  * Created by enzo on 19.02.2015.
@@ -34,6 +33,7 @@ public class AcceptButtonListener implements ActionListener {
             informAboutBadURL();
         }
         dls.setDownloadLink(host.getDownloadLink());
+        dls.setDownloadInterval(host.getDownloadInterval());
         dls.setDownloadSize(host.getDownloadSize());
         dls.startDownloadQueue();
         host.dispose();

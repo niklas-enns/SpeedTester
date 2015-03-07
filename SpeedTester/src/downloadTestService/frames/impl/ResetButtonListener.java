@@ -2,7 +2,6 @@ package downloadTestService.frames.impl;
 
 import downloadTestService.frames.OptionsFrame;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,5 +17,6 @@ public class ResetButtonListener implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         host.resetDownloadLink();
         host.resetDownloadSize();
+        host.resetDownloadInterval();
     }
 }
