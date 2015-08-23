@@ -17,7 +17,7 @@ public class DownloadServiceArguments {
     private String url = "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
 
     @Parameter(names = "-tray", description = "Debug mode", arity = 1)
-    private boolean tray = false;
+    private boolean tray = true;
 
 
     public int getSize() {
