@@ -5,3 +5,12 @@ out/
 results.txt
 targetIsBiggerThan.data
 temp.data
+
+#project stuff
+.idea/
+*.iml
+*.iws
+
+#Maven stuff
+log/
+target/

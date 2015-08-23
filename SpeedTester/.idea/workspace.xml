@@ -6,32 +6,8 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fac8eab6-9d8e-4569-8c87-7b483868513a" name="Default" comment="Added option to change the download interval">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/downloadTestService/Constants.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/downloadTestService/DownloadServiceArguments.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_beust_jcommander_1_48.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\META-INF\MANIFEST.MF" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\DownloadFileSizeChecker.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\DownloadService.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\DownloadThread.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\State.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\frames\OptionsFrame.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\frames\impl\AcceptButtonListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\frames\impl\DeclineButtonListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\frames\impl\DownloadIntervalSliderChangeListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\frames\impl\DownloadSizeSiderChangeListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\frames\impl\ResetButtonListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\interfaces\OptionsChanger.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\interfaces\ServiceHost.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\listeners\ExitButtonListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\listeners\OpenButtonListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\listeners\OptionsButtonListener.java" afterPath="" />
-      <change type="DELETED" beforePath="H:\Dokumente\GitHub\SpeedTester\SpeedTester\src\downloadTestService\listeners\PauseButtonListener.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpeedTester.jar" afterPath="$PROJECT_DIR$/SpeedTester.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SpeedTester.iml" afterPath="$PROJECT_DIR$/SpeedTester.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="fac8eab6-9d8e-4569-8c87-7b483868513a" name="Default" comment="- Command line support by using JCommander library&#10;- Some cleanup with error checking&#10;- Target file size is now checked by looking at the 'Content-Length' field of a HEAD request to the target file. Not anymore by downloading the target file.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SpeedTester.iws" />
@@ -60,7 +36,18 @@
     <favorites_list name="SpeedTester" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.43074325" vertical-offset="0" max-vertical-offset="592">
+              <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -87,6 +74,7 @@
         <option value="$PROJECT_DIR$/src/main/java/downloadTestService/DownloadThread.java" />
         <option value="$PROJECT_DIR$/src/main/java/downloadTestService/frames/impl/AcceptButtonListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/downloadTestService/frames/OptionsFrame.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -444,7 +432,13 @@
       <option name="project" value="LOCAL" />
       <updated>1425747419693</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="- Command line support by using JCommander library&#10;- Some cleanup with error checking&#10;- Target file size is now checked by looking at the 'Content-Length' field of a HEAD request to the target file. Not anymore by downloading the target file.">
+      <created>1440365899329</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1440365899329</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -469,7 +463,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -484,7 +478,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30957684" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2489339" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2489339" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -545,7 +539,8 @@
     </option>
     <MESSAGE value="Replaced System.out.println calls by somethin serious" />
     <MESSAGE value="Added option to change the download interval" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added option to change the download interval" />
+    <MESSAGE value="- Command line support by using JCommander library&#10;- Some cleanup with error checking&#10;- Target file size is now checked by looking at the 'Content-Length' field of a HEAD request to the target file. Not anymore by downloading the target file." />
+    <option name="LAST_COMMIT_MESSAGE" value="- Command line support by using JCommander library&#10;- Some cleanup with error checking&#10;- Target file size is now checked by looking at the 'Content-Length' field of a HEAD request to the target file. Not anymore by downloading the target file." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -854,13 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14604811" vertical-offset="0" max-vertical-offset="582">
-          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/downloadTestService/frames/impl/DownloadSizeSiderChangeListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
@@ -1005,6 +993,14 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.43074325" vertical-offset="0" max-vertical-offset="592">
+          <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
