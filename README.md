@@ -15,5 +15,5 @@ Arguments:
 - url <URL>: Target file URL. Works with http://, ftp:// and maybe some others which i havent't dried yet.
 - tray [true|false]
 
-Example
+Example:
 java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4 -tray true
