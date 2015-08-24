@@ -26,4 +26,6 @@ If you want to change some parameters, you can just use the GUI or pass command-
 - tray [true|false]: Enables or disables the tray icon and GUI
 
 ##Example:
+``
 java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4 -tray true
+``
