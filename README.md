@@ -7,7 +7,7 @@ Otherwise, SpeedTester can run as a normal command-line application which can be
 
 ##Parameters:
 The work of SpeedTester uses four parameters:
-- size : The size of the file which is used to calculcate your connection speed
+- size : The download size of the file which is used to calculcate your connection speed, in MB
 - interval: The download interval in minutes
 - url: The target file url
 - tray: Enables a GUI which is accessible through a tray icon
