@@ -10,11 +10,11 @@ public interface ServiceHost {
 
     public void cancelDownloadQueue();
 
-    public boolean setDownloadSize(int size);
+    public boolean setDownloadSize(long size);
 
-    public int getDefaultDownloadSize();
+    public long getDefaultDownloadSize();
 
-    public int getDownloadSize();
+    public long getDownloadSize();
 
     public boolean setDownloadLink(String url);
 

@@ -1,6 +1,7 @@
 package downloadTestService;
 
 
+import downloadTestService.exceptions.BadFileException;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 public class DownloadFileSizeChecker {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
 
-    public long getFileSize(URL targetFile) throws Exception {
+    public long getFileSize(URL targetFile) throws BadFileException {
         HttpClient client = new DefaultHttpClient();
         HttpHead head = new HttpHead(String.valueOf(targetFile));
         // execute the method and handle any error responses.
@@ -29,7 +30,7 @@ public class DownloadFileSizeChecker {
             e.printStackTrace();
         }
         Header[] size = response.getHeaders("Content-length");
-        if (size.length == 0) throw new Exception("The HTTP response has no Content-Length field");
+        if (size.length == 0) throw new BadFileException("The HTTP response has no Content-Length field");
         log.info("content - length says: " + size[0].getValue());
         String contentLength = size[0].getValue().replaceAll("[^\\d.]", "");
         long contentLengthAsInt = Long.parseLong(contentLength);

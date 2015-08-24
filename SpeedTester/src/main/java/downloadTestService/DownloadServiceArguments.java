@@ -5,7 +5,7 @@ import com.beust.jcommander.Parameter;
 /**
  * Created by enzo on 20.08.2015.
  */
-public class DownloadServiceArguments {
+public class DownloadServiceArguments implements Constants {
 
     @Parameter(names = "-size", description = "Download size in MB", required = false)
     private int size = 50;
@@ -21,7 +21,7 @@ public class DownloadServiceArguments {
 
 
     public int getSize() {
-        return size;
+        return size * MB;
     }
 
     public int getInterval() {

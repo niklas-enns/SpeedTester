@@ -17,11 +17,11 @@ import java.util.logging.Logger;
 public class DownloadThread extends Thread {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
     URL targetFile;
-    int dlsize;
+    long dlsize;
     DownloadService host;
     Date startOfDownload = new Date();
 
-    public DownloadThread(int size, DownloadService h, URL url) {
+    public DownloadThread(long size, DownloadService h, URL url) {
         targetFile = url;
         dlsize = size;
         host = h;
@@ -32,7 +32,7 @@ public class DownloadThread extends Thread {
         download();
         long runningTime = new Date().getTime() - startTime;
         double resultSpeed = ((double) dlsize / ((double) runningTime / (double) 1000)) * 8.;
-        log.info("Download of " + dlsize + " MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
+        log.info("Download of " + dlsize + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
         sendResultToHost(startOfDownload, resultSpeed);
         appendToLogFile(startOfDownload, resultSpeed);
 
@@ -43,7 +43,7 @@ public class DownloadThread extends Thread {
             log.info("Starting download...");
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
             FileOutputStream fos = new FileOutputStream("temp.dat");
-            fos.getChannel().transferFrom(rbc, 0, 1000 * 1000 * dlsize);
+            fos.getChannel().transferFrom(rbc, 0, dlsize);
 
         } catch (Exception e) {
             log.severe("Could not download file");

@@ -1,6 +1,8 @@
 package downloadTestService;
 
 import com.beust.jcommander.JCommander;
+import downloadTestService.exceptions.BadFileException;
+import downloadTestService.exceptions.TooSmallFileException;
 import downloadTestService.interfaces.ServiceHost;
 import downloadTestService.listeners.ExitButtonListener;
 import downloadTestService.listeners.OpenButtonListener;
@@ -8,6 +10,7 @@ import downloadTestService.listeners.OptionsButtonListener;
 import downloadTestService.listeners.PauseButtonListener;
 
 import java.awt.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,7 +19,7 @@ import java.util.logging.Logger;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
-public class DownloadService implements ServiceHost {
+public class DownloadService implements ServiceHost, Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
     static DownloadService dls = new DownloadService();
     static ScheduledFuture<?> beeperHandle;
@@ -24,14 +27,13 @@ public class DownloadService implements ServiceHost {
     static Menu results;
     static DownloadServiceArguments arguments;
 
-    static int dlsize;
+    static long dlsize;
     static int downloadInterval;
     static String url;
     static Boolean enableTrayIcon;
 
     final Runnable downloadStarter = new Runnable() {
         public void run() {
-            log.info("Starting Download of " + dlsize + " MB");
             try {
                 DownloadThread dl = new DownloadThread(dlsize, dls, new URL(url));
                 dl.start();
@@ -47,15 +49,22 @@ public class DownloadService implements ServiceHost {
     public static void main(String[] args) {
         arguments = new DownloadServiceArguments();
         new JCommander(arguments, args);
-
         dlsize = arguments.getSize();
-        if (!(dlsize <= 200 && dlsize >= 1))
-            throw new java.lang.IllegalArgumentException("File size has to be between 1 and 200 MB");
         downloadInterval = arguments.getInterval();
-        if (!(downloadInterval >= 1))
-            throw new java.lang.IllegalArgumentException("Download interval has to be greator or equal 1");
         url = arguments.getUrl();
         enableTrayIcon = arguments.getTray();
+        try {
+            ParamValidator.validateParams(dlsize, downloadInterval, url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return;
+        } catch (TooSmallFileException e) {
+            e.printStackTrace();
+            return;
+        } catch (BadFileException e) {
+            e.printStackTrace();
+            return;
+        }
 
         scheduler = Executors.newScheduledThreadPool(1);
         dls.startDownloadQueue();
@@ -143,8 +152,8 @@ public class DownloadService implements ServiceHost {
     }
 
     @Override
-    public boolean setDownloadSize(int size) {
-        if (size > 0 && size <= 210) {
+    public boolean setDownloadSize(long size) {
+        if (size > MB && size <= 200 * MB) {
             log.info("DL size was set to " + size);
             dlsize = size;
             return true;
@@ -153,12 +162,12 @@ public class DownloadService implements ServiceHost {
     }
 
     @Override
-    public int getDefaultDownloadSize() {
+    public long getDefaultDownloadSize() {
         return arguments.getSize();
     }
 
     @Override
-    public int getDownloadSize() {
+    public long getDownloadSize() {
         return dlsize;
     }
 

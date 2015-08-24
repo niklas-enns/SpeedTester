@@ -1,15 +1,16 @@
 package downloadTestService.frames.impl;
 
 import downloadTestService.Constants;
-import downloadTestService.DownloadFileSizeChecker;
 import downloadTestService.DownloadService;
+import downloadTestService.ParamValidator;
+import downloadTestService.exceptions.BadFileException;
+import downloadTestService.exceptions.TooSmallFileException;
 import downloadTestService.frames.OptionsFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Created by enzo on 19.02.2015.
@@ -26,22 +27,18 @@ public class AcceptButtonListener implements ActionListener, Constants {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            long realFileSize = new DownloadFileSizeChecker().getFileSize(new URL(host.getDownloadLink()));
-            if (realFileSize < MB) {
-                if (continueAnyway() != 0) {
-                    return;
-                }
-            }
-            if (realFileSize / MB < host.getDownloadSize()) {
-                informAboutTargetFileIsSmallerThanRequired(realFileSize);
+            if (ParamValidator.validateParams(host.getDownloadSize(), host.getDownloadInterval(), host.getDownloadLink()))
                 return;
-            }
-
-        } catch (MalformedURLException e1) {
-            System.out.println("Bad URL");
-            informAboutBadURL();
+        } catch (TooSmallFileException e1) {
+            e1.printStackTrace();
+            informAboutTargetFileIsSmallerThanRequired(e1.getRealSize(), e1.getRequiredSize());
             return;
-        } catch (Exception e1) {
+        } catch (MalformedURLException e1) {
+            informAboutBadURL();
+            e1.printStackTrace();
+            return;
+        } catch (BadFileException e1) {
+            e1.printStackTrace();
             informAboutBadTargetFile();
             return;
         }
@@ -52,12 +49,22 @@ public class AcceptButtonListener implements ActionListener, Constants {
         host.dispose();
     }
 
-    private void informAboutTargetFileIsSmallerThanRequired(long realFileSize) {
+    private int askIfContinueWithTinyFile() {
+        return JOptionPane.showConfirmDialog(
+                host,
+                "The file is smaller than 1 MB. Proceed anyway?",
+                "Small target file",
+                JOptionPane.YES_NO_OPTION);
+
+    }
+
+    private void informAboutTargetFileIsSmallerThanRequired(long realFileSize, long requiredDownloadsize) {
         JOptionPane.showMessageDialog(host,
-                "The target file, you selected has a size of " + realFileSize / MB + "MB,\n which is less than your required download size of " + host.getDownloadSize() + "MB.\nLower the download size or choose a bigger target file",
+                "The target file, you selected has a size of " + realFileSize / MB + "MB,\n which is less than your required download size of " + requiredDownloadsize / MB + "MB.\nLower the download size or choose a bigger target file",
                 "Target file is too small",
                 JOptionPane.ERROR_MESSAGE);
     }
+
 
     private void informAboutBadTargetFile() {
         JOptionPane.showMessageDialog(host,
@@ -66,14 +73,6 @@ public class AcceptButtonListener implements ActionListener, Constants {
                 JOptionPane.ERROR_MESSAGE);
     }
 
-    private int continueAnyway() {
-        return JOptionPane.showConfirmDialog(
-                host,
-                "The file is smaller than 1 MB. Proceed anyway?",
-                "Small target file",
-                JOptionPane.YES_NO_OPTION);
-
-    }
 
     private void informAboutBadURL() {
         JOptionPane.showMessageDialog(host,

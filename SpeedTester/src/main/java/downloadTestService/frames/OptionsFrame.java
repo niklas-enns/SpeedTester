@@ -1,5 +1,6 @@
 package downloadTestService.frames;
 
+import downloadTestService.Constants;
 import downloadTestService.DownloadService;
 import downloadTestService.frames.impl.*;
 import downloadTestService.interfaces.OptionsChanger;
@@ -14,17 +15,15 @@ import java.awt.event.WindowEvent;
 /**
  * Created by enzo on 19.02.2015.
  */
-public class OptionsFrame extends Frame implements OptionsChanger {
+public class OptionsFrame extends Frame implements OptionsChanger, Constants {
     static final int SIZE_MIN = 0;
     static final int SIZE_MAX = 200;
     private static int DOWNLOAD_INTERVAL_INIT;
-    int DOWNLOAD_SIZE_INIT;
+    long DOWNLOAD_SIZE_INIT;
     DownloadService dls;
     JSlider downloadSizeSlider;
     JSlider intervalSlider;
     TextField linkField;
-
-    private Object downloadInterval;
 
     public OptionsFrame(DownloadService d) {
         dls = d;
@@ -39,10 +38,10 @@ public class OptionsFrame extends Frame implements OptionsChanger {
 
         //filesize slider
         JPanel p = new JPanel();
-        p.setBorder(new TitledBorder(new EtchedBorder(), "Download size [MB]"));
-
+        TitledBorder border = new TitledBorder(new EtchedBorder(), "Download size [MB]");
+        p.setBorder(border);
         downloadSizeSlider = new JSlider(JSlider.HORIZONTAL,
-                SIZE_MIN, SIZE_MAX, DOWNLOAD_SIZE_INIT);
+                SIZE_MIN, SIZE_MAX, (int) DOWNLOAD_SIZE_INIT / MB);
 
 
         Font font = new Font("Serif", Font.ITALIC, 15);
@@ -118,18 +117,18 @@ public class OptionsFrame extends Frame implements OptionsChanger {
 
     @Override
     public int getDownloadSize() {
-        return downloadSizeSlider.getValue();
+        return downloadSizeSlider.getValue() * MB;
     }
 
     @Override
     public boolean resetDownloadSize() {
-        downloadSizeSlider.setValue(dls.getDefaultDownloadSize());
+        downloadSizeSlider.setValue((int) dls.getDefaultDownloadSize() / MB);
         return true;
     }
 
     @Override
     public int getDownloadInterval() {
-        return intervalSlider.getValue();
+        return intervalSlider.getValue() * MB;
     }
 
     @Override
