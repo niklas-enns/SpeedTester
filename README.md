@@ -5,7 +5,7 @@ SpeedTester is a tool which tests the speed of your internet connection periodic
 ![alt tag](https://github.com/niklasu/SpeedTester/blob/master/Screenshot.png)
 
 If supported, SpeedTester can settle in the tray menu. I tried it with windows 7,8,10, openSuse and linux mint.
-Otherwise, SpeedTester can run as a normal command-line application which can be called with java -jar SpeedTester.jar.
+Otherwise, SpeedTester can run as a normal command-line application which can be called with ``java -jar SpeedTester.jar``.
 
 ##Parameters:
 The work of SpeedTester uses four parameters:
