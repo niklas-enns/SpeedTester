@@ -14,7 +14,7 @@ The work of SpeedTester uses four parameters:
 
 ##Default values:
 You don't have to declare these parameters. SpeedTester has built-in default values: 50MB size, 1 minute interval, a nice URL, enabled tray icon. For normal use-cases this should be fine. Just run SpeedTester and you will notice that "results.txt" will be contain a new result every minute.
-
+![alt tag](https://github.com/niklasu/SpeedTester/blob/master/Screenshot.png)
 If you want to change some parameters, you can just use the GUI or pass command-line arguments to the application.
 
 ##Arguments:
