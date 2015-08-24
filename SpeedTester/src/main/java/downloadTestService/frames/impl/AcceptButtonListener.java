@@ -49,15 +49,6 @@ public class AcceptButtonListener implements ActionListener, Constants {
         host.dispose();
     }
 
-    private int askIfContinueWithTinyFile() {
-        return JOptionPane.showConfirmDialog(
-                host,
-                "The file is smaller than 1 MB. Proceed anyway?",
-                "Small target file",
-                JOptionPane.YES_NO_OPTION);
-
-    }
-
     private void informAboutTargetFileIsSmallerThanRequired(long realFileSize, long requiredDownloadsize) {
         JOptionPane.showMessageDialog(host,
                 "The target file, you selected has a size of " + realFileSize / MB + "MB,\n which is less than your required download size of " + requiredDownloadsize / MB + "MB.\nLower the download size or choose a bigger target file",
