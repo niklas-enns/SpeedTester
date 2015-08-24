@@ -1,8 +1,8 @@
 package downloadTestService.frames;
 
-import downloadTestService.Constants;
 import downloadTestService.DownloadService;
 import downloadTestService.frames.impl.*;
+import downloadTestService.interfaces.Constants;
 import downloadTestService.interfaces.OptionsChanger;
 
 import javax.swing.*;

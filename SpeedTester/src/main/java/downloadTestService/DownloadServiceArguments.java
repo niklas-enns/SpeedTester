@@ -1,6 +1,7 @@
 package downloadTestService;
 
 import com.beust.jcommander.Parameter;
+import downloadTestService.interfaces.Constants;
 
 /**
  * Created by enzo on 20.08.2015.

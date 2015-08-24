@@ -1,4 +1,4 @@
-package downloadTestService;
+package downloadTestService.interfaces;
 
 /**
  * Created by enzo on 23.08.2015.

@@ -3,6 +3,7 @@ package downloadTestService;
 import com.beust.jcommander.JCommander;
 import downloadTestService.exceptions.BadFileException;
 import downloadTestService.exceptions.TooSmallFileException;
+import downloadTestService.interfaces.Constants;
 import downloadTestService.interfaces.ServiceHost;
 import downloadTestService.listeners.ExitButtonListener;
 import downloadTestService.listeners.OpenButtonListener;

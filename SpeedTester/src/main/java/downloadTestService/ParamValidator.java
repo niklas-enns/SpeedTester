@@ -2,6 +2,7 @@ package downloadTestService;
 
 import downloadTestService.exceptions.BadFileException;
 import downloadTestService.exceptions.TooSmallFileException;
+import downloadTestService.interfaces.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;

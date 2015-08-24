@@ -1,11 +1,11 @@
 package downloadTestService.frames.impl;
 
-import downloadTestService.Constants;
 import downloadTestService.DownloadService;
 import downloadTestService.ParamValidator;
 import downloadTestService.exceptions.BadFileException;
 import downloadTestService.exceptions.TooSmallFileException;
 import downloadTestService.frames.OptionsFrame;
+import downloadTestService.interfaces.Constants;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
