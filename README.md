@@ -10,10 +10,10 @@ You don't have to use parameters. SpeedTester has built-in default values: 50MB 
 If you want to set some parameters, you can just use the GUI or pass command-line arguments to the application.
 
 Arguments:
--size <size>: Target download size in MB
--interval <interval>: Download interval in minutes
--url <URL>: Target file URL. Works with http://, ftp:// and maybe some others which i havent't dried yet.
--tray [true|false]
+- size <size>: Target download size in MB
+- interval <interval>: Download interval in minutes
+- url <URL>: Target file URL. Works with http://, ftp:// and maybe some others which i havent't dried yet.
+- tray [true|false]
 
 Example
 java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4 -tray true
