@@ -11,6 +11,9 @@ The work of SpeedTester uses four parameters:
 - interval: The download interval in minutes
 - url: The target file url
 - tray: Enables a GUI which is accessible through a tray icon
+- 
+
+
 ##Default values:
 You don't have to declare these parameters. SpeedTester has built-in default values: 50MB size, 1 minute interval, a nice URL, enabled tray icon. For normal use-cases this should be fine. Just run SpeedTester and you will notice that "results.txt" will be contain a new result every minute.
 
