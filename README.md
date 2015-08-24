@@ -20,9 +20,11 @@ You don't have to declare these parameters. SpeedTester has built-in default val
 If you want to change some parameters, you can just use the GUI or pass command-line arguments to the application.
 
 ##Arguments:
+Remember, none of these is required. If you leave an argument, the default value will be used
+
 - size <size>: Target download size in MB
 - interval <interval>: Download interval in minutes
-- url <URL>: Target file URL. Works with http://, ftp:// and maybe some others which i havent't dried yet.
+- url <URL>: Target file URL. Works with http://, ftp:// and maybe some others which i havent't tried yet.
 - tray [true|false]: Enables or disables the tray icon and GUI
 
 ##Example:
