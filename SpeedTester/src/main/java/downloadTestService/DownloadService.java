@@ -33,18 +33,6 @@ public class DownloadService implements ServiceHost, Constants {
     static String url;
     static Boolean enableTrayIcon;
 
-    final Runnable downloadStarter = new Runnable() {
-        public void run() {
-            try {
-                DownloadThread dl = new DownloadThread(downloadSize, downloadService, new URL(url));
-                dl.start();
-            } catch (Exception e) {
-                log.severe("Bad URL");
-            }
-        }
-    };
-
-
     public static void main(String[] args) {
         arguments = new DownloadServiceArguments();
         new JCommander(arguments, args);
@@ -65,7 +53,8 @@ public class DownloadService implements ServiceHost, Constants {
             return;
         }
 
-        scheduler = Executors.newScheduledThreadPool(1);
+        //scheduler = Executors.newScheduledThreadPool(1);
+        scheduler = Executors.newSingleThreadScheduledExecutor();
         downloadService.startDownloadQueue();
 
         if (SystemTray.isSupported() && enableTrayIcon) {
@@ -140,7 +129,11 @@ public class DownloadService implements ServiceHost, Constants {
     @Override
     public void startDownloadQueue() {
         log.finest("beeperHandle.start");
-        beeperHandle = scheduler.scheduleAtFixedRate(downloadStarter, 0, downloadInterval, MINUTES);
+        try {
+            beeperHandle = scheduler.scheduleAtFixedRate(new DownloadThread(downloadSize, downloadService, new URL(url)), 0, downloadInterval, MINUTES);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

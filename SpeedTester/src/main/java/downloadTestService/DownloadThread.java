@@ -34,7 +34,7 @@ public class DownloadThread extends Thread implements Constants {
         download();
         long runningTime = new Date().getTime() - startTime;
         double resultSpeed = ((double) downloadSize / ((double) runningTime / 1000.)) / MB * 8.;
-        log.info("Download of " + downloadSize + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
+        log.info("Download of " + downloadSize / MB + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
         sendResultToHost(startOfDownload, resultSpeed);
         appendToLogFile(startOfDownload, resultSpeed);
 
@@ -65,9 +65,7 @@ public class DownloadThread extends Thread implements Constants {
         try {
             //init writer with append
             writer = new FileWriter(file, true);
-
             String date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(dateOfDownload);
-
             writer.write("" + date + " " + String.format("%.2f", resultSpeed) + " Mbit/s");
             writer.write(System.getProperty("line.separator"));
 
