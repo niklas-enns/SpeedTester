@@ -29,7 +29,7 @@ public class DownloadFileSizeChecker {
         }
         Header[] size = response.getHeaders("Content-length");
         if (size.length == 0) throw new BadFileException("The HTTP response has no Content-Length field");
-        log.info("" + size[0].getValue());
+        log.finest("" + size[0].getValue());
         String contentLength = size[0].getValue().replaceAll("[^\\d.]", ""); //delete all non-numbers
         long contentLengthAsInt = Long.parseLong(contentLength);
         return contentLengthAsInt;

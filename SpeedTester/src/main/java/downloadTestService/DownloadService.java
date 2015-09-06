@@ -16,24 +16,25 @@ import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class DownloadService implements ServiceHost, Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
-    static DownloadService downloadService = new DownloadService();
-    static ScheduledFuture<?> beeperHandle;
-    static ScheduledExecutorService scheduler;
-    static Menu results;
-    static DownloadServiceArguments arguments;
+    ScheduledFuture<?> scheduledFuture;
+    ScheduledExecutorService scheduler;
+    Menu results;
+    DownloadServiceArguments arguments;
 
-    static long downloadSize;
-    static int downloadInterval;
-    static String url;
-    static Boolean enableTrayIcon;
+    long downloadSize;
+    int downloadInterval;
+    String url;
+    Boolean enableTrayIcon;
 
-    public static void main(String[] args) {
+    public DownloadService(String[] args) {
+        log.setLevel(Level.INFO);
         arguments = new DownloadServiceArguments();
         new JCommander(arguments, args);
         downloadSize = arguments.getSize();
@@ -53,9 +54,8 @@ public class DownloadService implements ServiceHost, Constants {
             return;
         }
 
-        //scheduler = Executors.newScheduledThreadPool(1);
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        downloadService.startDownloadQueue();
+        startDownloadQueue();
 
         if (SystemTray.isSupported() && enableTrayIcon) {
             initSysTray();
@@ -64,7 +64,7 @@ public class DownloadService implements ServiceHost, Constants {
         }
     }
 
-    private static boolean initSysTray() {
+    private boolean initSysTray() {
         SystemTray tray = SystemTray.getSystemTray();
         TrayIcon trayIcon = new TrayIcon(getImage(), "tray icon");
 
@@ -81,13 +81,13 @@ public class DownloadService implements ServiceHost, Constants {
         }
     }
 
-    private static Image getImage() {
-        Image image = Toolkit.getDefaultToolkit().getImage(downloadService.getClass().getResource("/Download_Icon.png"));
+    private Image getImage() {
+        Image image = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Download_Icon.png"));
         image = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         return image;
     }
 
-    private static boolean buildPopupMenu(PopupMenu popup) {
+    private boolean buildPopupMenu(PopupMenu popup) {
         MenuItem aboutItem = new MenuItem("About");
         CheckboxMenuItem pauseMenu = new CheckboxMenuItem("Pause");
         MenuItem openItem = new MenuItem("Open working directory");
@@ -110,8 +110,8 @@ public class DownloadService implements ServiceHost, Constants {
         popup.add(exitItem);
 
         //Set Listeners
-        pauseMenu.addItemListener(new PauseButtonListener(downloadService));
-        optionsItem.addActionListener(new OptionsButtonListener(downloadService));
+        pauseMenu.addItemListener(new PauseButtonListener(this));
+        optionsItem.addActionListener(new OptionsButtonListener(this));
         openItem.addActionListener(new OpenButtonListener());
         exitItem.addActionListener(new ExitButtonListener());
 
@@ -128,9 +128,9 @@ public class DownloadService implements ServiceHost, Constants {
 
     @Override
     public void startDownloadQueue() {
-        log.finest("beeperHandle.start");
+        log.finest("scheduledFuture.start");
         try {
-            beeperHandle = scheduler.scheduleAtFixedRate(new DownloadThread(downloadSize, downloadService, new URL(url)), 0, downloadInterval, MINUTES);
+            scheduledFuture = scheduler.scheduleAtFixedRate(new DownloadThread(downloadSize, this, new URL(url)), 0, downloadInterval, MINUTES);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -138,8 +138,8 @@ public class DownloadService implements ServiceHost, Constants {
 
     @Override
     public void cancelDownloadQueue() {
-        log.finest("beeperHandle.cancel");
-        beeperHandle.cancel(true);
+        log.finest("scheduledFuture.cancel");
+        scheduledFuture.cancel(true);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class DownloadService implements ServiceHost, Constants {
 
     @Override
     public boolean setDownloadLink(String url) {
-        DownloadService.url = url;
+        this.url = url;
         return true;
     }
 
