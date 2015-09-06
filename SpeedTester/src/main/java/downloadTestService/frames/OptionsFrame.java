@@ -3,7 +3,7 @@ package downloadTestService.frames;
 import downloadTestService.DownloadService;
 import downloadTestService.frames.impl.*;
 import downloadTestService.interfaces.Constants;
-import downloadTestService.interfaces.OptionsChanger;
+import downloadTestService.interfaces.ParamChanger;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by enzo on 19.02.2015.
  */
-public class OptionsFrame extends Frame implements OptionsChanger, Constants {
+public class OptionsFrame extends Frame implements ParamChanger, Constants {
     static final int SIZE_MIN = 0;
     static final int SIZE_MAX = 200;
     private static int DOWNLOAD_INTERVAL_INIT;
@@ -80,7 +80,7 @@ public class OptionsFrame extends Frame implements OptionsChanger, Constants {
         p2.setBorder(new TitledBorder(new EtchedBorder(), "Download file"));
         linkField = new TextField();
         linkField.setColumns(50);
-        linkField.setText(dls.getDwonloadLink());
+        linkField.setText(dls.getDownloadURL());
         p2.add(linkField);
         add(p2);
 

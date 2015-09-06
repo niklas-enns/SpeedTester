@@ -1,5 +1,7 @@
 package downloadTestService;
 
+import downloadTestService.interfaces.Constants;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -14,16 +16,16 @@ import java.util.logging.Logger;
 /**
  * Created by enzo on 06.11.2014.
  */
-public class DownloadThread extends Thread {
+public class DownloadThread extends Thread implements Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
     URL targetFile;
-    long dlsize;
+    long downloadSize;
     DownloadService host;
     Date startOfDownload = new Date();
 
     public DownloadThread(long size, DownloadService h, URL url) {
         targetFile = url;
-        dlsize = size;
+        downloadSize = size;
         host = h;
     }
 
@@ -31,8 +33,8 @@ public class DownloadThread extends Thread {
         long startTime = startOfDownload.getTime();
         download();
         long runningTime = new Date().getTime() - startTime;
-        double resultSpeed = ((double) dlsize / ((double) runningTime / (double) 1000)) * 8.;
-        log.info("Download of " + dlsize + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
+        double resultSpeed = ((double) downloadSize / ((double) runningTime / 1000.)) / MB * 8.;
+        log.info("Download of " + downloadSize + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
         sendResultToHost(startOfDownload, resultSpeed);
         appendToLogFile(startOfDownload, resultSpeed);
 
@@ -43,7 +45,7 @@ public class DownloadThread extends Thread {
             log.info("Starting download...");
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
             FileOutputStream fos = new FileOutputStream("temp.dat");
-            fos.getChannel().transferFrom(rbc, 0, dlsize);
+            fos.getChannel().transferFrom(rbc, 0, downloadSize);
 
         } catch (Exception e) {
             log.severe("Could not download file");

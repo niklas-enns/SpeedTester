@@ -18,7 +18,7 @@ public interface ServiceHost {
 
     public boolean setDownloadLink(String url);
 
-    public String getDwonloadLink();
+    public String getDownloadURL();
 
     public String getDefaultDownloadLink();
 

@@ -22,13 +22,13 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class DownloadService implements ServiceHost, Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
-    static DownloadService dls = new DownloadService();
+    static DownloadService downloadService = new DownloadService();
     static ScheduledFuture<?> beeperHandle;
     static ScheduledExecutorService scheduler;
     static Menu results;
     static DownloadServiceArguments arguments;
 
-    static long dlsize;
+    static long downloadSize;
     static int downloadInterval;
     static String url;
     static Boolean enableTrayIcon;
@@ -36,7 +36,7 @@ public class DownloadService implements ServiceHost, Constants {
     final Runnable downloadStarter = new Runnable() {
         public void run() {
             try {
-                DownloadThread dl = new DownloadThread(dlsize, dls, new URL(url));
+                DownloadThread dl = new DownloadThread(downloadSize, downloadService, new URL(url));
                 dl.start();
             } catch (Exception e) {
                 log.severe("Bad URL");
@@ -44,18 +44,16 @@ public class DownloadService implements ServiceHost, Constants {
         }
     };
 
-    //TODO Wait4DL
-    //Download should not start when there is already one running
 
     public static void main(String[] args) {
         arguments = new DownloadServiceArguments();
         new JCommander(arguments, args);
-        dlsize = arguments.getSize();
+        downloadSize = arguments.getSize();
         downloadInterval = arguments.getInterval();
         url = arguments.getUrl();
         enableTrayIcon = arguments.getTray();
         try {
-            ParamValidator.validateParams(dlsize, downloadInterval, url);
+            ParamValidator.validateParams(downloadSize, downloadInterval, url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return;
@@ -68,7 +66,7 @@ public class DownloadService implements ServiceHost, Constants {
         }
 
         scheduler = Executors.newScheduledThreadPool(1);
-        dls.startDownloadQueue();
+        downloadService.startDownloadQueue();
 
         if (SystemTray.isSupported() && enableTrayIcon) {
             initSysTray();
@@ -95,7 +93,7 @@ public class DownloadService implements ServiceHost, Constants {
     }
 
     private static Image getImage() {
-        Image image = Toolkit.getDefaultToolkit().getImage(dls.getClass().getResource("/Download_Icon.png"));
+        Image image = Toolkit.getDefaultToolkit().getImage(downloadService.getClass().getResource("/Download_Icon.png"));
         image = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         return image;
     }
@@ -123,8 +121,8 @@ public class DownloadService implements ServiceHost, Constants {
         popup.add(exitItem);
 
         //Set Listeners
-        pauseMenu.addItemListener(new PauseButtonListener(dls));
-        optionsItem.addActionListener(new OptionsButtonListener(dls));
+        pauseMenu.addItemListener(new PauseButtonListener(downloadService));
+        optionsItem.addActionListener(new OptionsButtonListener(downloadService));
         openItem.addActionListener(new OpenButtonListener());
         exitItem.addActionListener(new ExitButtonListener());
 
@@ -142,7 +140,6 @@ public class DownloadService implements ServiceHost, Constants {
     @Override
     public void startDownloadQueue() {
         log.finest("beeperHandle.start");
-
         beeperHandle = scheduler.scheduleAtFixedRate(downloadStarter, 0, downloadInterval, MINUTES);
     }
 
@@ -156,7 +153,7 @@ public class DownloadService implements ServiceHost, Constants {
     public boolean setDownloadSize(long size) {
         if (size > MB && size <= 200 * MB) {
             log.info("DL size was set to " + size);
-            dlsize = size;
+            downloadSize = size;
             return true;
         }
         return false;
@@ -169,7 +166,7 @@ public class DownloadService implements ServiceHost, Constants {
 
     @Override
     public long getDownloadSize() {
-        return dlsize;
+        return downloadSize;
     }
 
     @Override
@@ -179,7 +176,7 @@ public class DownloadService implements ServiceHost, Constants {
     }
 
     @Override
-    public String getDwonloadLink() {
+    public String getDownloadURL() {
         return url;
     }
 
