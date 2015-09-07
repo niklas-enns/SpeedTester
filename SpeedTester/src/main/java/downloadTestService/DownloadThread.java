@@ -21,7 +21,7 @@ public class DownloadThread extends Thread implements Constants {
     URL targetFile;
     long downloadSize;
     DownloadService host;
-    Date startOfDownload = new Date();
+    Date startOfDownload;
 
     public DownloadThread(long size, DownloadService h, URL url) {
         targetFile = url;
@@ -30,6 +30,7 @@ public class DownloadThread extends Thread implements Constants {
     }
 
     public void run() {
+        startOfDownload = new Date();
         long startTime = startOfDownload.getTime();
         download();
         long runningTime = new Date().getTime() - startTime;
@@ -55,7 +56,6 @@ public class DownloadThread extends Thread implements Constants {
     private void sendResultToHost(Date dateOfDownload, double resultSpeed) {
         SimpleDateFormat sdftime = new SimpleDateFormat("HH:mm");
         String time = sdftime.format(dateOfDownload);
-
         host.setResult(time + " - " + String.format("%.2f", resultSpeed) + " Mbit/s");
     }
 
