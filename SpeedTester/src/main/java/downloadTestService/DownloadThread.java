@@ -47,7 +47,7 @@ public class DownloadThread extends Thread implements Constants {
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
             FileOutputStream fos = new FileOutputStream("temp.dat");
             fos.getChannel().transferFrom(rbc, 0, downloadSize);
-
+            rbc.close();
         } catch (Exception e) {
             log.severe("Could not download file");
         }
