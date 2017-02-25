@@ -1,4 +1,4 @@
-package downloadTestService.exceptions;
+package niklasu.speedtester.exceptions;
 
 /**
  * Created by enzo on 24.08.2015.

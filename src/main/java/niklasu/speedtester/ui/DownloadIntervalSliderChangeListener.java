@@ -1,4 +1,4 @@
-package downloadTestService.frames.impl;
+package niklasu.speedtester.ui;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -7,10 +7,10 @@ import javax.swing.event.ChangeListener;
 /**
  * Created by enzo on 19.02.2015.
  */
-public class DownloadSizeSiderChangeListener implements ChangeListener {
+public class DownloadIntervalSliderChangeListener implements ChangeListener {
     JSlider slider;
 
-    public DownloadSizeSiderChangeListener(JSlider s) {
+    public DownloadIntervalSliderChangeListener(JSlider s) {
         slider = s;
     }
 

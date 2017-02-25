@@ -1,6 +1,4 @@
-package downloadTestService.frames.impl;
-
-import downloadTestService.frames.OptionsFrame;
+package niklasu.speedtester.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

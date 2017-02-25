@@ -1,7 +1,7 @@
-package downloadTestService;
+package niklasu.speedtester.downloader;
 
 
-import downloadTestService.exceptions.BadFileException;
+import niklasu.speedtester.exceptions.BadFileException;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

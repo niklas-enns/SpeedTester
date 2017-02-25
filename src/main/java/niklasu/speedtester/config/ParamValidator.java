@@ -1,8 +1,9 @@
-package downloadTestService;
+package niklasu.speedtester.config;
 
-import downloadTestService.exceptions.BadFileException;
-import downloadTestService.exceptions.TooSmallFileException;
-import downloadTestService.interfaces.Constants;
+import niklasu.speedtester.downloader.DownloadFileSizeChecker;
+import niklasu.speedtester.exceptions.BadFileException;
+import niklasu.speedtester.exceptions.TooSmallFileException;
+import niklasu.speedtester.interfaces.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
