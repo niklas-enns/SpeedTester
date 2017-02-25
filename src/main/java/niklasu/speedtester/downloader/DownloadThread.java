@@ -17,7 +17,7 @@ public class DownloadThread extends Thread implements Constants {
     private long downloadsizeInMB;
     private Date startOfDownload;
     private EventBus eventBus;
-    DownloadThread(long downloadsizeInMB, URL url, EventBus eventBus) {
+    public DownloadThread(long downloadsizeInMB, URL url, EventBus eventBus) {
         this.eventBus = eventBus;
         targetFile = url;
         this.downloadsizeInMB = downloadsizeInMB;

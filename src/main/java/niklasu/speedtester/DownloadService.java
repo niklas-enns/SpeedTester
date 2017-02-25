@@ -9,6 +9,8 @@ import niklasu.speedtester.downloader.DownloadMgr;
 import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
 import niklasu.speedtester.ui.UI;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -23,18 +25,14 @@ public class DownloadService implements Constants {
     private ConfigStore configStore;
 
     public DownloadService(String[] args) throws Exception {
+        ApplicationContext context = new AnnotationConfigApplicationContext(DIConfig.class);
         log.setLevel(Level.INFO);
-        configStore = new ConfigStore();
-        new ConfigReader(args, configStore);
-        eventBus = new EventBus();
-        if (SystemTray.isSupported() && configStore.isTray()) {
-            new UI(configStore);
-        } else {
-            log.info("SystemTray not available");
-        }
-        new DownloadMgr(configStore, eventBus);
-        ResultFileWriter writer = new ResultFileWriter(eventBus);
-        eventBus.register(this);
+        configStore = context.getBean(ConfigStore.class);
+        ConfigReader configReader = context.getBean(ConfigReader.class);
+        configReader.parseArgs(args);
+        eventBus = context.getBean(EventBus.class);
+        DownloadMgr downloadMgr = context.getBean(DownloadMgr.class);
+        ResultFileWriter writer = context.getBean(ResultFileWriter.class);
     }
 
     public static void main(String[] args) throws Exception {

@@ -3,6 +3,7 @@ package niklasu.speedtester.resultfilewriter;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import niklasu.speedtester.Result;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,9 +11,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by enzo on 25.02.2017.
- */
+@Component
 public class ResultFileWriter {
     private EventBus eventBus;
 

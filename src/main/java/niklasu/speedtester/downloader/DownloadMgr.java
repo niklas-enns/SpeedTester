@@ -2,6 +2,7 @@ package niklasu.speedtester.downloader;
 
 import com.google.common.eventbus.EventBus;
 import niklasu.speedtester.config.ConfigStore;
+import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,9 +12,7 @@ import java.util.concurrent.ScheduledFuture;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
-/**
- * Created by enzo on 25.02.2017.
- */
+@Component
 public class DownloadMgr {
     private ScheduledFuture<?> scheduledFuture;
     private ScheduledExecutorService scheduler;
