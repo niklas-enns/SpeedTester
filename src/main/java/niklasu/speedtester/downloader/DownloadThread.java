@@ -1,5 +1,7 @@
 package niklasu.speedtester.downloader;
 
+import com.google.common.eventbus.EventBus;
+import niklasu.speedtester.Result;
 import niklasu.speedtester.interfaces.Constants;
 
 import java.io.FileOutputStream;
@@ -14,8 +16,9 @@ public class DownloadThread extends Thread implements Constants {
     private URL targetFile;
     private long downloadsizeInMB;
     private Date startOfDownload;
-
-    DownloadThread(long downloadsizeInMB, URL url) {
+    private EventBus eventBus;
+    DownloadThread(long downloadsizeInMB, URL url, EventBus eventBus) {
+        this.eventBus = eventBus;
         targetFile = url;
         this.downloadsizeInMB = downloadsizeInMB;
     }
@@ -44,7 +47,7 @@ public class DownloadThread extends Thread implements Constants {
     }
 
     private void publishResult(Date startOfDownload, double resultSpeed) {
-        //TODO via EventBus
+        eventBus.post(new Result(startOfDownload, resultSpeed));
     }
 
 }
