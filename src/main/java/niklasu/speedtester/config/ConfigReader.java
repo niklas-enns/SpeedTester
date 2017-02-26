@@ -8,13 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
 
-/**
- * Created by enzo on 25.02.2017.
- */
 @Component
 public class ConfigReader {
     @Autowired
-    ConfigStore configStore;
+    private ConfigStore configStore;
 
     public void parseArgs(String []args)throws BadFileException, TooSmallFileException, MalformedURLException{
         new JCommander(configStore, args);

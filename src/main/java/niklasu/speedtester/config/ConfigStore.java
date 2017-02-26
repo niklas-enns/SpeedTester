@@ -4,12 +4,10 @@ import com.beust.jcommander.Parameter;
 import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.TooSmallFileException;
 import niklasu.speedtester.interfaces.Constants;
+import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
-
-/**
- * Created by enzo on 20.08.2015.
- */
+@Component
 public class ConfigStore implements Constants {
     @Parameter(names = "-size", description = "Download size in MB", required = false)
     private int size = 50;

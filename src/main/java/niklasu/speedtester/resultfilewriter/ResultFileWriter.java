@@ -3,8 +3,10 @@ package niklasu.speedtester.resultfilewriter;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import niklasu.speedtester.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,10 +15,11 @@ import java.util.Date;
 
 @Component
 public class ResultFileWriter {
+    @Autowired
     private EventBus eventBus;
 
-    public ResultFileWriter(EventBus eventBus){
-        this.eventBus = eventBus;
+    @PostConstruct
+    private void init() {
         eventBus.register(this);
     }
 

@@ -7,14 +7,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-/**
- * Created by enzo on 19.02.2015.
- */
+@Component
 public class DownloadFileSizeChecker {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
 

@@ -9,6 +9,7 @@ import niklasu.speedtester.downloader.DownloadMgr;
 import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
 import niklasu.speedtester.ui.UI;
+//import niklasu.speedtester.ui.UIFX;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -32,7 +33,9 @@ public class DownloadService implements Constants {
         configReader.parseArgs(args);
         eventBus = context.getBean(EventBus.class);
         DownloadMgr downloadMgr = context.getBean(DownloadMgr.class);
+        downloadMgr.start();
         ResultFileWriter writer = context.getBean(ResultFileWriter.class);
+        //new UIFX().go();
     }
 
     public static void main(String[] args) throws Exception {
