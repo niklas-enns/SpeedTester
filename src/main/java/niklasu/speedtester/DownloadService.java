@@ -7,7 +7,7 @@ import niklasu.speedtester.downloader.DownloadFileSizeChecker;
 import niklasu.speedtester.downloader.DownloadMgr;
 import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
-import niklasu.speedtester.ui.TrayIcon;
+import niklasu.speedtester.ui.UI;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -32,7 +32,7 @@ public class DownloadService implements Constants {
         DownloadMgr downloadMgr = context.getBean(DownloadMgr.class);
         downloadMgr.start();
         ResultFileWriter writer = context.getBean(ResultFileWriter.class);
-        new TrayIcon().go();
+        context.getBean(UI.class);
     }
 
     public static void main(String[] args) throws Exception {
