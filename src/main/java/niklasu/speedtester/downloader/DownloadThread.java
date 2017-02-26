@@ -15,6 +15,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Date;
 import java.util.logging.Logger;
+
 @Component
 public class DownloadThread extends Thread implements Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
@@ -33,6 +34,7 @@ public class DownloadThread extends Thread implements Constants {
     }
 
     public void run() {
+        System.out.println();
         startOfDownload = new Date();
         long startTime = startOfDownload.getTime();
         download();
@@ -40,7 +42,7 @@ public class DownloadThread extends Thread implements Constants {
         double resultSpeed = ((double) downloadsizeInMB / ((double) runningTime / 1000.)) * 8.;
         log.info("Download of " + downloadsizeInMB + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
         publishResult(startOfDownload, resultSpeed);
-}
+    }
 
     private void download() {
         try {

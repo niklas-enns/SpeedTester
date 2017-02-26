@@ -25,8 +25,9 @@ public class DownloadMgr {
     private ApplicationContext context;
 
     @PostConstruct
-    private void init(){
+    private void initAndStart() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
+        start();
     }
 
     public void start(){
