@@ -7,13 +7,14 @@ import niklasu.speedtester.downloader.DownloadFileSizeChecker;
 import niklasu.speedtester.downloader.DownloadMgr;
 import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
+import niklasu.speedtester.ui.TrayIcon;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//import niklasu.speedtester.ui.UIFX;
+//import niklasu.speedtester.ui.TrayIcon;
 
 public class DownloadService implements Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
@@ -31,7 +32,7 @@ public class DownloadService implements Constants {
         DownloadMgr downloadMgr = context.getBean(DownloadMgr.class);
         downloadMgr.start();
         ResultFileWriter writer = context.getBean(ResultFileWriter.class);
-        //new UIFX().go();
+        new TrayIcon().go();
     }
 
     public static void main(String[] args) throws Exception {
