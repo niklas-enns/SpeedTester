@@ -1,8 +1,6 @@
 package niklasu.speedtester.ui;
 
-import niklasu.speedtester.DownloadService;
 import niklasu.speedtester.config.ConfigStore;
-import niklasu.speedtester.config.ParamValidator;
 import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.TooSmallFileException;
 import niklasu.speedtester.interfaces.Constants;

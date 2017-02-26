@@ -1,23 +1,19 @@
 package niklasu.speedtester;
 
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import niklasu.speedtester.config.ConfigReader;
 import niklasu.speedtester.config.ConfigStore;
 import niklasu.speedtester.downloader.DownloadFileSizeChecker;
 import niklasu.speedtester.downloader.DownloadMgr;
 import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
-import niklasu.speedtester.ui.UI;
-//import niklasu.speedtester.ui.UIFX;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+//import niklasu.speedtester.ui.UIFX;
 
 public class DownloadService implements Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());

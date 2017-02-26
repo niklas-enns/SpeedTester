@@ -1,7 +1,6 @@
 package niklasu.speedtester.ui;
 
 import niklasu.speedtester.config.ConfigStore;
-import org.springframework.stereotype.*;
 
 import java.awt.*;
 
