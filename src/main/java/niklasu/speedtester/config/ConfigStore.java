@@ -2,7 +2,9 @@ package niklasu.speedtester.config;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.google.common.eventbus.EventBus;
 import niklasu.speedtester.DownloadService;
+import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.TooSmallFileException;
 import niklasu.speedtester.interfaces.Constants;
@@ -16,6 +18,9 @@ import java.net.MalformedURLException;
 public class ConfigStore implements Constants {
     @Autowired
     ParamValidator paramValidator;
+    @Autowired
+    EventBus eventBus;
+
     @Parameter(names = "-size", description = "Download size in MB", required = false)
     private int size = 50;
     @Parameter(names = "-interval", description = "Download interval in minutes", required = false)
@@ -87,5 +92,9 @@ public class ConfigStore implements Constants {
 
     public String getDefaultUrl() {
         return "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
+    }
+
+    public void fireConfigChangedEvent() {
+        eventBus.post(new ConfigChangedEvent());
     }
 }

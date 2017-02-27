@@ -1,8 +1,8 @@
 package niklasu.speedtester.downloader;
 
 import com.google.common.eventbus.EventBus;
-import niklasu.speedtester.Result;
 import niklasu.speedtester.config.ConfigStore;
+import niklasu.speedtester.events.ResultEvent;
 import niklasu.speedtester.interfaces.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,12 +21,10 @@ public class DownloadThread extends Thread implements Constants {
     private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
     private URL targetFile;
     private long downloadsizeInMB;
-    private Date startOfDownload;
-    @Autowired
-    private EventBus eventBus;
     @Autowired
     private ConfigStore configStore;
-
+    @Autowired
+    private EventBus eventBus;
     @PostConstruct
     private void init() throws MalformedURLException {
         this.downloadsizeInMB = configStore.getSize();
@@ -34,8 +32,7 @@ public class DownloadThread extends Thread implements Constants {
     }
 
     public void run() {
-        System.out.println();
-        startOfDownload = new Date();
+        Date startOfDownload = new Date();
         long startTime = startOfDownload.getTime();
         download();
         long runningTime = new Date().getTime() - startTime;
@@ -58,7 +55,8 @@ public class DownloadThread extends Thread implements Constants {
     }
 
     private void publishResult(Date startOfDownload, double resultSpeed) {
-        eventBus.post(new Result(startOfDownload, resultSpeed));
+        eventBus.post(new ResultEvent(startOfDownload, resultSpeed));
+        configStore.fireConfigChangedEvent();
     }
 
 }

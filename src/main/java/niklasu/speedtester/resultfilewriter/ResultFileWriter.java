@@ -2,7 +2,7 @@ package niklasu.speedtester.resultfilewriter;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import niklasu.speedtester.Result;
+import niklasu.speedtester.events.ResultEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,14 +23,14 @@ public class ResultFileWriter {
     }
 
     @Subscribe
-    public void appendToLogFile(Result result) {
+    public void appendToLogFile(ResultEvent result) {
         File file = new File("results.txt");
         FileWriter writer;
         try {
             //init writer with append
             writer = new FileWriter(file, true);
-            String date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(result.date);
-            writer.write("" + date + " " + String.format("%.2f", result.speed) + " Mbit/s");
+            String date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(result.getDate());
+            writer.write("" + date + " " + String.format("%.2f", result.getSpeed()) + " Mbit/s");
             writer.write(System.getProperty("line.separator"));
 
             writer.flush();
@@ -39,4 +39,5 @@ public class ResultFileWriter {
             e.printStackTrace();
         }
     }
+
 }

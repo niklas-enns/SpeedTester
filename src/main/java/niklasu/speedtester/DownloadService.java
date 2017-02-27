@@ -22,14 +22,13 @@ public class DownloadService implements Constants {
         myargs = args;
         ApplicationContext context = new AnnotationConfigApplicationContext(DownloadService.class);
         log.setLevel(Level.INFO);
-        //TODO ensure Thread-safety. DownloadMgr must not start a download before ConfigStore isnt initialized
-        /*
-        Status quo: ConfigReader pusht, wenn er fertig ist, in Configstore rein. Also ist ConfigReader davon abhängig.
-        Kann DownloadMgr davor schon daten aus dem ConfigStore geholt haben?
-        Entweder wird ConfigStore von ConfigReader erstellt. Nein!
-         */
+
     }
 
+    //@Subscribe
+    //public void configChangedHandler(DeadEvent deadEvent){
+    //    System.out.println("Dafür interessiert sich sonst niemand...");
+    //}
     @Bean
     public EventBus eventBus() {
         return new EventBus();

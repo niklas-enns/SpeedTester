@@ -22,6 +22,4 @@ public class ParamValidator implements Constants {
             throw new TooSmallFileException("The target file is smaller than the required download size", realFileSize, requiredFileSize);
         return false;
     }
-
-
 }
