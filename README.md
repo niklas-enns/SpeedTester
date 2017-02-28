@@ -24,6 +24,7 @@ The operation of SpeedTester is controlled by four parameters
 
 If you want to change some parameters, you can just use the GUI via the tray icon or pass command-line arguments to the application.
 
+
 ##Example:
 ``
 java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4 -tray true
