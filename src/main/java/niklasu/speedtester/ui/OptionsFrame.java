@@ -121,7 +121,7 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
         TitledBorder border = new TitledBorder(new EtchedBorder(), "Download size [MB]");
         sizeSlider.setBorder(border);
         downloadSizeSlider = new JSlider(JSlider.HORIZONTAL,
-                SIZE_MIN, SIZE_MAX, (int) DOWNLOAD_SIZE_INIT / MB);
+                SIZE_MIN, SIZE_MAX, (int) DOWNLOAD_SIZE_INIT);
         downloadSizeSlider.setFont(font);
 
         //Turn on labels at major tick marks.
