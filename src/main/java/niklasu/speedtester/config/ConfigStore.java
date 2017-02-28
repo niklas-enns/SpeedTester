@@ -4,7 +4,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.common.eventbus.EventBus;
 import niklasu.speedtester.DownloadService;
-import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.TooSmallFileException;
 import niklasu.speedtester.interfaces.Constants;
@@ -29,7 +28,6 @@ public class ConfigStore implements Constants {
     private String url = "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
     @Parameter(names = "-tray", description = "Debug mode", arity = 1)
     private boolean tray = true;
-    private boolean running = true;
 
     @PostConstruct
     public void parseArgs() throws BadFileException, TooSmallFileException, MalformedURLException {
@@ -41,8 +39,7 @@ public class ConfigStore implements Constants {
         return size;
     }
 
-    public void setSize(int size) throws TooSmallFileException, MalformedURLException, BadFileException {
-        paramValidator.validateParams(size, interval, url);
+    public void setSize(int size) {
         this.size = size;
     }
 
@@ -74,14 +71,6 @@ public class ConfigStore implements Constants {
         return "" + size + " " + interval + " " + url;
     }
 
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
     public int getDefaultSize() {
         return 50;
     }
@@ -92,9 +81,5 @@ public class ConfigStore implements Constants {
 
     public String getDefaultUrl() {
         return "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
-    }
-
-    public void fireConfigChangedEvent() {
-        eventBus.post(new ConfigChangedEvent());
     }
 }

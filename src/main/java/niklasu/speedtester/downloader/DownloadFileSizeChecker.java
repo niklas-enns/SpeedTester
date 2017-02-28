@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 @Component
 public class DownloadFileSizeChecker {
-    private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
+    private static final Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public long getFileSize(URL targetFile) throws BadFileException {
         HttpClient client = new DefaultHttpClient();

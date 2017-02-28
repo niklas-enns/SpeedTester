@@ -1,15 +1,12 @@
 package niklasu.speedtester.downloader;
 
 import com.google.common.eventbus.EventBus;
-import niklasu.speedtester.config.ConfigStore;
 import niklasu.speedtester.events.ResultEvent;
 import niklasu.speedtester.interfaces.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.FileOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -18,17 +15,18 @@ import java.util.logging.Logger;
 
 @Component
 public class DownloadThread extends Thread implements Constants {
-    private static final Logger log = Logger.getLogger(DownloadFileSizeChecker.class.getName());
+    private static final Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private URL targetFile;
     private long downloadsizeInMB;
     @Autowired
-    private ConfigStore configStore;
-    @Autowired
     private EventBus eventBus;
-    @PostConstruct
-    private void init() throws MalformedURLException {
-        this.downloadsizeInMB = configStore.getSize();
-        targetFile = new URL(configStore.getUrl());
+
+    public void setSize(int size) {
+        this.downloadsizeInMB = size;
+    }
+
+    public void setUrl(URL url) {
+        this.targetFile = url;
     }
 
     public void run() {
@@ -56,7 +54,6 @@ public class DownloadThread extends Thread implements Constants {
 
     private void publishResult(Date startOfDownload, double resultSpeed) {
         eventBus.post(new ResultEvent(startOfDownload, resultSpeed));
-        configStore.fireConfigChangedEvent();
     }
 
 }

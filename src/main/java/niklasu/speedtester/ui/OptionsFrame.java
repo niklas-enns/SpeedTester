@@ -1,10 +1,12 @@
 package niklasu.speedtester.ui;
 
+import com.google.common.eventbus.EventBus;
 import niklasu.speedtester.config.ConfigStore;
-import niklasu.speedtester.exceptions.BadFileException;
-import niklasu.speedtester.exceptions.TooSmallFileException;
+import niklasu.speedtester.events.StartEvent;
+import niklasu.speedtester.events.StopEvent;
 import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.interfaces.ParamChanger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -14,23 +16,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.MalformedURLException;
 
 /**
  * Created by enzo on 19.02.2015.
  */
+//@org.springframework.stereotype.Component
 public class OptionsFrame extends Frame implements ParamChanger, Constants {
     static final int SIZE_MIN = 0;
     static final int SIZE_MAX = 200;
     private static int DOWNLOAD_INTERVAL_INIT;
-    long DOWNLOAD_SIZE_INIT;
+    @Autowired
+    EventBus eventBus;
+    @Autowired
     ConfigStore configStore;
+    long DOWNLOAD_SIZE_INIT;
     JSlider downloadSizeSlider;
     JSlider intervalSlider;
     TextField linkField;
 
-    public OptionsFrame(ConfigStore configStore) {
-        configStore.setRunning(false);
+    public OptionsFrame() {
+        eventBus.post(new StopEvent());
         DOWNLOAD_SIZE_INIT = configStore.getSize();
 
         DOWNLOAD_INTERVAL_INIT = configStore.getInterval();
@@ -93,7 +98,7 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
         Button reset = new Button("Reset");
         reset.addActionListener(new ResetButtonListener(this));
         Button decline = new Button("Decline");
-        decline.addActionListener(e -> configStore.setRunning(true));
+        decline.addActionListener(e -> eventBus.post(new StartEvent()));
         Button accept = new Button("Accept");
         accept.addActionListener(new AcceptButtonListener());
 
@@ -140,7 +145,7 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
 
     class OptionsWindowListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
-            configStore.setRunning(true);
+            eventBus.post(new StartEvent());
             e.getWindow().dispose();
         }
     }
@@ -149,6 +154,7 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            /*
             try {
                 configStore.setUrl(getDownloadLink());
                 configStore.setInterval(getDownloadInterval());
@@ -166,7 +172,7 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
                 informAboutBadTargetFile();
                 return;
             }
-            configStore.setRunning(true);
+            */
             dispose();
         }
 

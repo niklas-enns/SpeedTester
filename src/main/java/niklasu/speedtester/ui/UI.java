@@ -1,17 +1,29 @@
 package niklasu.speedtester.ui;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import niklasu.speedtester.config.ConfigStore;
+import niklasu.speedtester.events.ResultEvent;
+import niklasu.speedtester.events.StartEvent;
+import niklasu.speedtester.events.StopEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.awt.*;
+import java.util.logging.Logger;
 
 @org.springframework.stereotype.Component
 public class UI {
+    private static final Logger log = Logger.getLogger(UI.class.getName());
     Menu results;
     @Autowired
     ConfigStore configStore;
+    @Autowired
+    EventBus eventBus;
 
-    public UI(ConfigStore configStore) throws Exception {
+    @PostConstruct
+    public void init() throws Exception {
+        eventBus.register(this);
         this.configStore = configStore;
         SystemTray tray = SystemTray.getSystemTray();
         TrayIcon trayIcon = new TrayIcon(getImage(), "tray icon");
@@ -55,11 +67,11 @@ public class UI {
         //Set Listeners
         pauseMenu.addItemListener(e -> {
             {
-                if (e.getStateChange() == 1) configStore.setRunning(false);
-                if (e.getStateChange() == 2) configStore.setRunning(true);
+                if (e.getStateChange() == 1) eventBus.post(new StopEvent());
+                if (e.getStateChange() == 2) eventBus.post(new StartEvent());
             }
         });
-        optionsItem.addActionListener(e -> new OptionsFrame(configStore));
+        //optionsItem.addActionListener(e -> new OptionsFrame());
         openItem.addActionListener(e -> {
             final String dir = System.getProperty("user.dir");
             try {
@@ -73,10 +85,10 @@ public class UI {
         return true;
     }
 
-    public void setResult(String result) {
-        //TODO
-        //if (results.getItemCount() == 10) results.remove(0);
-        //results.add(new MenuItem(result));
+    @Subscribe
+    public void setResult(ResultEvent resultEvent) {
+        if (results.getItemCount() == 10) results.remove(0);
+        results.add(new MenuItem(String.format("%.2f MBit/s", resultEvent.getSpeed())));
     }
 }
 
