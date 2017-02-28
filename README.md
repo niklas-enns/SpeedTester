@@ -8,24 +8,13 @@ If supported, SpeedTester can settle in the tray menu. It should work with Windo
 Otherwise, SpeedTester can run as a normal command-line application which can be called with ``java -jar SpeedTester.jar``. Depending on your OS configuration, a (double-)click on the jar file will also execute it.
 
 ##Parameters:
-The operation of SpeedTester uses four parameters:
-- size : The download size of the file which is used to calculcate your connection speed, in MB
-- interval: The download interval in minutes
-- url: The target file url
-- tray: Enables a GUI which is accessible through a tray icon
+The operation of SpeedTester is controlled by four parameters
+- size (default: 50MB): The download size of the file which is used to calculcate your connection speed, in MB
+- interval (default: 1min): The download interval in minutes
+- url (default: [link](http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso)): The target file url
+- tray: (default: enabled): Enables a GUI which is accessible through a tray icon
 
-##Default values:
-You don't have to declare these parameters. SpeedTester has built-in default values: 50MB size, 1 minute interval, a nice URL, enabled tray icon. For normal use-cases this should be fine. Just run SpeedTester and you will notice that "results.txt" will contain a new result every minute.
-
-If you want to change some parameters, you can just use the GUI or pass command-line arguments to the application.
-
-##Arguments:
-Remember, none of these is required. If you leave an argument, the default value will be used
-
-- size <size>: Target download size in MB
-- interval <interval>: Download interval in minutes
-- url <URL>: Target file URL. Works with http://, ftp:// and maybe some others which i haven't tried yet
-- tray [true|false]: Enables or disables the tray icon and GUI
+If you want to change some parameters, you can just use the GUI via the tray icon or pass command-line arguments to the application.
 
 ##Example:
 ``
