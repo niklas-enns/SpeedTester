@@ -71,15 +71,9 @@ public class ConfigStore implements Constants {
         return "" + size + " " + interval + " " + url;
     }
 
-    public int getDefaultSize() {
-        return 50;
-    }
-
-    public int getDetaultInterval() {
-        return 1;
-    }
-
-    public String getDefaultUrl() {
-        return "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
+    public void reset() {
+        url = "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
+        size = 50;
+        interval = 1;
     }
 }

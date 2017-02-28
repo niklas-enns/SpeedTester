@@ -2,12 +2,17 @@ package niklasu.speedtester.ui;
 
 import com.google.common.eventbus.EventBus;
 import niklasu.speedtester.config.ConfigStore;
+import niklasu.speedtester.config.ParamValidator;
+import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.events.StopEvent;
+import niklasu.speedtester.exceptions.BadFileException;
+import niklasu.speedtester.exceptions.TooSmallFileException;
 import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.interfaces.ParamChanger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -16,59 +21,85 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
 
 /**
  * Created by enzo on 19.02.2015.
  */
-//@org.springframework.stereotype.Component
+@org.springframework.stereotype.Component
 public class OptionsFrame extends Frame implements ParamChanger, Constants {
     static final int SIZE_MIN = 0;
     static final int SIZE_MAX = 200;
+    private static final Font font = new Font("Serif", Font.ITALIC, 15);
     private static int DOWNLOAD_INTERVAL_INIT;
     @Autowired
     EventBus eventBus;
     @Autowired
     ConfigStore configStore;
+    @Autowired
+    ParamValidator paramValidator;
     long DOWNLOAD_SIZE_INIT;
     JSlider downloadSizeSlider;
     JSlider intervalSlider;
     TextField linkField;
 
-    public OptionsFrame() {
-        eventBus.post(new StopEvent());
+    @PostConstruct
+    public void init() {
         DOWNLOAD_SIZE_INIT = configStore.getSize();
-
         DOWNLOAD_INTERVAL_INIT = configStore.getInterval();
-        setTitle("SpeedTester options");
+        setTitle("Options");
         setSize(400, 300);
-
         setLayout(new GridLayout(4, 1));
+        setResizable(false);
 
-        //filesize slider
-        JPanel p = new JPanel();
-        TitledBorder border = new TitledBorder(new EtchedBorder(), "Download size [MB]");
-        p.setBorder(border);
-        downloadSizeSlider = new JSlider(JSlider.HORIZONTAL,
-                SIZE_MIN, SIZE_MAX, (int) DOWNLOAD_SIZE_INIT / MB);
+        createAndAddSizeSlider();
+        createAndAddIntervalSlider();
+        createAndAddURLTextField();
+        createAndAddButtons();
 
+        addWindowListener(new OptionsWindowListener());
 
-        Font font = new Font("Serif", Font.ITALIC, 15);
-        downloadSizeSlider.setFont(font);
+        setLocationRelativeTo(null);
+    }
 
-        //Turn on labels at major tick marks.
-        downloadSizeSlider.setMajorTickSpacing(100);
-        downloadSizeSlider.setMinorTickSpacing(50);
-        downloadSizeSlider.setPaintTicks(true);
-        downloadSizeSlider.setPaintLabels(true);
-        //downloadSizeSlider.setSnapToTicks(true);
-        downloadSizeSlider.addChangeListener(new DownloadSizeSiderChangeListener(downloadSizeSlider));
-        p.add(downloadSizeSlider);
-        add(p);
+    private void createAndAddButtons() {
+        Panel buttons = new Panel();
+        buttons.setLayout(new GridLayout(1, 2));
 
-        //intervalslider
+        Button reset = new Button("Reset");
+        reset.addActionListener(e -> {
+            configStore.reset();
+            linkField.setText(configStore.getUrl());
+            downloadSizeSlider.setValue(configStore.getSize());
+            intervalSlider.setValue(configStore.getInterval());
+            eventBus.post(new ConfigChangedEvent());
+        });
+
+        Button decline = new Button("Decline");
+        decline.addActionListener(e -> eventBus.post(new StartEvent()));
+
+        Button accept = new Button("Accept");
+        accept.addActionListener(new AcceptButtonListener());
+
+        buttons.add(reset);
+        buttons.add(decline);
+        buttons.add(accept);
+        add(buttons);
+    }
+
+    private void createAndAddURLTextField() {
+        JPanel p2 = new JPanel();
+        p2.setBorder(new TitledBorder(new EtchedBorder(), "Download file"));
+        linkField = new TextField();
+        linkField.setColumns(50);
+        linkField.setText(configStore.getUrl());
+        p2.add(linkField);
+        add(p2);
+    }
+
+    private void createAndAddIntervalSlider() {
         JPanel p3 = new JPanel();
         p3.setBorder(new TitledBorder(new EtchedBorder(), "Download interval [Minute]"));
-
         intervalSlider = new JSlider(JSlider.HORIZONTAL,
                 SIZE_MIN, SIZE_MAX, DOWNLOAD_INTERVAL_INIT);
 
@@ -83,33 +114,29 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
         intervalSlider.addChangeListener(new DownloadIntervalSliderChangeListener(intervalSlider));
         p3.add(intervalSlider);
         add(p3);
+    }
 
-        JPanel p2 = new JPanel();
-        p2.setBorder(new TitledBorder(new EtchedBorder(), "Download file"));
-        linkField = new TextField();
-        linkField.setColumns(50);
-        linkField.setText(configStore.getUrl());
-        p2.add(linkField);
-        add(p2);
+    private void createAndAddSizeSlider() {
+        JPanel sizeSlider = new JPanel();
+        TitledBorder border = new TitledBorder(new EtchedBorder(), "Download size [MB]");
+        sizeSlider.setBorder(border);
+        downloadSizeSlider = new JSlider(JSlider.HORIZONTAL,
+                SIZE_MIN, SIZE_MAX, (int) DOWNLOAD_SIZE_INIT / MB);
+        downloadSizeSlider.setFont(font);
 
-        Panel buttons = new Panel();
-        buttons.setLayout(new GridLayout(1, 2));
+        //Turn on labels at major tick marks.
+        downloadSizeSlider.setMajorTickSpacing(100);
+        downloadSizeSlider.setMinorTickSpacing(50);
+        downloadSizeSlider.setPaintTicks(true);
+        downloadSizeSlider.setPaintLabels(true);
+        //downloadSizeSlider.setSnapToTicks(true);
+        downloadSizeSlider.addChangeListener(new DownloadSizeSiderChangeListener(downloadSizeSlider));
+        sizeSlider.add(downloadSizeSlider);
+        add(sizeSlider);
+    }
 
-        Button reset = new Button("Reset");
-        reset.addActionListener(new ResetButtonListener(this));
-        Button decline = new Button("Decline");
-        decline.addActionListener(e -> eventBus.post(new StartEvent()));
-        Button accept = new Button("Accept");
-        accept.addActionListener(new AcceptButtonListener());
-
-        buttons.add(reset);
-        buttons.add(decline);
-        buttons.add(accept);
-        add(buttons);
-        addWindowListener(new OptionsWindowListener());
-
-        setLocationRelativeTo(null);
-        setResizable(false);
+    public void appear() {
+        eventBus.post(new StopEvent());
         setVisible(true);
     }
 
@@ -118,17 +145,17 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
     }
 
     public boolean resetDownloadLink() {
-        linkField.setText(configStore.getDefaultUrl());
+
         return true;
     }
 
     public int getDownloadSize() {
-        return downloadSizeSlider.getValue() * MB;
+        return downloadSizeSlider.getValue();
     }
 
 
     public boolean resetDownloadSize() {
-        downloadSizeSlider.setValue(configStore.getDefaultSize() / MB);
+
         return true;
     }
 
@@ -139,7 +166,7 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
 
 
     public boolean resetDownloadInterval() {
-        intervalSlider.setValue(configStore.getDetaultInterval());
+
         return true;
     }
 
@@ -154,11 +181,8 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            /*
             try {
-                configStore.setUrl(getDownloadLink());
-                configStore.setInterval(getDownloadInterval());
-                configStore.setSize(getDownloadSize());
+                paramValidator.validateParams(getDownloadSize(), getDownloadInterval(), getDownloadLink());
             } catch (TooSmallFileException e1) {
                 e1.printStackTrace();
                 informAboutTargetFileIsSmallerThanRequired(e1.getRealSize(), e1.getRequiredSize());
@@ -172,7 +196,11 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
                 informAboutBadTargetFile();
                 return;
             }
-            */
+            configStore.setUrl(getDownloadLink());
+            configStore.setInterval(getDownloadInterval());
+            configStore.setSize(getDownloadSize());
+            eventBus.post(new ConfigChangedEvent());
+            eventBus.post(new StartEvent());
             dispose();
         }
 

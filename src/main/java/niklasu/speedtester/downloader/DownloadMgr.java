@@ -43,6 +43,7 @@ public class DownloadMgr {
 
     @Subscribe
     public void configChangedHandler(ConfigChangedEvent configChangedEvent) throws MalformedURLException {
+        log.info("configChangedEvent@DownloadMgr");
         DownloadThread downloadThread = context.getBean(DownloadThread.class);
         downloadThread.setSize(configStore.getSize());
         downloadThread.setUrl(new URL(configStore.getUrl()));

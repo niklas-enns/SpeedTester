@@ -37,16 +37,16 @@ public class DownloadThread extends Thread implements Constants {
         double resultSpeed = ((double) downloadsizeInMB / ((double) runningTime / 1000.)) * 8.;
         log.info("Download of " + downloadsizeInMB + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
         publishResult(startOfDownload, resultSpeed);
+
     }
 
     private void download() {
         try {
-            log.info("Starting download...");
+            log.info(String.format("Starting download of %d MB from %s", downloadsizeInMB, targetFile.toString()));
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
             FileOutputStream fos = new FileOutputStream("temp.dat");
             fos.getChannel().transferFrom(rbc, 0, downloadsizeInMB * MB);
             rbc.close();
-            //yes
         } catch (Exception e) {
             log.severe("Could not download file");
         }

@@ -20,6 +20,8 @@ public class UI {
     ConfigStore configStore;
     @Autowired
     EventBus eventBus;
+    @Autowired
+    OptionsFrame optionsFrame;
 
     @PostConstruct
     public void init() throws Exception {
@@ -71,7 +73,7 @@ public class UI {
                 if (e.getStateChange() == 2) eventBus.post(new StartEvent());
             }
         });
-        //optionsItem.addActionListener(e -> new OptionsFrame());
+        optionsItem.addActionListener(e -> optionsFrame.appear());
         openItem.addActionListener(e -> {
             final String dir = System.getProperty("user.dir");
             try {
