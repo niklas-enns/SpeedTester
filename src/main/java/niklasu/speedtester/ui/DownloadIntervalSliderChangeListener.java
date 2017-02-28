@@ -4,9 +4,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-/**
- * Created by enzo on 19.02.2015.
- */
 public class DownloadIntervalSliderChangeListener implements ChangeListener {
     JSlider slider;
 
