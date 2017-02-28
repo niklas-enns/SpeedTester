@@ -9,7 +9,6 @@ import niklasu.speedtester.events.StopEvent;
 import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.TooSmallFileException;
 import niklasu.speedtester.interfaces.Constants;
-import niklasu.speedtester.interfaces.ParamChanger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -23,25 +22,22 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 
-/**
- * Created by enzo on 19.02.2015.
- */
 @org.springframework.stereotype.Component
-public class OptionsFrame extends Frame implements ParamChanger, Constants {
-    static final int SIZE_MIN = 0;
-    static final int SIZE_MAX = 200;
+public class OptionsFrame extends Frame implements Constants {
+    private static final int SIZE_MIN = 0;
+    private static final int SIZE_MAX = 200;
     private static final Font font = new Font("Serif", Font.ITALIC, 15);
     private static int DOWNLOAD_INTERVAL_INIT;
     @Autowired
-    EventBus eventBus;
+    private EventBus eventBus;
     @Autowired
-    ConfigStore configStore;
+    private ConfigStore configStore;
     @Autowired
-    ParamValidator paramValidator;
-    long DOWNLOAD_SIZE_INIT;
-    JSlider downloadSizeSlider;
-    JSlider intervalSlider;
-    TextField linkField;
+    private ParamValidator paramValidator;
+    private long DOWNLOAD_SIZE_INIT;
+    private JSlider downloadSizeSlider;
+    private JSlider intervalSlider;
+    private TextField linkField;
 
     @PostConstruct
     public void init() {
@@ -140,34 +136,16 @@ public class OptionsFrame extends Frame implements ParamChanger, Constants {
         setVisible(true);
     }
 
-    public String getDownloadLink() {
+    private String getDownloadLink() {
         return linkField.getText();
     }
 
-    public boolean resetDownloadLink() {
-
-        return true;
-    }
-
-    public int getDownloadSize() {
+    private int getDownloadSize() {
         return downloadSizeSlider.getValue();
     }
 
-
-    public boolean resetDownloadSize() {
-
-        return true;
-    }
-
-
-    public int getDownloadInterval() {
+    private int getDownloadInterval() {
         return intervalSlider.getValue() * MB;
-    }
-
-
-    public boolean resetDownloadInterval() {
-
-        return true;
     }
 
     class OptionsWindowListener extends WindowAdapter {
