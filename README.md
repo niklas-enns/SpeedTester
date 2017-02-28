@@ -10,8 +10,8 @@ Otherwise, SpeedTester can run as a normal command-line application which can be
 ##Parameters:
 The operation of SpeedTester is controlled by four parameters
 * size
- *The download size of the file which is used to calculcate your connection speed, in MB
- *default: 50MB
+    *The download size of the file which is used to calculcate your connection speed, in MB
+    *default: 50MB
 * interval (default: 1min): The download interval in minutes
 * url (default: [link](http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso)): The target file url
 * tray: (default: enabled): Enables a GUI which is accessible through a tray icon
