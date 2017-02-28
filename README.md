@@ -14,7 +14,7 @@ The operation of SpeedTester is controlled by four parameters
 * interval: The download interval in minutes
  * default: 1min
 * url: The target file url
- * default: [link](http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso) (Only for short term and test-wise usage. Respect public educational infrastructure!)
+ * default: [link](http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso) *(Only for short term and test-wise usage. Respect public educational infrastructure!)*
 * tray: Enables a GUI which is accessible through a tray icon
  * default: enabled
 
