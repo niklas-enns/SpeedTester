@@ -57,7 +57,11 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.0</version>
         </dependency>
 
     </dependencies>
@@ -76,7 +80,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>niklasu.speedtester.DownloadService</mainClass>
+                                    <mainClass>niklasu.speedtester.Main</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>

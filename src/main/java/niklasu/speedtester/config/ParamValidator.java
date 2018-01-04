@@ -1,23 +1,30 @@
 package niklasu.speedtester.config;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import niklasu.speedtester.downloader.DownloadFileSizeChecker;
 import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.TooSmallFileException;
 import niklasu.speedtester.interfaces.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-@Component
+@Singleton
 public class ParamValidator implements Constants {
-    @Autowired
-    ApplicationContext context;
+    private final static Logger logger = LoggerFactory.getLogger(ParamValidator.class);
+    private DownloadFileSizeChecker downloadFileSizeChecker;
+
+    @Inject
+    public ParamValidator(DownloadFileSizeChecker downloadFileSizeChecker) {
+        this.downloadFileSizeChecker = downloadFileSizeChecker;
+    }
 
     public boolean validateParams(long requiredFileSize, int interval, String url) throws MalformedURLException, TooSmallFileException, BadFileException {
-        long realFileSize = context.getBean(DownloadFileSizeChecker.class).getFileSize(new URL(url)); //Throws bad URL exceptions
+        logger.debug("Validating params: {} {} {}", requiredFileSize, interval, url);
+        long realFileSize = downloadFileSizeChecker.getFileSize(new URL(url));
         if (realFileSize < requiredFileSize)
             throw new TooSmallFileException("The target file is smaller than the required download size", realFileSize, requiredFileSize);
         return false;
