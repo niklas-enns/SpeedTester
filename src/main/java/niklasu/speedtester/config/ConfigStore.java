@@ -24,8 +24,8 @@ public class ConfigStore implements Constants {
     private int size = 50;
     @Parameter(names = "-interval", description = "Download interval in minutes", required = false)
     private int interval = 1;
-    @Parameter(names = "-url", description = "file URL", required = false)
-    private String url = "http://ftp.halifax.rwth-aachen.de/opensuse/distribution/13.2/iso/openSUSE-13.2-DVD-i586.iso";
+    @Parameter(names = "-url", description = "file URL", required = true)
+    private String url = "";
     @Parameter(names = "-tray", description = "Debug mode", arity = 1)
     private boolean tray = true;
 
