@@ -6,7 +6,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import niklasu.speedtester.exceptions.BadFileException;
-import niklasu.speedtester.exceptions.TooSmallFileException;
+import niklasu.speedtester.exceptions.ValidationException;
 import niklasu.speedtester.interfaces.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class ConfigStore implements Constants {
         this.eventBus = eventBus;
     }
 
-    public void parseArgs(String[] args) throws BadFileException, TooSmallFileException, MalformedURLException {
+    public void parseArgs(String[] args) throws BadFileException, ValidationException, MalformedURLException {
         new JCommander(this, args);
         paramValidator.validateParams(size, interval, url);
     }

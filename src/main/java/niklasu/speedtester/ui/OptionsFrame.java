@@ -6,8 +6,7 @@ import niklasu.speedtester.config.ParamValidator;
 import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.events.StopEvent;
-import niklasu.speedtester.exceptions.BadFileException;
-import niklasu.speedtester.exceptions.TooSmallFileException;
+import niklasu.speedtester.exceptions.ValidationException;
 import niklasu.speedtester.interfaces.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.MalformedURLException;
 
 @org.springframework.stereotype.Component
 public class OptionsFrame extends Frame implements Constants {
@@ -161,17 +159,8 @@ public class OptionsFrame extends Frame implements Constants {
         public void actionPerformed(ActionEvent e) {
             try {
                 paramValidator.validateParams(getDownloadSize(), getDownloadInterval(), getDownloadLink());
-            } catch (TooSmallFileException e1) {
-                e1.printStackTrace();
-                informAboutTargetFileIsSmallerThanRequired(e1.getRealSize(), e1.getRequiredSize());
-                return;
-            } catch (MalformedURLException e1) {
-                informAboutBadURL();
-                e1.printStackTrace();
-                return;
-            } catch (BadFileException e1) {
-                e1.printStackTrace();
-                informAboutBadTargetFile();
+            } catch (ValidationException e1) {
+                informAboutTargetFileIsSmallerThanRequired(e1.getMessage());
                 return;
             }
             configStore.setUrl(getDownloadLink());
@@ -182,9 +171,9 @@ public class OptionsFrame extends Frame implements Constants {
             dispose();
         }
 
-        private void informAboutTargetFileIsSmallerThanRequired(long realFileSize, long requiredDownloadsize) {
+        private void informAboutTargetFileIsSmallerThanRequired(String message) {
             JOptionPane.showMessageDialog(null,
-                    "The target file, you selected has a size of " + realFileSize / MB + "MB,\n which is less than your required download size of " + requiredDownloadsize / MB + "MB.\nLower the download size or choose a bigger target file",
+                    message,
                     "Target file is too small",
                     JOptionPane.ERROR_MESSAGE);
         }
