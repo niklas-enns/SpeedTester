@@ -9,6 +9,7 @@ import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.guice.ScheduledExecutorServiceModule;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
+import niklasu.speedtester.ui.UI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,5 +25,7 @@ public class Main{
 
         injector.getInstance(EventBus.class).post(new ConfigChangedEvent());
         injector.getInstance(EventBus.class).post(new StartEvent());
+
+        injector.getInstance(UI.class);
     }
 }

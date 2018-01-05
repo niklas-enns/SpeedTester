@@ -2,29 +2,32 @@ package niklasu.speedtester.ui;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 import niklasu.speedtester.config.ConfigStore;
 import niklasu.speedtester.events.ResultEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.events.StopEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import java.awt.*;
-import java.util.logging.Logger;
 
-@org.springframework.stereotype.Component
 public class UI {
-    private static final Logger log = Logger.getLogger(UI.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(UI.class);
     Menu results;
-    @Autowired
     ConfigStore configStore;
-    @Autowired
     EventBus eventBus;
-    @Autowired
     OptionsFrame optionsFrame;
 
-    @PostConstruct
-    public void init() throws Exception {
+    @Inject
+    public UI(ConfigStore configStore, EventBus eventBus, OptionsFrame optionsFrame) throws AWTException {
+        this.configStore = configStore;
+        this.eventBus = eventBus;
+        this.optionsFrame = optionsFrame;
+        init();
+    }
+
+    public void init() throws AWTException {
         eventBus.register(this);
         this.configStore = configStore;
         SystemTray tray = SystemTray.getSystemTray();
@@ -35,7 +38,6 @@ public class UI {
         buildPopupMenu(popup);
         trayIcon.setPopupMenu(popup);
         tray.add(trayIcon);
-
     }
 
     private Image getImage() {

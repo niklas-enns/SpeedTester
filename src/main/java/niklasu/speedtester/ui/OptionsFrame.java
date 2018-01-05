@@ -1,15 +1,14 @@
 package niklasu.speedtester.ui;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
 import niklasu.speedtester.config.ConfigStore;
 import niklasu.speedtester.config.ParamValidator;
 import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.events.StopEvent;
 import niklasu.speedtester.exceptions.ValidationException;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -21,24 +20,27 @@ import java.awt.event.WindowEvent;
 
 import static niklasu.speedtester.Constants.MB;
 
-@org.springframework.stereotype.Component
 public class OptionsFrame extends Frame {
     private static final int SIZE_MIN = 0;
     private static final int SIZE_MAX = 200;
     private static final Font font = new Font("Serif", Font.ITALIC, 15);
     private static int DOWNLOAD_INTERVAL_INIT;
-    @Autowired
     private EventBus eventBus;
-    @Autowired
     private ConfigStore configStore;
-    @Autowired
     private ParamValidator paramValidator;
     private long DOWNLOAD_SIZE_INIT;
     private JSlider downloadSizeSlider;
     private JSlider intervalSlider;
     private TextField linkField;
 
-    @PostConstruct
+    @Inject
+    public OptionsFrame(EventBus eventBus, ConfigStore configStore, ParamValidator paramValidator) throws HeadlessException {
+        this.eventBus = eventBus;
+        this.configStore = configStore;
+        this.paramValidator = paramValidator;
+        init();
+    }
+
     public void init() {
         DOWNLOAD_SIZE_INIT = configStore.getSize();
         DOWNLOAD_INTERVAL_INIT = configStore.getInterval();
