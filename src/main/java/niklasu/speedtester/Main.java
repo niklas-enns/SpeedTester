@@ -8,12 +8,11 @@ import niklasu.speedtester.downloader.DownloadManager;
 import niklasu.speedtester.downloader.ScheduledExecutorServiceModule;
 import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
-import niklasu.speedtester.interfaces.Constants;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Main implements Constants {
+public class Main{
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {

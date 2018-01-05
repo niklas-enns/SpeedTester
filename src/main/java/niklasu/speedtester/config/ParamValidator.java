@@ -2,7 +2,6 @@ package niklasu.speedtester.config;
 
 import com.google.inject.Singleton;
 import niklasu.speedtester.exceptions.ValidationException;
-import niklasu.speedtester.interfaces.Constants;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -14,8 +13,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static niklasu.speedtester.Constants.MB;
+
 @Singleton
-public class ParamValidator implements Constants {
+public class ParamValidator {
     private final static Logger logger = LoggerFactory.getLogger(ParamValidator.class);
 
     public void validateParams(long requiredFileSize, int interval, String url) throws ValidationException {
@@ -27,7 +28,7 @@ public class ParamValidator implements Constants {
         } catch (MalformedURLException e) {
             throw new ValidationException("",e);
         }
-        if (realFileSize < 1*MB) throw new ValidationException(String.format("The size of %s was %d and is < %d", url, realFileSize, 1*MB));
+        if (realFileSize < 1* MB) throw new ValidationException(String.format("The size of %s was %d and is < %d", url, realFileSize, 1*MB));
         if (realFileSize < requiredFileSize * MB) throw new ValidationException(String.format("%s has a size of %d while %d is required", url, realFileSize, requiredFileSize*MB));
     }
 

@@ -1,9 +1,6 @@
 package niklasu.speedtester.downloader;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-
-import static niklasu.speedtester.interfaces.Constants.MB;
 
 class DownloadThreadTest {
     private DownloadThread dlt;

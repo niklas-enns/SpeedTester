@@ -7,7 +7,6 @@ import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.events.StopEvent;
 import niklasu.speedtester.exceptions.ValidationException;
-import niklasu.speedtester.interfaces.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -20,8 +19,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static niklasu.speedtester.Constants.MB;
+
 @org.springframework.stereotype.Component
-public class OptionsFrame extends Frame implements Constants {
+public class OptionsFrame extends Frame {
     private static final int SIZE_MIN = 0;
     private static final int SIZE_MAX = 200;
     private static final Font font = new Font("Serif", Font.ITALIC, 15);
@@ -153,7 +154,7 @@ public class OptionsFrame extends Frame implements Constants {
         }
     }
 
-    class AcceptButtonListener implements ActionListener, Constants {
+    class AcceptButtonListener implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {

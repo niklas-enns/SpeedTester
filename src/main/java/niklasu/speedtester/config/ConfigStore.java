@@ -7,14 +7,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.ValidationException;
-import niklasu.speedtester.interfaces.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 
 @Singleton
-public class ConfigStore implements Constants {
+public class ConfigStore{
     private final static Logger logger = LoggerFactory.getLogger(ConfigStore.class);
     private ParamValidator paramValidator;
     private EventBus eventBus;

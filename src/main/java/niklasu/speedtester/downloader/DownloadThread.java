@@ -3,7 +3,6 @@ package niklasu.speedtester.downloader;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import niklasu.speedtester.events.ResultEvent;
-import niklasu.speedtester.interfaces.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,9 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Date;
 
-public class DownloadThread extends Thread implements Constants {
+import static niklasu.speedtester.Constants.MB;
+
+public class DownloadThread extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(DownloadThread.class);
     private URL targetFile;
     private long downloadsizeInMB;
