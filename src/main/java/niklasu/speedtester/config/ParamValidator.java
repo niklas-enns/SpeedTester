@@ -37,12 +37,18 @@ public class ParamValidator implements Constants {
                 .url(targetFile)
                 .head()
                 .build();
+        Headers responseHeaders;
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new ValidationException("Unexpected code " + response);
-            Headers responseHeaders = response.headers();
-            return Long.parseLong(responseHeaders.value(3));
+            responseHeaders = response.headers();
         }catch (IOException | NumberFormatException e){
-            throw new ValidationException("",e);
+            throw new ValidationException(String.format("Error while checking the file size of %s", targetFile),e);
+        }
+        String length = responseHeaders.get("Content-Length");
+        try{
+            return Long.parseLong(length);
+        }catch (NumberFormatException e) {
+            throw new ValidationException(String.format("%s was assumend to be the value for the \"Content-Length\" Header and could not be parsed", length));
         }
     }
 }
