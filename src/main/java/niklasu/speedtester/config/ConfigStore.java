@@ -5,12 +5,9 @@ import com.beust.jcommander.Parameter;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.MalformedURLException;
 
 @Singleton
 public class ConfigStore{
@@ -33,7 +30,7 @@ public class ConfigStore{
         this.eventBus = eventBus;
     }
 
-    public void parseArgs(String[] args) throws BadFileException, ValidationException, MalformedURLException {
+    public void parseArgs(String[] args) throws ValidationException {
         new JCommander(this, args);
         paramValidator.validateParams(size, interval, url);
     }

@@ -1,4 +1,4 @@
-package niklasu.speedtester.downloader;
+package niklasu.speedtester.guice;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
