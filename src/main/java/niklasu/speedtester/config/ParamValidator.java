@@ -1,14 +1,12 @@
 package niklasu.speedtester.config;
 
 import com.google.inject.Singleton;
-import niklasu.speedtester.exceptions.BadFileException;
 import niklasu.speedtester.exceptions.ValidationException;
 import niklasu.speedtester.interfaces.Constants;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.impl.client.DefaultHttpClient;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,27 +24,25 @@ public class ParamValidator implements Constants {
         long realFileSize = 0;
         try {
             realFileSize = getFileSize(new URL(url));
-        } catch (BadFileException | MalformedURLException e) {
+        } catch (MalformedURLException e) {
             throw new ValidationException("",e);
         }
         if (realFileSize < 1*MB) throw new ValidationException(String.format("The size of %s was %d and is < %d", url, realFileSize, 1*MB));
         if (realFileSize < requiredFileSize * MB) throw new ValidationException(String.format("%s has a size of %d while %d is required", url, realFileSize, requiredFileSize*MB));
     }
 
-    private long getFileSize(URL targetFile) throws BadFileException {
-        HttpClient client = new DefaultHttpClient();
-        HttpHead head = new HttpHead(String.valueOf(targetFile));
-        HttpResponse response = null;
-        try {
-            response = client.execute(head);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private long getFileSize(URL targetFile) throws ValidationException {
+        final OkHttpClient client = new OkHttpClient();
+        Request request =  new Request.Builder()
+                .url(targetFile)
+                .head()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new ValidationException("Unexpected code " + response);
+            Headers responseHeaders = response.headers();
+            return Long.parseLong(responseHeaders.value(3));
+        }catch (IOException | NumberFormatException e){
+            throw new ValidationException("",e);
         }
-        Header[] size = response.getHeaders("Content-length");
-        if (size.length == 0) throw new BadFileException("The HTTP response has no Content-Length field");
-        logger.debug("Size of {} is {} bytes", targetFile, size[0].getValue());
-        String contentLength = size[0].getValue().replaceAll("[^\\d.]", ""); //delete all non-numbers
-        long contentLengthAsInt = Long.parseLong(contentLength);
-        return contentLengthAsInt;
     }
 }
