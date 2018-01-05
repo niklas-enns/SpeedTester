@@ -50,7 +50,8 @@ public class DownloadManager {
     @Subscribe
     public void stopEventHandler(StopEvent stopEvent) {
         logger.debug("stopEvent");
-        scheduledFuture.cancel(true);
+        logger.info("Stopped scheduling downloads. If there was already a download running while stopping, it will be finished.");
+        scheduledFuture.cancel(false);
     }
 
     @Subscribe
