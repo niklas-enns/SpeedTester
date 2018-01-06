@@ -26,6 +26,6 @@ public class Main{
         injector.getInstance(EventBus.class).post(new ConfigChangedEvent());
         injector.getInstance(EventBus.class).post(new StartEvent());
 
-        injector.getInstance(UI.class);
+        if (configStore.isTray()) injector.getInstance(UI.class);
     }
 }

@@ -4,9 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import niklasu.speedtester.config.ConfigStore;
 import niklasu.speedtester.config.ParamValidator;
-import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
-import niklasu.speedtester.events.StopEvent;
 import niklasu.speedtester.exceptions.ValidationException;
 
 import javax.swing.*;
@@ -41,7 +39,7 @@ public class OptionsFrame extends Frame {
         init();
     }
 
-    public void init() {
+    private void init() {
         DOWNLOAD_SIZE_INIT = configStore.getSize();
         DOWNLOAD_INTERVAL_INIT = configStore.getInterval();
         setTitle("Options");
@@ -69,7 +67,6 @@ public class OptionsFrame extends Frame {
             linkField.setText(configStore.getUrl());
             downloadSizeSlider.setValue(configStore.getSize());
             intervalSlider.setValue(configStore.getInterval());
-            eventBus.post(new ConfigChangedEvent());
         });
 
         Button decline = new Button("Decline");
@@ -133,7 +130,6 @@ public class OptionsFrame extends Frame {
     }
 
     public void appear() {
-        eventBus.post(new StopEvent());
         setVisible(true);
     }
 
@@ -156,20 +152,16 @@ public class OptionsFrame extends Frame {
         }
     }
 
-    class AcceptButtonListener implements ActionListener{
+    class AcceptButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                paramValidator.validateParams(getDownloadSize(), getDownloadInterval(), getDownloadLink());
+                configStore.setParams(getDownloadSize(), getDownloadInterval(), getDownloadLink());
             } catch (ValidationException e1) {
                 informAboutTargetFileIsSmallerThanRequired(e1.getMessage());
                 return;
             }
-            configStore.setUrl(getDownloadLink());
-            configStore.setInterval(getDownloadInterval());
-            configStore.setSize(getDownloadSize());
-            eventBus.post(new ConfigChangedEvent());
             eventBus.post(new StartEvent());
             dispose();
         }
@@ -177,24 +169,7 @@ public class OptionsFrame extends Frame {
         private void informAboutTargetFileIsSmallerThanRequired(String message) {
             JOptionPane.showMessageDialog(null,
                     message,
-                    "Target file is too small",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-
-        private void informAboutBadTargetFile() {
-            JOptionPane.showMessageDialog(null,
-                    "The HTTP response did not include an Content-Length field. Please pick another file",
-                    "Target file is mysterious",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-
-        private void informAboutBadURL() {
-            JOptionPane.showMessageDialog(null,
-                    "Check your URL. It has to start with\n" +
-                            "http://www....",
-                    "Bad URL",
+                    "Configuration Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -11,13 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
 
 public class UI {
     private static final Logger logger = LoggerFactory.getLogger(UI.class);
-    Menu results;
-    ConfigStore configStore;
-    EventBus eventBus;
-    OptionsFrame optionsFrame;
+    private Menu results;
+    private ConfigStore configStore;
+    private EventBus eventBus;
+    private OptionsFrame optionsFrame;
 
     @Inject
     public UI(ConfigStore configStore, EventBus eventBus, OptionsFrame optionsFrame) throws AWTException {
@@ -27,11 +28,10 @@ public class UI {
         init();
     }
 
-    public void init() throws AWTException {
+    private void init() throws AWTException {
         eventBus.register(this);
-        this.configStore = configStore;
         SystemTray tray = SystemTray.getSystemTray();
-        TrayIcon trayIcon = new TrayIcon(getImage(), "tray icon");
+        TrayIcon trayIcon = new TrayIcon(getTrayIcon(), "SpeedTester");
 
         // Create a pop-up menu components
         PopupMenu popup = new PopupMenu();
@@ -40,7 +40,7 @@ public class UI {
         tray.add(trayIcon);
     }
 
-    private Image getImage() {
+    private Image getTrayIcon() {
         Image image = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Download_Icon.png"));
         image = image.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         return image;
@@ -53,7 +53,7 @@ public class UI {
         MenuItem optionsItem = new MenuItem("Options");
         MenuItem exitItem = new MenuItem("Exit");
         //Pseudo-menu:shows last results
-        results = new Menu("Last 10 measurements");
+        results = new Menu("10 last measurements");
 
         //Add components to pop-up menu
         popup.add(aboutItem);
@@ -70,12 +70,13 @@ public class UI {
 
         //Set Listeners
         pauseMenu.addItemListener(e -> {
-            {
-                if (e.getStateChange() == 1) eventBus.post(new StopEvent());
-                if (e.getStateChange() == 2) eventBus.post(new StartEvent());
-            }
+                if (e.getStateChange() == ItemEvent.SELECTED) eventBus.post(new StopEvent());
+                if (e.getStateChange() == ItemEvent.DESELECTED) eventBus.post(new StartEvent());
         });
-        optionsItem.addActionListener(e -> optionsFrame.appear());
+        optionsItem.addActionListener(e -> {
+            eventBus.post(new StopEvent());
+            optionsFrame.appear();
+        });
         openItem.addActionListener(e -> {
             final String dir = System.getProperty("user.dir");
             try {

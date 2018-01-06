@@ -22,13 +22,13 @@ public class ParamValidator {
     public void validateParams(long requiredFileSize, int interval, String url) throws ValidationException {
         logger.debug("Validating params: {}MB,  {}minutes interval, url: {}", requiredFileSize, interval, url);
         if (requiredFileSize <1) throw new ValidationException("download size must be >=1");
-        long realFileSize = 0;
+        long realFileSize;
         try {
             realFileSize = getFileSize(new URL(url));
         } catch (MalformedURLException e) {
-            throw new ValidationException("",e);
+            throw new ValidationException("Malformed URL. It has to start with http://",e);
         }
-        if (realFileSize < 1* MB) throw new ValidationException(String.format("The size of %s was %d and is < %d", url, realFileSize, 1*MB));
+        if (realFileSize < MB) throw new ValidationException(String.format("The size of %s was %d and is < %d", url, realFileSize, MB));
         if (realFileSize < requiredFileSize * MB) throw new ValidationException(String.format("%s has a size of %d while %d is required", url, realFileSize, requiredFileSize*MB));
     }
 
