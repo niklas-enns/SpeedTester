@@ -53,10 +53,10 @@ public class DownloadThread extends Thread {
     private void download() throws DownloadException {
         try {
             logger.info(String.format("Starting download of %d MB from %s", downloadsizeInMB, targetFile.toString()));
-            ReadableByteChannel download = Channels.newChannel(targetFile.openStream());
-            FileOutputStream file = new FileOutputStream("nul");
-            file.getChannel().transferFrom(download, 0, downloadsizeInMB * MB);
-            download.close();
+            ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
+            FileOutputStream fos = new FileOutputStream("temp.dat");
+            fos.getChannel().transferFrom(rbc, 0, downloadsizeInMB * MB);
+            rbc.close();
         } catch (FileNotFoundException e) {
             throw new DownloadException("", e);
         } catch (IOException e) {
