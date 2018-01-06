@@ -16,8 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import static niklasu.speedtester.Constants.MB;
-
 public class OptionsFrame extends Frame {
     private static final int SIZE_MIN = 0;
     private static final int SIZE_MAX = 200;
@@ -142,7 +140,7 @@ public class OptionsFrame extends Frame {
     }
 
     private int getDownloadInterval() {
-        return intervalSlider.getValue() * MB;
+        return intervalSlider.getValue();
     }
 
     class OptionsWindowListener extends WindowAdapter {
