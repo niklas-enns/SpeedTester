@@ -30,6 +30,8 @@ public class ParamValidator {
         }
         if (realFileSize < MB) throw new ValidationException(String.format("The size of %s was %d and is < %d", url, realFileSize, MB));
         if (realFileSize < requiredFileSize * MB) throw new ValidationException(String.format("%s has a size of %d while %d is required", url, realFileSize, requiredFileSize*MB));
+
+        if (interval < 1) throw new ValidationException(String.format("Interval must be >= 1 but it was %d", interval));
     }
 
     private long getFileSize(URL targetFile) throws ValidationException {

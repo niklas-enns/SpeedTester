@@ -3,7 +3,6 @@ package niklasu.speedtester.ui;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import niklasu.speedtester.config.ConfigStore;
-import niklasu.speedtester.config.ParamValidator;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.exceptions.ValidationException;
 
@@ -23,17 +22,15 @@ public class OptionsFrame extends Frame {
     private static int DOWNLOAD_INTERVAL_INIT;
     private EventBus eventBus;
     private ConfigStore configStore;
-    private ParamValidator paramValidator;
     private long DOWNLOAD_SIZE_INIT;
     private JSlider downloadSizeSlider;
-    private JSlider intervalSlider;
+    private TextField intervalField;
     private TextField linkField;
 
     @Inject
-    public OptionsFrame(EventBus eventBus, ConfigStore configStore, ParamValidator paramValidator) throws HeadlessException {
+    public OptionsFrame(EventBus eventBus, ConfigStore configStore) throws HeadlessException {
         this.eventBus = eventBus;
         this.configStore = configStore;
-        this.paramValidator = paramValidator;
         init();
     }
 
@@ -46,7 +43,7 @@ public class OptionsFrame extends Frame {
         setResizable(false);
 
         createAndAddSizeSlider();
-        createAndAddIntervalSlider();
+        createAndAddIntervalField();
         createAndAddURLTextField();
         createAndAddButtons();
 
@@ -64,7 +61,7 @@ public class OptionsFrame extends Frame {
             configStore.reset();
             linkField.setText(configStore.getUrl());
             downloadSizeSlider.setValue(configStore.getSize());
-            intervalSlider.setValue(configStore.getInterval());
+            intervalField.setText(""+configStore.getInterval());
         });
 
         Button decline = new Button("Decline");
@@ -89,22 +86,11 @@ public class OptionsFrame extends Frame {
         add(p2);
     }
 
-    private void createAndAddIntervalSlider() {
+    private void createAndAddIntervalField() {
         JPanel p3 = new JPanel();
         p3.setBorder(new TitledBorder(new EtchedBorder(), "Download interval [Minute]"));
-        intervalSlider = new JSlider(JSlider.HORIZONTAL,
-                SIZE_MIN, SIZE_MAX, DOWNLOAD_INTERVAL_INIT);
-
-        intervalSlider.setFont(font);
-
-        //Turn on labels at major tick marks.
-        intervalSlider.setMajorTickSpacing(100);
-        intervalSlider.setMinorTickSpacing(50);
-        intervalSlider.setPaintTicks(true);
-        intervalSlider.setPaintLabels(true);
-        //downloadSizeSlider.setSnapToTicks(true);
-        intervalSlider.addChangeListener(new DownloadIntervalSliderChangeListener(intervalSlider));
-        p3.add(intervalSlider);
+        intervalField = new TextField(Integer.toString(configStore.getInterval()), 4);
+        p3.add(intervalField);
         add(p3);
     }
 
@@ -121,7 +107,6 @@ public class OptionsFrame extends Frame {
         downloadSizeSlider.setMinorTickSpacing(50);
         downloadSizeSlider.setPaintTicks(true);
         downloadSizeSlider.setPaintLabels(true);
-        //downloadSizeSlider.setSnapToTicks(true);
         downloadSizeSlider.addChangeListener(new DownloadSizeSiderChangeListener(downloadSizeSlider));
         sizeSlider.add(downloadSizeSlider);
         add(sizeSlider);
@@ -139,8 +124,12 @@ public class OptionsFrame extends Frame {
         return downloadSizeSlider.getValue();
     }
 
-    private int getDownloadInterval() {
-        return intervalSlider.getValue();
+    private int getDownloadInterval() throws ValidationException {
+        try {
+            return Integer.parseInt(intervalField.getText());
+        }catch (NumberFormatException e){
+            throw new ValidationException(String.format("%s is not a valid number", intervalField.getText()));
+        }
     }
 
     class OptionsWindowListener extends WindowAdapter {
