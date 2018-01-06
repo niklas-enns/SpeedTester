@@ -54,7 +54,7 @@ public class DownloadThread extends Thread {
         try {
             logger.info(String.format("Starting download of %d MB from %s", downloadsizeInMB, targetFile.toString()));
             ReadableByteChannel download = Channels.newChannel(targetFile.openStream());
-            FileOutputStream file = new FileOutputStream("NUL:");
+            FileOutputStream file = new FileOutputStream("nul");
             file.getChannel().transferFrom(download, 0, downloadsizeInMB * MB);
             download.close();
         } catch (FileNotFoundException e) {
