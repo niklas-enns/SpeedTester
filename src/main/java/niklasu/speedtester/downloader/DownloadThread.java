@@ -6,6 +6,7 @@ import niklasu.speedtester.events.ResultEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,10 +54,13 @@ public class DownloadThread extends Thread {
     private void download() throws DownloadException {
         try {
             logger.info(String.format("Starting download of %d MB from %s", downloadsizeInMB, targetFile.toString()));
+            File tempFile = File.createTempFile("SpeedTester-","-lol");
+            tempFile.deleteOnExit();
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
-            FileOutputStream fos = new FileOutputStream("temp.dat");
+            FileOutputStream fos = new FileOutputStream(tempFile);
             fos.getChannel().transferFrom(rbc, 0, downloadsizeInMB * MB);
             rbc.close();
+            tempFile.delete();
         } catch (FileNotFoundException e) {
             throw new DownloadException("", e);
         } catch (IOException e) {
