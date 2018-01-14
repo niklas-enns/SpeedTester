@@ -9,7 +9,7 @@ import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.guice.ScheduledExecutorServiceModule;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
-import niklasu.speedtester.ui.UI;
+import niklasu.speedtester.ui.TrayContextMenu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +26,6 @@ public class Main{
         injector.getInstance(EventBus.class).post(new ConfigChangedEvent());
         injector.getInstance(EventBus.class).post(new StartEvent());
 
-        if (configStore.isTray()) injector.getInstance(UI.class);
+        if (configStore.isTray()) injector.getInstance(TrayContextMenu.class);
     }
 }

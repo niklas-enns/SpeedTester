@@ -3,7 +3,6 @@ package niklasu.speedtester.ui;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import niklasu.speedtester.config.ConfigStore;
 import niklasu.speedtester.events.ResultEvent;
 import niklasu.speedtester.events.StartEvent;
 import niklasu.speedtester.events.StopEvent;
@@ -13,16 +12,14 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 
-public class UI {
-    private static final Logger logger = LoggerFactory.getLogger(UI.class);
+public class TrayContextMenu {
+    private static final Logger logger = LoggerFactory.getLogger(TrayContextMenu.class);
     private Menu results;
-    private ConfigStore configStore;
     private EventBus eventBus;
     private OptionsFrame optionsFrame;
 
     @Inject
-    public UI(ConfigStore configStore, EventBus eventBus, OptionsFrame optionsFrame) throws AWTException {
-        this.configStore = configStore;
+    public TrayContextMenu(EventBus eventBus, OptionsFrame optionsFrame) throws AWTException {
         this.eventBus = eventBus;
         this.optionsFrame = optionsFrame;
         init();

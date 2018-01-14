@@ -16,14 +16,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class OptionsFrame extends Frame {
-    private static final int SIZE_MIN = 0;
-    private static final int SIZE_MAX = 200;
-    private static final Font font = new Font("Serif", Font.ITALIC, 15);
-    private static int DOWNLOAD_INTERVAL_INIT;
     private EventBus eventBus;
     private ConfigStore configStore;
-    private long DOWNLOAD_SIZE_INIT;
-    private JSlider downloadSizeSlider;
+    private TextField downloadSize;
     private TextField intervalField;
     private TextField linkField;
 
@@ -35,21 +30,45 @@ public class OptionsFrame extends Frame {
     }
 
     private void init() {
-        DOWNLOAD_SIZE_INIT = configStore.getSize();
-        DOWNLOAD_INTERVAL_INIT = configStore.getInterval();
         setTitle("Options");
-        setSize(400, 300);
-        setLayout(new GridLayout(4, 1));
+        setSize(400, 200);
+        setLayout(new GridLayout(3, 1));
         setResizable(false);
 
-        createAndAddSizeSlider();
-        createAndAddIntervalField();
+        Panel sliders = new Panel();
+        sliders.setLayout(new GridLayout(1, 2));
+
+
+        JPanel downloadSizePanel = assembleDownloadSizePanel();
+        sliders.add(downloadSizePanel);
+
+        JPanel intervalPanel = assembleDownloadIntervalPanel();
+        sliders.add(intervalPanel);
+
+        add(sliders);
+
         createAndAddURLTextField();
         createAndAddButtons();
 
         addWindowListener(new OptionsWindowListener());
 
         setLocationRelativeTo(null);
+    }
+
+    private JPanel assembleDownloadIntervalPanel() {
+        JPanel intervalPanel = new JPanel();
+        intervalPanel.setBorder(new TitledBorder(new EtchedBorder(), "Download interval [Minute]"));
+        intervalField = new TextField(Integer.toString(configStore.getInterval()), 4);
+        intervalPanel.add(intervalField);
+        return intervalPanel;
+    }
+
+    private JPanel assembleDownloadSizePanel() {
+        JPanel downloadSizePanel = new JPanel();
+        downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size [MB]"));
+        downloadSize = new TextField(Integer.toString(configStore.getSize()), 4);
+        downloadSizePanel.add(downloadSize);
+        return downloadSizePanel;
     }
 
     private void createAndAddButtons() {
@@ -60,7 +79,7 @@ public class OptionsFrame extends Frame {
         reset.addActionListener(e -> {
             configStore.reset();
             linkField.setText(configStore.getUrl());
-            downloadSizeSlider.setValue(configStore.getSize());
+            downloadSize.setText("" + configStore.getSize());
             intervalField.setText(""+configStore.getInterval());
         });
 
@@ -87,29 +106,11 @@ public class OptionsFrame extends Frame {
     }
 
     private void createAndAddIntervalField() {
-        JPanel p3 = new JPanel();
-        p3.setBorder(new TitledBorder(new EtchedBorder(), "Download interval [Minute]"));
-        intervalField = new TextField(Integer.toString(configStore.getInterval()), 4);
-        p3.add(intervalField);
-        add(p3);
+
     }
 
     private void createAndAddSizeSlider() {
-        JPanel sizeSlider = new JPanel();
-        TitledBorder border = new TitledBorder(new EtchedBorder(), "Download size [MB]");
-        sizeSlider.setBorder(border);
-        downloadSizeSlider = new JSlider(JSlider.HORIZONTAL,
-                SIZE_MIN, SIZE_MAX, (int) DOWNLOAD_SIZE_INIT);
-        downloadSizeSlider.setFont(font);
 
-        //Turn on labels at major tick marks.
-        downloadSizeSlider.setMajorTickSpacing(100);
-        downloadSizeSlider.setMinorTickSpacing(50);
-        downloadSizeSlider.setPaintTicks(true);
-        downloadSizeSlider.setPaintLabels(true);
-        downloadSizeSlider.addChangeListener(new DownloadSizeSiderChangeListener(downloadSizeSlider));
-        sizeSlider.add(downloadSizeSlider);
-        add(sizeSlider);
     }
 
     public void appear() {
@@ -120,8 +121,12 @@ public class OptionsFrame extends Frame {
         return linkField.getText();
     }
 
-    private int getDownloadSize() {
-        return downloadSizeSlider.getValue();
+    private int getDownloadSize() throws ValidationException {
+        try {
+            return Integer.parseInt(downloadSize.getText());
+        } catch (NumberFormatException e) {
+            throw new ValidationException(String.format("%s is not a valid number", intervalField.getText()));
+        }
     }
 
     private int getDownloadInterval() throws ValidationException {
