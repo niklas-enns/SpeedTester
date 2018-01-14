@@ -105,13 +105,6 @@ public class OptionsFrame extends Frame {
         add(p2);
     }
 
-    private void createAndAddIntervalField() {
-
-    }
-
-    private void createAndAddSizeSlider() {
-
-    }
 
     public void appear() {
         setVisible(true);
