@@ -11,5 +11,5 @@ temp.dat
 log/
 target/
 
-#.gitattributes test
+.gitattributes
 gedanken
