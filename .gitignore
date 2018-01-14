@@ -3,7 +3,7 @@ results.txt
 temp.dat
 
 #project stuff
-.idea/
+#.idea/
 *.iml
 *.iws
 
