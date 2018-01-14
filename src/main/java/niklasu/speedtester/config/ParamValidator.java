@@ -1,7 +1,6 @@
 package niklasu.speedtester.config;
 
 import com.google.inject.Singleton;
-import niklasu.speedtester.exceptions.ValidationException;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

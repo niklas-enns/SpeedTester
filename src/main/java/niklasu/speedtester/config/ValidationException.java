@@ -1,8 +1,5 @@
-package niklasu.speedtester.exceptions;
+package niklasu.speedtester.config;
 
-/**
- * Created by enzo on 24.08.2015.
- */
 public class ValidationException extends Exception {
 
     public ValidationException(String s) {

@@ -25,6 +25,7 @@ public class DownloadThread extends Thread {
 
     @Inject
     public DownloadThread(EventBus eventBus) {
+        logger.trace("Constructor");
         this.eventBus = eventBus;
     }
 
@@ -37,6 +38,7 @@ public class DownloadThread extends Thread {
     }
 
     public void run() {
+        logger.trace("I am {}", this);
         Date startOfDownload = new Date();
         long startTime = startOfDownload.getTime();
         try {

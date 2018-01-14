@@ -18,7 +18,7 @@ import java.util.concurrent.ScheduledFuture;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * Schedules downloads
+ * Schedules downloads and
  */
 public class DownloadManager {
     private static final Logger logger = LoggerFactory.getLogger(DownloadManager.class);

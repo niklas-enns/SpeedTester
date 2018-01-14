@@ -3,8 +3,8 @@ package niklasu.speedtester.ui;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import niklasu.speedtester.config.ConfigStore;
+import niklasu.speedtester.config.ValidationException;
 import niklasu.speedtester.events.StartEvent;
-import niklasu.speedtester.exceptions.ValidationException;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;

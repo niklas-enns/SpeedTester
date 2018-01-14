@@ -6,7 +6,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import niklasu.speedtester.events.ConfigChangedEvent;
-import niklasu.speedtester.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
