@@ -11,4 +11,4 @@ temp.dat
 log/
 target/
 
-.gitattributes
+#.gitattributes
