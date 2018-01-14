@@ -3,10 +3,12 @@ results.txt
 temp.dat
 
 #project stuff
-#.idea/
+.idea/
 *.iml
 *.iws
 
 #Maven stuff
 log/
 target/
+
+.gitattributes
