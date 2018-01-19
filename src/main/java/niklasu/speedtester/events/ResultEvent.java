@@ -2,9 +2,6 @@ package niklasu.speedtester.events;
 
 import java.util.Date;
 
-/**
- * Created by enzo on 25.02.2017.
- */
 public class ResultEvent {
     private Date date;
     private double speed;
@@ -14,11 +11,12 @@ public class ResultEvent {
         this.speed = speed;
     }
 
-    public Date getDate() {
-        return date;
+    @Override
+    public String toString() {
+        return String.format("%s %s Mbit/s", date, String.format("%.2f", speed));
     }
 
-    public double getSpeed() {
-        return speed;
+    public String getSpeedText() {
+        return String.format("%.2f MBit/s", speed);
     }
 }

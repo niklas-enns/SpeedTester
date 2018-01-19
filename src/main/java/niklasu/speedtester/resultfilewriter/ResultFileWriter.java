@@ -22,7 +22,7 @@ public class ResultFileWriter {
 
     @Subscribe
     public void appendToLogFile(ResultEvent result) {
-        logger.debug("Received ResultEvent {} {}", result.getDate(), result.getSpeed());
-        resultLogger.info("{} {} Mbit/s", result.getDate(), String.format("%.2f", result.getSpeed()));
+        logger.debug(result.toString());
+        resultLogger.info(result.toString());
     }
 }

@@ -38,14 +38,12 @@ public class DownloadThread extends Thread {
     }
 
     public void run() {
-        logger.trace("I am {}", this);
         Date startOfDownload = new Date();
         long startTime = startOfDownload.getTime();
         try {
             download();
             long runningTime = new Date().getTime() - startTime;
             double resultSpeed = ((double) downloadsizeInMB / ((double) runningTime / 1000.)) * 8.;
-            logger.info("Download of " + downloadsizeInMB + "MB completed, calculated Speed: " + String.format("%.2f", resultSpeed) + " MBit/s");
             eventBus.post(new ResultEvent(startOfDownload, resultSpeed));
         } catch (DownloadException e) {
             logger.error("Download failed, because", e);

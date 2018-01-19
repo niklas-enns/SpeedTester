@@ -90,7 +90,7 @@ public class TrayContextMenu {
     @Subscribe
     public void setResult(ResultEvent resultEvent) {
         if (results.getItemCount() == 10) results.remove(0);
-        results.add(new MenuItem(String.format("%.2f MBit/s", resultEvent.getSpeed())));
+        results.add(new MenuItem(resultEvent.getSpeedText()));
     }
 }
 
