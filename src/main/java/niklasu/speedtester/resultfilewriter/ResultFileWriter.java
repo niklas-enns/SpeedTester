@@ -11,7 +11,7 @@ public class ResultFileWriter {
     private final static Logger logger = LoggerFactory.getLogger(ResultFileWriter.class);
     private final static Logger resultLogger = LoggerFactory.getLogger("resultlogger");
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
 
     @Inject
     public ResultFileWriter(EventBus eventBus) {

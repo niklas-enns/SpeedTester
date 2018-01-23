@@ -10,13 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 
 public class TrayContextMenu {
     private static final Logger logger = LoggerFactory.getLogger(TrayContextMenu.class);
-    private Menu results;
-    private EventBus eventBus;
-    private OptionsFrame optionsFrame;
+    private final Menu results = new Menu("10 last measurements");
+    private final EventBus eventBus;
+    private final OptionsFrame optionsFrame;
 
     @Inject
     public TrayContextMenu(EventBus eventBus, OptionsFrame optionsFrame) throws AWTException {
@@ -43,48 +44,57 @@ public class TrayContextMenu {
         return image;
     }
 
-    private boolean buildPopupMenu(PopupMenu popup) {
+    private void buildPopupMenu(PopupMenu popup) {
         MenuItem aboutItem = new MenuItem("About");
-        CheckboxMenuItem pauseMenu = new CheckboxMenuItem("Pause");
-        MenuItem openItem = new MenuItem("Open working directory");
-        MenuItem optionsItem = new MenuItem("Options");
-        MenuItem exitItem = new MenuItem("Exit");
-        //Pseudo-menu:shows last results
-        results = new Menu("10 last measurements");
-
-        //Add components to pop-up menu
         popup.add(aboutItem);
+        popup.addSeparator();
 
+        popup.add(getPauseMenuItem());
+
+        popup.add(getMenuItem("Options", e -> handleOptionsItemClick()));
         popup.addSeparator();
-        popup.add(pauseMenu);
-        popup.add(optionsItem);
-        popup.addSeparator();
-        popup.add(openItem);
+
+        popup.add(getMenuItem("Open working directory", e -> handleExitButtonClick()));
         popup.add(results);
-
         popup.addSeparator();
-        popup.add(exitItem);
 
-        //Set Listeners
+        MenuItem exitItem = getMenuItem("Exit", e -> System.exit(0));
+        popup.add(exitItem);
+    }
+
+    private void handleOptionsItemClick() {
+        eventBus.post(new StopEvent());
+        optionsFrame.appear();
+    }
+
+    private void handleExitButtonClick() {
+        final String dir = System.getProperty("user.dir");
+        try {
+            Runtime.getRuntime().exec("Explorer.exe " + dir);
+        } catch (Exception u) {
+            u.printStackTrace();
+        }
+    }
+
+    private MenuItem getMenuItem(String options, ActionListener actionListener) {
+        MenuItem optionsItem = new MenuItem(options);
+        optionsItem.addActionListener(actionListener);
+        return optionsItem;
+    }
+
+    private CheckboxMenuItem getPauseMenuItem() {
+        CheckboxMenuItem pauseMenu = new CheckboxMenuItem("Pause");
         pauseMenu.addItemListener(e -> {
-                if (e.getStateChange() == ItemEvent.SELECTED) eventBus.post(new StopEvent());
-                if (e.getStateChange() == ItemEvent.DESELECTED) eventBus.post(new StartEvent());
-        });
-        optionsItem.addActionListener(e -> {
-            eventBus.post(new StopEvent());
-            optionsFrame.appear();
-        });
-        openItem.addActionListener(e -> {
-            final String dir = System.getProperty("user.dir");
-            try {
-                Runtime.getRuntime().exec("Explorer.exe " + dir);
-            } catch (Exception u) {
-                u.printStackTrace();
+            switch (e.getStateChange()) {
+                case ItemEvent.SELECTED:
+                    eventBus.post(new StopEvent());
+                    break;
+                case ItemEvent.DESELECTED:
+                    eventBus.post(new StartEvent());
+                    break;
             }
         });
-        exitItem.addActionListener(e -> System.exit(0));
-
-        return true;
+        return pauseMenu;
     }
 
     @Subscribe

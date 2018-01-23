@@ -23,12 +23,11 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 public class DownloadManager {
     private static final Logger logger = LoggerFactory.getLogger(DownloadManager.class);
 
-    private EventBus eventBus;
-    private ConfigStore configStore;
-    private DownloadThread downloadThread;
-
+    private final EventBus eventBus;
+    private final ConfigStore configStore;
+    private final DownloadThread downloadThread;
+    private final ScheduledExecutorService scheduler;
     private ScheduledFuture<?> scheduledFuture;
-    private ScheduledExecutorService scheduler;
 
     @Inject
     public DownloadManager(EventBus eventBus, ConfigStore configStore, DownloadThread downloadThread, ScheduledExecutorService scheduledExecutorService) throws MalformedURLException {
@@ -42,7 +41,7 @@ public class DownloadManager {
 
     @Subscribe
     public void configChangedHandler(ConfigChangedEvent configChangedEvent) throws MalformedURLException {
-        logger.debug("configChangeHandler");
+        logger.trace("configChangeHandler");
         downloadThread.setSize(configStore.getSize());
         downloadThread.setUrl(new URL(configStore.getUrl()));
     }

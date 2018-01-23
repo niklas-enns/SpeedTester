@@ -19,9 +19,10 @@ import static niklasu.speedtester.Constants.MB;
 
 public class DownloadThread extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(DownloadThread.class);
+    private final EventBus eventBus;
+
     private URL targetFile;
     private long downloadsizeInMB;
-    private EventBus eventBus;
 
     @Inject
     public DownloadThread(EventBus eventBus) {
@@ -53,7 +54,7 @@ public class DownloadThread extends Thread {
 
     private void download() throws DownloadException {
         try {
-            logger.info(String.format("Starting download of %d MB from %s", downloadsizeInMB, targetFile.toString()));
+            logger.debug(String.format("Starting download of %d MB from %s", downloadsizeInMB, targetFile.toString()));
             File tempFile = File.createTempFile("SpeedTester-","-lol");
             tempFile.deleteOnExit();
             ReadableByteChannel rbc = Channels.newChannel(targetFile.openStream());
