@@ -6,7 +6,9 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.io.IOException
 
 internal class FileSizeCheckerTest {
 
@@ -44,6 +46,19 @@ internal class FileSizeCheckerTest {
         val fileSizeChecker = FileSizeChecker(OkHttpClient())
 
         //WHEN THEN
-        assertThrows(ValidationException::class.java){fileSizeChecker.getFileSize(mockWebServer.url("nix").url())}.printStackTrace()
+        assertThrows(IOException::class.java){fileSizeChecker.getFileSize(mockWebServer.url("nix").url())}.printStackTrace()
+    }
+
+    @Test
+    @DisplayName("Content-Length: noNumber")
+    fun contentLengthHeaderHasNoNumericalValue() {
+        //GIVEN
+        val mockWebServer =  MockWebServer()
+        val mockResponse = MockResponse().setHeader("Content-Length", "noNumber")
+        mockWebServer.enqueue(mockResponse)
+        val fileSizeChecker = FileSizeChecker(OkHttpClient())
+
+        //WHEN THEN
+        assertThrows(NumberFormatException::class.java){ fileSizeChecker.getFileSize(mockWebServer.url("nix").url())}
     }
 }

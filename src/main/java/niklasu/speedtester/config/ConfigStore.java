@@ -32,7 +32,7 @@ public class ConfigStore{
 
     public void parseArgs(String[] args) throws ValidationException {
         new JCommander(this, args);
-        paramValidator.validateParams(size, interval, url);
+        paramValidator.validate(new Config(size, interval, url));
     }
 
     public int getSize() {
@@ -62,7 +62,7 @@ public class ConfigStore{
     }
 
     public void setParams(int size, int interval, String url) throws ValidationException {
-        paramValidator.validateParams(size, interval, url);
+        paramValidator.validate(new Config(size, interval, url));
         this.size = size;
         this.interval = interval;
         this.url = url;
