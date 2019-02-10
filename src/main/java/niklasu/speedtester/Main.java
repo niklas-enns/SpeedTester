@@ -7,7 +7,7 @@ import niklasu.speedtester.config.ConfigStore;
 import niklasu.speedtester.downloader.DownloadManager;
 import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
-import niklasu.speedtester.guice.ScheduledExecutorServiceModule;
+import niklasu.speedtester.guice.Module;
 import niklasu.speedtester.resultfilewriter.ResultFileWriter;
 import niklasu.speedtester.ui.TrayContextMenu;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ public class Main{
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        Injector injector = Guice.createInjector(new ScheduledExecutorServiceModule());
+        Injector injector = Guice.createInjector(new Module());
         DownloadManager downloadManager = injector.getInstance(DownloadManager.class);
         ConfigStore configStore = injector.getInstance(ConfigStore.class);
         configStore.parseArgs(args);

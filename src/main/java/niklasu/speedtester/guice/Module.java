@@ -9,11 +9,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 
-public class ScheduledExecutorServiceModule extends AbstractModule {
+public class Module extends AbstractModule {
+
 
     @Override
     protected void configure() {
-        bind(ScheduledExecutorService.class).toProvider(Executors::newSingleThreadScheduledExecutor);
+
     }
 
     @Provides
@@ -22,4 +23,9 @@ public class ScheduledExecutorServiceModule extends AbstractModule {
         return new EventBus();
     }
 
+    @Provides
+    @Singleton
+    private ScheduledExecutorService get() {
+        return Executors.newSingleThreadScheduledExecutor();
+    }
 }
