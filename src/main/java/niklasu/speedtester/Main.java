@@ -3,7 +3,7 @@ package niklasu.speedtester;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import niklasu.speedtester.config.ConfigStore;
+import niklasu.speedtester.config.ConfigProvider;
 import niklasu.speedtester.downloader.DownloadManager;
 import niklasu.speedtester.events.ConfigChangedEvent;
 import niklasu.speedtester.events.StartEvent;
@@ -19,13 +19,13 @@ public class Main{
     public static void main(String[] args) throws Exception {
         Injector injector = Guice.createInjector(new Module());
         DownloadManager downloadManager = injector.getInstance(DownloadManager.class);
-        ConfigStore configStore = injector.getInstance(ConfigStore.class);
-        configStore.parseArgs(args);
+        ConfigProvider configProvider = injector.getInstance(ConfigProvider.class);
+        configProvider.setConfig(args);
         injector.getInstance(ResultFileWriter.class);
 
         injector.getInstance(EventBus.class).post(new ConfigChangedEvent());
         injector.getInstance(EventBus.class).post(new StartEvent());
 
-        if (configStore.isTray()) injector.getInstance(TrayContextMenu.class);
+        if (configProvider.isTray()) injector.getInstance(TrayContextMenu.class);
     }
 }

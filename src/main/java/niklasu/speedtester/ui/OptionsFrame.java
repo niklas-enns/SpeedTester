@@ -2,7 +2,8 @@ package niklasu.speedtester.ui;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
-import niklasu.speedtester.config.ConfigStore;
+import niklasu.speedtester.config.Config;
+import niklasu.speedtester.config.ConfigProvider;
 import niklasu.speedtester.config.ValidationException;
 import niklasu.speedtester.events.StartEvent;
 
@@ -17,15 +18,15 @@ import java.awt.event.WindowEvent;
 
 public class OptionsFrame extends Frame {
     private EventBus eventBus;
-    private ConfigStore configStore;
+    private ConfigProvider configProvider;
     private TextField downloadSize;
     private TextField intervalField;
     private TextField linkField;
 
     @Inject
-    public OptionsFrame(EventBus eventBus, ConfigStore configStore) throws HeadlessException {
+    public OptionsFrame(EventBus eventBus, ConfigProvider configProvider) throws HeadlessException {
         this.eventBus = eventBus;
-        this.configStore = configStore;
+        this.configProvider = configProvider;
         init();
     }
 
@@ -58,7 +59,7 @@ public class OptionsFrame extends Frame {
     private JPanel assembleDownloadIntervalPanel() {
         JPanel intervalPanel = new JPanel();
         intervalPanel.setBorder(new TitledBorder(new EtchedBorder(), "Download interval [Minute]"));
-        intervalField = new TextField(Integer.toString(configStore.getInterval()), 4);
+        intervalField = new TextField(Integer.toString(configProvider.getInterval()), 4);
         intervalPanel.add(intervalField);
         return intervalPanel;
     }
@@ -66,7 +67,7 @@ public class OptionsFrame extends Frame {
     private JPanel assembleDownloadSizePanel() {
         JPanel downloadSizePanel = new JPanel();
         downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size [MB]"));
-        downloadSize = new TextField(Integer.toString(configStore.getSize()), 4);
+        downloadSize = new TextField(Long.toString(configProvider.getSize()), 4);
         downloadSizePanel.add(downloadSize);
         return downloadSizePanel;
     }
@@ -77,10 +78,10 @@ public class OptionsFrame extends Frame {
 
         Button reset = new Button("Reset");
         reset.addActionListener(e -> {
-            configStore.reset();
-            linkField.setText(configStore.getUrl());
-            downloadSize.setText("" + configStore.getSize());
-            intervalField.setText(""+configStore.getInterval());
+            configProvider.reset();
+            linkField.setText(configProvider.getUrl());
+            downloadSize.setText("" + configProvider.getSize());
+            intervalField.setText(""+ configProvider.getInterval());
         });
 
         Button decline = new Button("Decline");
@@ -100,7 +101,7 @@ public class OptionsFrame extends Frame {
         p2.setBorder(new TitledBorder(new EtchedBorder(), "Download file"));
         linkField = new TextField();
         linkField.setColumns(50);
-        linkField.setText(configStore.getUrl());
+        linkField.setText(configProvider.getUrl());
         p2.add(linkField);
         add(p2);
     }
@@ -142,7 +143,7 @@ public class OptionsFrame extends Frame {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                configStore.setParams(getDownloadSize(), getDownloadInterval(), getDownloadLink());
+                configProvider.setConfig(new Config(getDownloadSize(), getDownloadInterval(), getDownloadLink()));
             } catch (ValidationException e1) {
                 informAboutTargetFileIsSmallerThanRequired(e1.getMessage());
                 return;

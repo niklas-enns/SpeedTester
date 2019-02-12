@@ -26,11 +26,10 @@ public class DownloadThread extends Thread {
 
     @Inject
     public DownloadThread(EventBus eventBus) {
-        logger.trace("Constructor");
         this.eventBus = eventBus;
     }
 
-    public void setSize(int size) {
+    public void setSize(long size) {
         this.downloadsizeInMB = size;
     }
 
