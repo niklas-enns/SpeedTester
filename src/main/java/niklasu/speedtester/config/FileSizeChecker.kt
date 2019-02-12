@@ -20,10 +20,11 @@ class FileSizeChecker @Inject constructor(private val client: OkHttpClient) {
                 .url(url)
                 .head()
                 .build()
-        client.newCall(request).execute().use({ response ->
+
+        client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw ValidationException("Unexpected code $response")
             val length = response.headers().get("Content-Length")
             return length!!.toLong()
-        })
+        }
     }
 }

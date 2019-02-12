@@ -1,23 +1,23 @@
 package niklasu.speedtester.config
 
+import com.nhaarman.mockito_kotlin.doThrow
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 
 internal class KotlinParamValidatorTest {
 
     @Test
-    @Throws(java.io.IOException::class)
-    fun IOException() {
+    fun NetworkError() {
         val url = URL("http://fred.de")
-        val fileSizeChecker = mock<FileSizeChecker>(FileSizeChecker::class.java)
-        `when`(fileSizeChecker.getFileSize(eq(url))).thenThrow(java.io.IOException("kapuu"))
-        val paramValidator = JavaParamValidator(fileSizeChecker)
+        val fileSizeChecker = mock<FileSizeChecker>{on {getFileSize(url)} doThrow(IOException("Network Error"))}
+        val paramValidator = KotlinParamValidator(fileSizeChecker)
 
         val config = Config(100, 2, url.toString())
 

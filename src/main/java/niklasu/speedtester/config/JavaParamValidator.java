@@ -28,7 +28,7 @@ public class JavaParamValidator implements ParamValidator {
         long realFileSize = 0;
         try {
             final URL url = new URL(config.getUrl());
-
+            fileSizeChecker.getFileSize(url);
         } catch (MalformedURLException e) {
             throw new ValidationException("Malformed URL. It has to start with http://", e);
         } catch (NumberFormatException | IOException e) {

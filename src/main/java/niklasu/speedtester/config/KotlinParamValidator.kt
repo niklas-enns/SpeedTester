@@ -21,9 +21,9 @@ class KotlinParamValidator @Inject constructor(private val fileSizeChecker: File
         } catch (e: MalformedURLException) {
             throw ValidationException("Malformed URL. It has to start with http://", e)
         } catch (e: NumberFormatException) {
-            throw ValidationException("Unable to get the file size for ${config.url}")
+            throw ValidationException("Unable to get the file size for ${config.url}", e)
         } catch (e: IOException) {
-            throw ValidationException("Unable to get the file size for ${config.url}")
+            throw ValidationException("Unable to get the file size for ${config.url}", e)
         }
 
         if (realFileSize < MB) throw ValidationException("The size of ${config.url} was $realFileSize and is < $MB")
