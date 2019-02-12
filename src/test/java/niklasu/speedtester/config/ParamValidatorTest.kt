@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test
 import java.io.IOException
 import java.net.URL
 
-internal class KotlinParamValidatorTest {
+internal class ParamValidatorTest {
 
     @Test
     fun NetworkError() {
         val url = URL("http://fred.de")
         val fileSizeChecker = mock<FileSizeChecker>{on {getFileSize(url)} doThrow(IOException("Network Error"))}
-        val paramValidator = KotlinParamValidator(fileSizeChecker)
+        val paramValidator = ParamValidator(fileSizeChecker)
 
         val config = Config(100, 2, url.toString())
 
@@ -25,7 +25,7 @@ internal class KotlinParamValidatorTest {
     @Throws(java.io.IOException::class)
     fun malformedURL() {
         val fileSizeChecker = mock<FileSizeChecker>{}
-        val paramValidator = KotlinParamValidator(fileSizeChecker)
+        val paramValidator = ParamValidator(fileSizeChecker)
 
         val config = Config(100, 2, "httasdddasdp://fred.de")
 
@@ -37,7 +37,7 @@ internal class KotlinParamValidatorTest {
     fun fileIsTooSmall() {
         val url = URL("http://fred.de")
         val fileSizeChecker = mock<FileSizeChecker>{on {getFileSize(url)} doReturn (1)}
-        val paramValidator = KotlinParamValidator(fileSizeChecker)
+        val paramValidator = ParamValidator(fileSizeChecker)
 
         val config = Config(100, 2, "http://fred.de")
 
@@ -49,7 +49,7 @@ internal class KotlinParamValidatorTest {
     fun intervalLessThanOne() {
         val url = URL("http://fred.de")
         val fileSizeChecker = mock<FileSizeChecker>{on {getFileSize(url)} doReturn (99999999999999)}
-        val paramValidator = KotlinParamValidator(fileSizeChecker)
+        val paramValidator = ParamValidator(fileSizeChecker)
 
         val config = Config(100, 0, "http://fred.de")
 
