@@ -8,11 +8,17 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.io.IOException
+import java.util.stream.IntStream
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class FileSizeCheckerTest {
 
     @Test
+    @DisplayName("gets file size from headers correctly")
     fun getFileSize() {
         //GIVEN
         val mockWebServer =  MockWebServer()
@@ -25,16 +31,22 @@ internal class FileSizeCheckerTest {
         assertEquals(responseBody.length.toLong(), fileSizeChecker.getFileSize(mockWebServer.url("nix").url()))
     }
 
-    @Test
-    fun get404() {
+    @ParameterizedTest
+    @MethodSource("invalidResponseCodes")
+    @DisplayName("Throws exception on response code 400 and 404")
+    fun get404(number: Int) {
         //GIVEN
         val mockWebServer =  MockWebServer()
-        val mockResponse = MockResponse().setResponseCode(404)
+        val mockResponse = MockResponse().setResponseCode(number)
         mockWebServer.enqueue(mockResponse)
         val fileSizeChecker = FileSizeChecker(OkHttpClient())
 
         //WHEN THEN
         assertThrows(ValidationException::class.java){fileSizeChecker.getFileSize(mockWebServer.url("nix").url())}
+    }
+
+    fun invalidResponseCodes():IntStream {
+        return IntStream.of(400, 404)
     }
 
     @Test
