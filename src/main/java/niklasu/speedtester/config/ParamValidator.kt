@@ -1,7 +1,7 @@
 package niklasu.speedtester.config
 
 import com.google.inject.Inject
-import niklasu.speedtester.Constants.MB
+import niklasu.speedtester.MiB
 import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.MalformedURLException
@@ -26,8 +26,8 @@ class ParamValidator @Inject constructor(private val fileSizeChecker: FileSizeCh
             throw ValidationException("Unable to get the file size for ${config.url}", e)
         }
 
-        if (realFileSize < MB) throw ValidationException("The size of ${config.url} was $realFileSize and is < $MB")
-        if (realFileSize < config.fileSize) throw ValidationException("${config.url} has a size of $realFileSize while ${config.fileSize * MB} is required")
+        if (realFileSize < MiB) throw ValidationException("The size of ${config.url} was $realFileSize and is < $MiB")
+        if (realFileSize < config.fileSize) throw ValidationException("${config.url} has a size of $realFileSize while ${config.fileSize * MiB} is required")
 
         if (config.interval < 1) throw ValidationException("Interval must be >= 1. Your input was ${config.interval}")
 

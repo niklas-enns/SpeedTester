@@ -66,7 +66,7 @@ public class OptionsFrame extends Frame {
 
     private JPanel assembleDownloadSizePanel() {
         JPanel downloadSizePanel = new JPanel();
-        downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size [MB]"));
+        downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size MiB"));
         downloadSize = new TextField(Long.toString(configProvider.getSize()), 4);
         downloadSizePanel.add(downloadSize);
         return downloadSizePanel;

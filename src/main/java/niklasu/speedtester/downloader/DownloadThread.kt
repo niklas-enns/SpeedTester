@@ -2,7 +2,7 @@ package niklasu.speedtester.downloader
 
 import com.google.common.eventbus.EventBus
 import com.google.inject.Inject
-import niklasu.speedtester.Constants.MB
+import niklasu.speedtester.MiB
 import niklasu.speedtester.events.ResultEvent
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -12,7 +12,7 @@ import java.net.URL
 import java.nio.channels.Channels
 import java.util.*
 
-class DownloadThread @Inject
+open class DownloadThread @Inject
 constructor(private val eventBus: EventBus, val targetFile: URL, val downloadsizeInMB: Long) : Thread() {
 
     override fun run() {
@@ -33,11 +33,11 @@ constructor(private val eventBus: EventBus, val targetFile: URL, val downloadsiz
     @Throws(DownloadException::class)
     private fun download() {
         try {
-            logger.debug(String.format("Starting download of %d MB from %s", downloadsizeInMB, targetFile.toString()))
+            logger.debug(String.format("Starting download of %d MiB from %s", downloadsizeInMB, targetFile.toString()))
             val tempFile = getTempFile()
             val rbc = Channels.newChannel(targetFile.openStream())
             val fos = FileOutputStream(tempFile)
-            fos.channel.transferFrom(rbc, 0, downloadsizeInMB * MB)
+            fos.channel.transferFrom(rbc, 0, downloadsizeInMB * MiB)
             rbc.close()
             fos.close()
             tempFile.delete()
