@@ -9,7 +9,7 @@ Otherwise, SpeedTester can run as a normal command-line application which can be
 
 ## Parameters:
 The operation of SpeedTester is controlled by four parameters
-* size: The download size of the file which is used to calculcate your connection speed, in niklasu.speedtester.MiB
+* size: The download size of the file which is used to calculcate your connection speed, in niklasu.speedtester.MB
   * default: 50MB
 * interval: The download interval in minutes
   * default: 1min

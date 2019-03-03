@@ -16,25 +16,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class OptionsFrame extends Frame {
+public class OptionsFrame {
     private EventBus eventBus;
     private ConfigProvider configProvider;
     private TextField downloadSize;
     private TextField intervalField;
     private TextField linkField;
+    private final Frame frame;
 
     @Inject
-    public OptionsFrame(EventBus eventBus, ConfigProvider configProvider) throws HeadlessException {
+    public OptionsFrame(EventBus eventBus, ConfigProvider configProvider, Frame frame) throws HeadlessException {
         this.eventBus = eventBus;
         this.configProvider = configProvider;
+        this.frame = frame;
         init();
     }
 
     private void init() {
-        setTitle("Options");
-        setSize(400, 200);
-        setLayout(new GridLayout(3, 1));
-        setResizable(false);
+        frame.setTitle("Options");
+        frame.setSize(400, 200);
+        frame.setLayout(new GridLayout(3, 1));
+        frame.setResizable(false);
 
         Panel sliders = new Panel();
         sliders.setLayout(new GridLayout(1, 2));
@@ -46,14 +48,14 @@ public class OptionsFrame extends Frame {
         JPanel intervalPanel = assembleDownloadIntervalPanel();
         sliders.add(intervalPanel);
 
-        add(sliders);
+        frame.add(sliders);
 
         createAndAddURLTextField();
         createAndAddButtons();
 
-        addWindowListener(new OptionsWindowListener());
+        frame.addWindowListener(new OptionsWindowListener());
 
-        setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(null);
     }
 
     private JPanel assembleDownloadIntervalPanel() {
@@ -66,7 +68,7 @@ public class OptionsFrame extends Frame {
 
     private JPanel assembleDownloadSizePanel() {
         JPanel downloadSizePanel = new JPanel();
-        downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size MiB"));
+        downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size MB"));
         downloadSize = new TextField(Long.toString(configProvider.getSize()), 4);
         downloadSizePanel.add(downloadSize);
         return downloadSizePanel;
@@ -93,7 +95,7 @@ public class OptionsFrame extends Frame {
         buttons.add(reset);
         buttons.add(decline);
         buttons.add(accept);
-        add(buttons);
+        frame.add(buttons);
     }
 
     private void createAndAddURLTextField() {
@@ -103,12 +105,12 @@ public class OptionsFrame extends Frame {
         linkField.setColumns(50);
         linkField.setText(configProvider.getUrl());
         p2.add(linkField);
-        add(p2);
+        frame.add(p2);
     }
 
 
     public void appear() {
-        setVisible(true);
+        frame.setVisible(true);
     }
 
     private String getDownloadLink() {
@@ -133,8 +135,6 @@ public class OptionsFrame extends Frame {
 
     class OptionsWindowListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
-            eventBus.post(new StartEvent());
-            e.getWindow().dispose();
         }
     }
 
@@ -149,7 +149,7 @@ public class OptionsFrame extends Frame {
                 return;
             }
             eventBus.post(new StartEvent());
-            dispose();
+            frame.dispose();
         }
 
         private void informAboutTargetFileIsSmallerThanRequired(String message) {
