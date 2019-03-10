@@ -13,20 +13,20 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 
-public class TrayContextMenu {
-    private static final Logger logger = LoggerFactory.getLogger(TrayContextMenu.class);
+public class UICreator {
+    private static final Logger logger = LoggerFactory.getLogger(UICreator.class);
     private final Menu results = new Menu("10 last measurements");
     private final EventBus eventBus;
     private final OptionsFrame optionsFrame;
 
     @Inject
-    public TrayContextMenu(EventBus eventBus, OptionsFrame optionsFrame) throws AWTException {
+    public UICreator(EventBus eventBus, OptionsFrame optionsFrame) throws AWTException {
         this.eventBus = eventBus;
         this.optionsFrame = optionsFrame;
-        init();
+        create();
     }
 
-    private void init() throws AWTException {
+    private void create() throws AWTException {
         eventBus.register(this);
         SystemTray tray = SystemTray.getSystemTray();
         TrayIcon trayIcon = new TrayIcon(getTrayIcon(), "SpeedTester");

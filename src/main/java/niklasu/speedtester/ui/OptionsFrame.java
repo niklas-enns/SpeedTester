@@ -2,7 +2,8 @@ package niklasu.speedtester.ui;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
-import niklasu.speedtester.config.ConfigStore;
+import niklasu.speedtester.config.Config;
+import niklasu.speedtester.config.ConfigProvider;
 import niklasu.speedtester.config.ValidationException;
 import niklasu.speedtester.events.StartEvent;
 
@@ -15,25 +16,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class OptionsFrame extends Frame {
+public class OptionsFrame {
     private EventBus eventBus;
-    private ConfigStore configStore;
+    private ConfigProvider configProvider;
     private TextField downloadSize;
     private TextField intervalField;
     private TextField linkField;
+    private final Frame frame;
 
     @Inject
-    public OptionsFrame(EventBus eventBus, ConfigStore configStore) throws HeadlessException {
+    public OptionsFrame(EventBus eventBus, ConfigProvider configProvider, Frame frame) throws HeadlessException {
         this.eventBus = eventBus;
-        this.configStore = configStore;
+        this.configProvider = configProvider;
+        this.frame = frame;
         init();
     }
 
     private void init() {
-        setTitle("Options");
-        setSize(400, 200);
-        setLayout(new GridLayout(3, 1));
-        setResizable(false);
+        frame.setTitle("Options");
+        frame.setSize(400, 200);
+        frame.setLayout(new GridLayout(3, 1));
+        frame.setResizable(false);
 
         Panel sliders = new Panel();
         sliders.setLayout(new GridLayout(1, 2));
@@ -45,28 +48,28 @@ public class OptionsFrame extends Frame {
         JPanel intervalPanel = assembleDownloadIntervalPanel();
         sliders.add(intervalPanel);
 
-        add(sliders);
+        frame.add(sliders);
 
         createAndAddURLTextField();
         createAndAddButtons();
 
-        addWindowListener(new OptionsWindowListener());
+        frame.addWindowListener(new OptionsWindowListener());
 
-        setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(null);
     }
 
     private JPanel assembleDownloadIntervalPanel() {
         JPanel intervalPanel = new JPanel();
         intervalPanel.setBorder(new TitledBorder(new EtchedBorder(), "Download interval [Minute]"));
-        intervalField = new TextField(Integer.toString(configStore.getInterval()), 4);
+        intervalField = new TextField(Integer.toString(configProvider.getInterval()), 4);
         intervalPanel.add(intervalField);
         return intervalPanel;
     }
 
     private JPanel assembleDownloadSizePanel() {
         JPanel downloadSizePanel = new JPanel();
-        downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size [MB]"));
-        downloadSize = new TextField(Integer.toString(configStore.getSize()), 4);
+        downloadSizePanel.setBorder(new TitledBorder(new EtchedBorder(), "Download size MB"));
+        downloadSize = new TextField(Long.toString(configProvider.getSize()), 4);
         downloadSizePanel.add(downloadSize);
         return downloadSizePanel;
     }
@@ -77,10 +80,10 @@ public class OptionsFrame extends Frame {
 
         Button reset = new Button("Reset");
         reset.addActionListener(e -> {
-            configStore.reset();
-            linkField.setText(configStore.getUrl());
-            downloadSize.setText("" + configStore.getSize());
-            intervalField.setText(""+configStore.getInterval());
+            configProvider.reset();
+            linkField.setText(configProvider.getUrl());
+            downloadSize.setText("" + configProvider.getSize());
+            intervalField.setText(""+ configProvider.getInterval());
         });
 
         Button decline = new Button("Decline");
@@ -92,7 +95,7 @@ public class OptionsFrame extends Frame {
         buttons.add(reset);
         buttons.add(decline);
         buttons.add(accept);
-        add(buttons);
+        frame.add(buttons);
     }
 
     private void createAndAddURLTextField() {
@@ -100,14 +103,14 @@ public class OptionsFrame extends Frame {
         p2.setBorder(new TitledBorder(new EtchedBorder(), "Download file"));
         linkField = new TextField();
         linkField.setColumns(50);
-        linkField.setText(configStore.getUrl());
+        linkField.setText(configProvider.getUrl());
         p2.add(linkField);
-        add(p2);
+        frame.add(p2);
     }
 
 
     public void appear() {
-        setVisible(true);
+        frame.setVisible(true);
     }
 
     private String getDownloadLink() {
@@ -132,8 +135,6 @@ public class OptionsFrame extends Frame {
 
     class OptionsWindowListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
-            eventBus.post(new StartEvent());
-            e.getWindow().dispose();
         }
     }
 
@@ -142,13 +143,13 @@ public class OptionsFrame extends Frame {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                configStore.setParams(getDownloadSize(), getDownloadInterval(), getDownloadLink());
+                configProvider.setConfig(new Config(getDownloadSize(), getDownloadInterval(), getDownloadLink()));
             } catch (ValidationException e1) {
                 informAboutTargetFileIsSmallerThanRequired(e1.getMessage());
                 return;
             }
             eventBus.post(new StartEvent());
-            dispose();
+            frame.dispose();
         }
 
         private void informAboutTargetFileIsSmallerThanRequired(String message) {
