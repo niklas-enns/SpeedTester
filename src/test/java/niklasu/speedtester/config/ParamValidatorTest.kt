@@ -15,9 +15,7 @@ internal class ParamValidatorTest {
         val fileSizeChecker = mockk<FileSizeChecker> { every { getFileSize(any()) } throws IOException("kaputt") }
         val paramValidator = ParamValidator(fileSizeChecker)
 
-        val config = Config(100, 2, url.toString())
-
-        assertThrows(ValidationException::class.java) { paramValidator.validate(config) }.printStackTrace()
+        assertThrows(ValidationException::class.java) { paramValidator.validate(100, 2, url.toString()) }.printStackTrace()
     }
 
     @Test
@@ -26,9 +24,8 @@ internal class ParamValidatorTest {
         val fileSizeChecker = mockk<FileSizeChecker> {}
         val paramValidator = ParamValidator(fileSizeChecker)
 
-        val config = Config(100, 2, "httasdddasdp://fred.de")
 
-        assertThrows(ValidationException::class.java) { paramValidator.validate(config) }.printStackTrace()
+        assertThrows(ValidationException::class.java) { paramValidator.validate(100, 2, "httasdddasdp://fred.de") }.printStackTrace()
     }
 
     @Test
@@ -37,10 +34,7 @@ internal class ParamValidatorTest {
         val url = URL("http://fred.de")
         val fileSizeChecker = mockk<FileSizeChecker> { every { getFileSize(url) } returns (1) }
         val paramValidator = ParamValidator(fileSizeChecker)
-
-        val config = Config(100, 2, "http://fred.de")
-
-        assertThrows(ValidationException::class.java) { paramValidator.validate(config) }.printStackTrace()
+        assertThrows(ValidationException::class.java) { paramValidator.validate(100, 2, "http://fred.de") }.printStackTrace()
     }
 
     @Test
@@ -50,8 +44,6 @@ internal class ParamValidatorTest {
         val fileSizeChecker = mockk<FileSizeChecker> { every { getFileSize(url) } returns (99999999999999) }
         val paramValidator = ParamValidator(fileSizeChecker)
 
-        val config = Config(100, 0, "http://fred.de")
-
-        assertThrows(ValidationException::class.java) { paramValidator.validate(config) }.printStackTrace()
+        assertThrows(ValidationException::class.java) { paramValidator.validate(100, 0, "http://fred.de") }.printStackTrace()
     }
 }

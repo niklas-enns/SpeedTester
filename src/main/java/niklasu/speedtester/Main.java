@@ -1,28 +1,15 @@
 package niklasu.speedtester;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import niklasu.speedtester.config.ConfigProvider;
+import niklasu.speedtester.config.ConfigModule;
 import niklasu.speedtester.downloader.DownloadScheduler;
-import niklasu.speedtester.events.ConfigChangedEvent;
-import niklasu.speedtester.events.StartEvent;
-import niklasu.speedtester.guice.Module;
-import niklasu.speedtester.resultfilewriter.ResultFileWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import niklasu.speedtester.downloader.DownloaderModule;
 
-public class Main{
-    private final static Logger logger = LoggerFactory.getLogger(Main.class);
+public class Main {
 
-    public static void main(String[] args) throws Exception {
-        Injector injector = Guice.createInjector(new Module());
-        DownloadScheduler downloadScheduler = injector.getInstance(DownloadScheduler.class);
-        ConfigProvider configProvider = injector.getInstance(ConfigProvider.class);
-        configProvider.setConfig(args);
-        injector.getInstance(ResultFileWriter.class);
-
-        injector.getInstance(EventBus.class).post(new ConfigChangedEvent());
-        injector.getInstance(EventBus.class).post(new StartEvent());
+    public static void main(String[] args) {
+        Injector injector = Guice.createInjector(new ConfigModule(args), new DownloaderModule());
+        injector.getInstance(DownloadScheduler.class).start();
     }
 }
