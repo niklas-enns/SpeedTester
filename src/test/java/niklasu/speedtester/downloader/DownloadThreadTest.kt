@@ -1,18 +1,14 @@
 package niklasu.speedtester.downloader
 
-import io.mockk.Runs
-import io.mockk.every
-import io.mockk.just
-import io.mockk.mockk
+import niklasu.speedtester.KB
 import niklasu.speedtester.MB
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.Assert
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.io.File
-import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class DownloadThreadTest {
@@ -23,7 +19,7 @@ internal class DownloadThreadTest {
     fun initbytes() {
         var repsonseBytes = ByteArray(100* MB)
         for (i in 1..100 * MB) {
-            repsonseBytes[i - 1] = 33
+            repsonseBytes[i - 1] = "${i % 128}".toByte()
         }
         string = String(repsonseBytes)
     }
@@ -32,15 +28,9 @@ internal class DownloadThreadTest {
     @DisplayName("Ensures that the correct file size is downloaded")
     fun downloadSize() {
         mockWebServer.enqueue(MockResponse().setBody(string))
-        val tempFile = getTempFile()
-        val downloadThread = DownloadThread(mockWebServer.url("").url(), 2, tempFile, mockk { every { remove(any()) } just Runs })
+        val downloadThread = DownloadThread(mockWebServer.url("").url(), 5)
         downloadThread.run()
-        assertEquals((2 * MB).toLong(), tempFile.length())
+        Assert.assertEquals((5 * MB).toDouble(), downloadThread.downloadedBytes.toDouble(), 1 * KB.toDouble())
     }
 
-    private fun getTempFile(): File {
-        val tempFile = File.createTempFile("SpeedTester-", "-lol")
-        tempFile.deleteOnExit()
-        return tempFile
-    }
 }

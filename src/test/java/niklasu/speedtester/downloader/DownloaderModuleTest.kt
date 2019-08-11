@@ -7,7 +7,7 @@ import niklasu.speedtester.config.ConfigProvider
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 internal class DownloaderModuleTest {
@@ -20,7 +20,7 @@ internal class DownloaderModuleTest {
         fun getConfigProvider(): ConfigProvider {
             val configProvider = ConfigProvider()
             configProvider.interval = 1
-            configProvider.size = 10
+            configProvider.size = 100
             configProvider.url = url.toString()
             return configProvider
         }
