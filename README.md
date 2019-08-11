@@ -1,11 +1,8 @@
 # SpeedTester
 
-SpeedTester is a tool which tests the speed of your internet connection periodically by downloading a file and measuring the elapsed time. Then, the results will be listed with according timestamps in the file "results.txt".
+SpeedTester is a tool which tests the speed of your internet connection periodically by downloading a file and measuring the elapsed time
 
-![alt tag](https://github.com/niklasu/SpeedTester/blob/master/Screenshot.png)
-
-If supported, SpeedTester can settle in the tray menu. It should work with Windows 7,8,10, openSuse and Linux Mint.
-Otherwise, SpeedTester can run as a normal command-line application which can be called with ``java -jar SpeedTester.jar``. Depending on your OS configuration, a (double-)click on the jar file will also execute it.
+SpeedTester can run as a normal command-line application which can be called with ``java -jar SpeedTester.jar``. Depending on your OS configuration, a (double-)click on the jar file will also execute it.
 
 ## Parameters:
 The operation of SpeedTester is controlled by four parameters
@@ -15,13 +12,8 @@ The operation of SpeedTester is controlled by four parameters
   * default: 1min
 * url: The target file url
   * no default value
-* tray: Enables a GUI which is accessible through a tray icon
-  * default: enabled
-
-If you want to change some parameters, you can just use the GUI via the tray icon or pass command-line arguments to the application.
-
 
 ## Example:
 ``
-java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4 -tray true
+java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4
 ``
