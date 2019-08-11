@@ -80,7 +80,8 @@ internal class ConfigModuleTest {
     + Refactoring everything covered by the ConfigurationModule is way easier! No tight coupling to the implementation anymore
     + When Constructor of ConfigProvider grows, we don't care here
 
-    - I
+    - When sth fails, we see only the test case and the affected module. We don't see the exact class / method where the
+    bug is
      */
 
 }
