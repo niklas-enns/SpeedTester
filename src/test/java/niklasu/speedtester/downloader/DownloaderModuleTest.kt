@@ -24,17 +24,18 @@ internal class DownloaderModuleTest {
             configProvider.url = url.toString()
             return configProvider
         }
-
     }
 
     @Test
     fun testDownloads() {
+        //GIVEN
         mockWebServer.enqueue(MockResponse())
+        val singleDownloader = injector.getInstance(DownloadThread::class.java)
 
-        val createInjector = injector
-        val singleDownloader = createInjector.getInstance(DownloadThread::class.java)
+        //WHEN
         singleDownloader.run()
 
+        //THEN
         assertEquals(1, mockWebServer.requestCount)
     }
 
@@ -48,6 +49,4 @@ internal class DownloaderModuleTest {
 
         assertEquals(1, mockWebServer.requestCount)
     }
-
-
 }
