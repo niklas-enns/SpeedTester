@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory
 
 
 class ConfigModule(private val args: Array<String>) : AbstractModule() {
-    companion object {
-        private val logger = LoggerFactory.getLogger(DownloadThread::class.java)
-    }
+    private val logger = LoggerFactory.getLogger(DownloadThread::class.java)
 
     @Provides
     private fun getArgs(): Array<String> {

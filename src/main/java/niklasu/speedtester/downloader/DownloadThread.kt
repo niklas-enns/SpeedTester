@@ -10,6 +10,7 @@ import java.util.*
 
 open class DownloadThread @Inject
 constructor(private val targetFile: URL, private val downloadsizeInMB: Long) : Thread() {
+    //for testing purposes
     var downloadedBytes = 0
 
     companion object {
@@ -19,8 +20,7 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long) : T
     override fun run() {
         downloadedBytes = 0
         try {
-            val startOfDownload = Date()
-            val startTime = startOfDownload.time
+            val startTime = Date().time
             download()
             val runtime = Date().time - startTime
             val resultSpeed = downloadsizeInMB.toDouble() / (runtime.toDouble() / 1000.0) * 8.0
