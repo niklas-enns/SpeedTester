@@ -7,7 +7,7 @@ import java.io.IOException
 import java.net.URL
 
 class FileSizeChecker @Inject constructor(private val client: OkHttpClient) {
-
+    class NoFileSizeException(s: String) : Exception(s)
     /**
      *
      * @throws IOException
@@ -30,4 +30,3 @@ class FileSizeChecker @Inject constructor(private val client: OkHttpClient) {
     }
 }
 
-class NoFileSizeException(s: String) : Exception(s)
