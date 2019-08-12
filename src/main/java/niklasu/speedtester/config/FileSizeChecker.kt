@@ -24,7 +24,7 @@ class FileSizeChecker @Inject constructor(private val client: OkHttpClient) {
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw ValidationException("Unexpected code $response")
             val length = response.headers().get("Content-Length")
-            if (length == null) throw NoFileSizeException("Unable to determine URL file size. Content-Length header missing")
+                    ?: throw NoFileSizeException("Unable to determine URL file size. Content-Length header missing")
             return length.toLong()
         }
     }
