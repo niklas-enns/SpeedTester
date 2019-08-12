@@ -32,7 +32,11 @@ internal class DownloadThreadTest {
     @DisplayName("Ensures that the correct file size is downloaded (1KB tolerance)")
     fun downloadSize() {
         mockWebServer.enqueue(MockResponse().setBody(string))
-        val downloadThread = DownloadThread(mockWebServer.url("").url(), 5, mockk { every { show(any()) } just runs })
+        val downloadThread = DownloadThread(mockWebServer.url("").url(), 5,
+                mockk {
+                    every { show(any()) } just runs
+                    every { showProgress(any(), any()) } just runs
+                })
         downloadThread.run()
         Assert.assertEquals((5 * MB).toDouble(), downloadThread.downloadedBytes.toDouble(), 1 * KB.toDouble())
     }

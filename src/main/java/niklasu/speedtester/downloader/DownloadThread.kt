@@ -12,7 +12,7 @@ import java.util.*
 open class DownloadThread @Inject
 constructor(private val targetFile: URL, private val downloadsizeInMB: Long, private val consoleResultPrinter: ConsoleResultPrinter) : Thread() {
     //for testing purposes
-    var downloadedBytes = 0
+    var downloadedBytes: Long = 0
 
     companion object {
         private val logger = LoggerFactory.getLogger(DownloadThread::class.java)
@@ -39,6 +39,7 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
             while (downloadedBytes < downloadsizeInMB * MB) {
                 val read = stream.read(byteBuffer, 0, 1 * KB)
                 downloadedBytes += read
+                consoleResultPrinter.showProgress(downloadedBytes, downloadsizeInMB * MB)
             }
             logger.debug("Downloaded ${downloadedBytes} Bytes ~ ${downloadedBytes / MB} MB")
         } catch (e: IOException) {
