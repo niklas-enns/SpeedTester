@@ -2,11 +2,10 @@
 
 SpeedTester is a tool which tests the speed of your internet connection periodically by downloading a file and measuring the elapsed time
 
-SpeedTester can run as a normal command-line application which can be called with ``java -jar SpeedTester.jar``. Depending on your OS configuration, a (double-)click on the jar file will also execute it.
+SpeedTester can run as a normal command-line application which can be called with ``java -jar SpeedTester.jar``.
 
-## Parameters:
-The operation of SpeedTester is controlled by four parameters
-* size: The download size of the file which is used to calculcate your connection speed, in niklasu.speedtester.MB
+## Configuration Parameters:
+* size: The download size of the file which is used to calculcate your connection speed, in MB
   * default: 50MB
 * interval: The download interval in minutes
   * default: 1min
