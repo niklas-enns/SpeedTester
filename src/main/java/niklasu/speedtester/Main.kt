@@ -12,7 +12,7 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val app = Javalin.create().start(7000)
+        val app = Javalin.create { it.addStaticFiles("/public") }.start(7000)
         val injector = Guice.createInjector(ConfigModule(args), DownloaderModule(), MeasurementsModule())
         app.get("/all") { ctx -> ctx.result(injector.getInstance(Measurements::class.java).measurements.toString()) }
         injector.getInstance(DownloadScheduler::class.java).start()
