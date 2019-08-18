@@ -3,6 +3,7 @@ package niklasu.speedtester.downloader
 import com.google.inject.Inject
 import niklasu.speedtester.KB
 import niklasu.speedtester.MB
+import niklasu.speedtester.measurements.Measurements
 import niklasu.speedtester.ui.ConsoleResultPrinter
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -10,7 +11,7 @@ import java.net.URL
 import java.util.*
 
 open class DownloadThread @Inject
-constructor(private val targetFile: URL, private val downloadsizeInMB: Long, private val consoleResultPrinter: ConsoleResultPrinter) : Thread() {
+constructor(private val targetFile: URL, private val downloadsizeInMB: Long, private val consoleResultPrinter: ConsoleResultPrinter, val measurements: Measurements) : Thread() {
     //for testing purposes
     var downloadedBytes: Long = 0
 
@@ -24,7 +25,9 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
             val startTime = Date().time
             download()
             val runtime = Date().time - startTime
-            consoleResultPrinter.show(downloadsizeInMB.toDouble() / (runtime.toDouble() / 1000.0) * 8.0)
+            val resultSpeed = downloadsizeInMB.toDouble() / (runtime.toDouble() / 1000.0) * 8.0
+            consoleResultPrinter.show(resultSpeed)
+            measurements.add(resultSpeed)
         } catch (e: DownloadException) {
             logger.error("Download failed, because", e)
         }

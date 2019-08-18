@@ -36,7 +36,7 @@ internal class DownloadThreadTest {
                 mockk {
                     every { show(any()) } just runs
                     every { showProgress(any(), any()) } just runs
-                })
+                }, mockk {})
         downloadThread.run()
         Assert.assertEquals((5 * MB).toDouble(), downloadThread.downloadedBytes.toDouble(), 1 * KB.toDouble())
     }
