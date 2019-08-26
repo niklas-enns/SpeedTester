@@ -13,6 +13,8 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class DownloadThreadTest {
@@ -39,6 +41,28 @@ internal class DownloadThreadTest {
                 }, mockk {})
         downloadThread.run()
         Assert.assertEquals((5 * MB).toDouble(), downloadThread.downloadedBytes.toDouble(), 1 * KB.toDouble())
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = [1, 5, 10, 50, 100])
+//    @Disabled("Intended for manual Testing")
+    @DisplayName("Ensures that the download implementation is not the bottleneck of the download")
+    fun throttling(downloadSizeInMB: Long) {
+        mockWebServer.enqueue(MockResponse().setBody(string))
+
+        val downloadThread = DownloadThread(mockWebServer.url("").url(), downloadSizeInMB,
+                mockk {
+                    every { show(any()) } just runs
+                    every { showProgress(any(), any()) } just runs
+                },
+                mockk {
+                    every { add(any()) } just runs
+                }
+        )
+
+        downloadThread.run()
+
+        //look at the logs for the measured download speed and decide if its okay
     }
 
 }

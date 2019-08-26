@@ -1,7 +1,6 @@
 package niklasu.speedtester.downloader
 
 import com.google.inject.Inject
-import niklasu.speedtester.KB
 import niklasu.speedtester.MB
 import niklasu.speedtester.measurements.Measurements
 import niklasu.speedtester.ui.ConsoleResultPrinter
@@ -36,7 +35,7 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
     @Throws(DownloadException::class)
     private fun download() {
         try {
-            val bufferSize = 1 * KB
+            val bufferSize = 1 * MB
             val byteBuffer = ByteArray(bufferSize)
             val stream = targetFile.openStream()
 
