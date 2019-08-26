@@ -36,11 +36,12 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
     @Throws(DownloadException::class)
     private fun download() {
         try {
-            val byteBuffer = ByteArray(1 * KB)
+            val bufferSize = 1 * KB
+            val byteBuffer = ByteArray(bufferSize)
             val stream = targetFile.openStream()
 
             while (downloadedBytes < downloadsizeInMB * MB) {
-                val read = stream.read(byteBuffer, 0, 1 * KB)
+                val read = stream.read(byteBuffer, 0, bufferSize)
                 downloadedBytes += read
                 consoleResultPrinter.showProgress(downloadedBytes, downloadsizeInMB * MB)
             }
