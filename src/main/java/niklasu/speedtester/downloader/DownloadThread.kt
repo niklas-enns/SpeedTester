@@ -25,7 +25,7 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
             val startTime = Date().time
             download()
             val runtime = Date().time - startTime
-            val resultSpeed = downloadsizeInMB.toDouble() / (runtime.toDouble() / 1000.0) * 8.0
+            val resultSpeed = (downloadedBytes.toDouble() / MB) / (runtime.toDouble() / 1000.0) * 8.0
             consoleResultPrinter.show(resultSpeed)
             measurements.add(resultSpeed)
         } catch (e: DownloadException) {
