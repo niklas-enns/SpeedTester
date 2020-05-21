@@ -7,6 +7,7 @@ import niklasu.speedtester.config.ConfigProvider
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -27,6 +28,7 @@ internal class DownloaderModuleTest {
     }
 
     @Test
+    @Disabled
     fun testDownloads() {
         //GIVEN
         mockWebServer.enqueue(MockResponse())
