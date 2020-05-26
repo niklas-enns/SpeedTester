@@ -19,8 +19,13 @@ class ConfigModule(private val args: Array<String>) : AbstractModule() {
     @Provides
     @Singleton
     private fun getConfigProvider(args: Array<String>, paramValidator: ParamValidator): ConfigProvider {
+        var argsWithUrl: Array<String> = args
+        if (!args.contains("-url")) {
+            argsWithUrl += "-url"
+            argsWithUrl += System.getenv("DOWNLOAD_URL")
+        }
         val configProvider = ConfigProvider()
-        JCommander(configProvider, *args)
+        JCommander(configProvider, *argsWithUrl)
         paramValidator.validate(configProvider.size, configProvider.interval, configProvider.url)
         logger.info("URL: {} size: {} interval: {}", configProvider.url, configProvider.size, configProvider.interval)
         return configProvider
