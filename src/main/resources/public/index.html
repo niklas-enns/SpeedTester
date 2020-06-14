@@ -50,7 +50,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 everything = JSON.parse(this.responseText)
                 data_from_server = everything.map(measurement => measurement.speed)
-                labels_from_server = everything.map(measurement => measurement.date)
+                labels_from_server = everything.map(measurement => measurement.timeStamp)
             }
         };
         xhttp.open("GET", "measurements", false);

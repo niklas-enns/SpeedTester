@@ -1,9 +1,10 @@
 package niklasu.speedtester.measurements
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 
-data class Measurement(val now: LocalDateTime, val speed: Double) {
-    override fun toString(): String {
-        return "{\"date\":\"$now\",\"speed\":$speed}"
-    }
-}
+data class Measurement(
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+        val timeStamp: LocalDateTime,
+        val speed: Double
+)
