@@ -7,50 +7,101 @@
     <meta content="" name="author">
     <meta content="" name="description">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+
 </head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+
 <body>
-<canvas id="myChart"></canvas>
-<script>
+<div class="container">
+    <h1>Speed Tester</h1>
+    <div class="row">
+        <h2>Configuration</h2>
+        <table class="table" id="config">
+            <thead>
+            <tr>
+                <th scope="col">Key</th>
+                <th scope="col">Value</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="row">
+        <h2>Measurements</h2>
+        <div class="panel">
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
-    var xhttp = new XMLHttpRequest();
-    data_from_server = []
-    labels_from_server = []
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            everything = JSON.parse(this.responseText)
-            data_from_server = everything.map(measurement => measurement.speed)
-            labels_from_server = everything.map(measurement => measurement.date)
-        }
-    };
-    xhttp.open("GET", "measurements", false);
-    xhttp.send();
-
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels_from_server,
-            datasets: [{
-                label: 'Speed in MBit/s',
-                data: data_from_server,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-
-
-</script>
 
 </body>
+<script>
+    function getAndSetMeasurements() {
+        var xhttp = new XMLHttpRequest();
+        data_from_server = []
+        labels_from_server = []
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                everything = JSON.parse(this.responseText)
+                data_from_server = everything.map(measurement => measurement.speed)
+                labels_from_server = everything.map(measurement => measurement.date)
+            }
+        };
+        xhttp.open("GET", "measurements", false);
+        xhttp.send();
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels_from_server,
+                datasets: [{
+                    label: 'Speed in MBit/s',
+                    data: data_from_server,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function getAndSetConfig() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                configAsJson = JSON.parse(this.responseText)
+                console.log(configAsJson)
+                var table = document.getElementById("config");
+                for (entry in configAsJson) {
+                    var row = table.insertRow(-1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = entry;
+                    cell2.innerHTML = configAsJson[entry];
+                }
+            }
+        };
+        xhttp.open("GET", "config", false);
+        xhttp.send();
+    }
+
+    getAndSetConfig()
+    getAndSetMeasurements()
+
+</script>
 
 </html>
