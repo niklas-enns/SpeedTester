@@ -23,7 +23,7 @@
             labels_from_server = everything.map(measurement => measurement.date)
         }
     };
-    xhttp.open("GET", "all", false);
+    xhttp.open("GET", "measurements", false);
     xhttp.send();
 
     var ctx = document.getElementById('myChart').getContext('2d');
