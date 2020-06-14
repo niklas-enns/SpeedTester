@@ -10,43 +10,43 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 <body>
-<canvas height="400" id="myChart" width="400"></canvas>
+<canvas id="myChart"></canvas>
 <script>
 
-var xhttp = new XMLHttpRequest();
-data_from_server = []
-labels_from_server = []
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      everything = JSON.parse(this.responseText)
-      data_from_server = everything.map(measurement => measurement.speed)
-      labels_from_server = everything.map(measurement => measurement.date)
-    }
-  };
-  xhttp.open("GET", "all", false);
-  xhttp.send();
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: labels_from_server,
-        datasets: [{
-            label: 'Speed in MBit/s',
-            data: data_from_server,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+    var xhttp = new XMLHttpRequest();
+    data_from_server = []
+    labels_from_server = []
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            everything = JSON.parse(this.responseText)
+            data_from_server = everything.map(measurement => measurement.speed)
+            labels_from_server = everything.map(measurement => measurement.date)
         }
-    }
-});
+    };
+    xhttp.open("GET", "all", false);
+    xhttp.send();
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels_from_server,
+            datasets: [{
+                label: 'Speed in MBit/s',
+                data: data_from_server,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 
 
 </script>
