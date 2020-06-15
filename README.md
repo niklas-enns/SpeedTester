@@ -16,3 +16,11 @@ SpeedTester can run as a normal command-line application which can be called wit
 ``
 java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4
 ``
+
+## Build
+### Build and Push to docker hub
+Set envs for maven
+* REGISTRY_USERNAME
+* REGISTRY_PASSWORD
+
+`compile jib:build`
