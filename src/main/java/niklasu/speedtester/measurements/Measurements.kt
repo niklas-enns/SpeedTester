@@ -12,8 +12,4 @@ class Measurements {
     fun get() {
         measurements
     }
-
-    override fun toString(): String {
-        return measurements.toString()
-    }
 }

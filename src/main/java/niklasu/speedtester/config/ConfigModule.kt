@@ -4,12 +4,11 @@ import com.beust.jcommander.JCommander
 import com.google.inject.AbstractModule
 import com.google.inject.Provides
 import com.google.inject.Singleton
-import niklasu.speedtester.downloader.DownloadThread
-import org.slf4j.LoggerFactory
+import niklasu.speedtester.logger
 
 
 class ConfigModule(private val args: Array<String>) : AbstractModule() {
-    private val logger = LoggerFactory.getLogger(DownloadThread::class.java)
+    private val logger = logger()
 
     @Provides
     private fun getArgs(): Array<String> {

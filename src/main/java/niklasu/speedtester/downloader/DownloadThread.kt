@@ -2,21 +2,19 @@ package niklasu.speedtester.downloader
 
 import com.google.inject.Inject
 import niklasu.speedtester.MB
+import niklasu.speedtester.logger
 import niklasu.speedtester.measurements.Measurements
 import niklasu.speedtester.ui.ConsoleResultPrinter
-import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.net.URL
 import java.util.*
 
 open class DownloadThread @Inject
 constructor(private val targetFile: URL, private val downloadsizeInMB: Long, private val consoleResultPrinter: ConsoleResultPrinter, val measurements: Measurements) : Thread() {
+    private val logger = logger()
+
     //for testing purposes
     var downloadedBytes: Long = 0
-
-    companion object {
-        private val logger = LoggerFactory.getLogger(DownloadThread::class.java)
-    }
 
     override fun run() {
         downloadedBytes = 0

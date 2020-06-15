@@ -1,9 +1,9 @@
 package niklasu.speedtester.ui
 
-import org.slf4j.LoggerFactory
+import niklasu.speedtester.logger
 
 class ConsoleResultPrinter {
-    private val logger = LoggerFactory.getLogger(ConsoleResultPrinter::class.java)
+    private val logger = logger()
     fun show(resultSpeed: Double) {
         logger.info(String.format("%.2f MBit/s", resultSpeed))
     }
