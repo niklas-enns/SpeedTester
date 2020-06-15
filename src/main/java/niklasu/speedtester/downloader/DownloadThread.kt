@@ -42,7 +42,7 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
                 downloadedBytes += read
                 consoleResultPrinter.showProgress(downloadedBytes, downloadsizeInMB * MB)
             }
-            logger.debug("Downloaded ${downloadedBytes} Bytes ~ ${downloadedBytes / MB} MB")
+            logger.debug("Downloaded $downloadedBytes Bytes ~ ${downloadedBytes / MB} MB")
         } catch (e: IOException) {
             throw DownloadException("", e)
         }
