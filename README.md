@@ -24,3 +24,6 @@ Set envs for maven
 * REGISTRY_PASSWORD
 
 `compile jib:build`
+
+### Run as docker image
+For example `docker run -p8080:7000 -e DOWNLOAD_URL=<url>`
