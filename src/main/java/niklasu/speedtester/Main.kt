@@ -16,7 +16,7 @@ object Main {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val app = Javalin.create { it.addStaticFiles("/public") }.start(7000)
+        val app = Javalin.create { it.addStaticFiles("/public") }.start(8080)
         JavalinJackson.configure(jacksonObjectMapper().registerModule(JavaTimeModule()))
         val injector = Guice.createInjector(ConfigModule(args), DownloaderModule(), MeasurementsModule())
         app.get("/measurements") { ctx -> ctx.json(injector.getInstance(Measurements::class.java).measurements) }
