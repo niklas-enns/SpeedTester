@@ -11,6 +11,7 @@ SpeedTester can run as a normal command-line application which can be called wit
   * default: 1min
 * url: The target file url
   * no default value
+  * can also be set via env DOWNLOAD_URL
 
 ## Example:
 ``
@@ -18,7 +19,7 @@ java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/
 ``
 
 ## Build
-### Build and Push to docker hub
+### Build and Push to docker hub via jib
 Set envs for maven
 * REGISTRY_USERNAME
 * REGISTRY_PASSWORD
