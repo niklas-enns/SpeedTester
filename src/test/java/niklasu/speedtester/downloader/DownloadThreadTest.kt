@@ -40,9 +40,10 @@ internal class DownloadThreadTest {
                     every { show(any()) } just runs
                     every { showProgress(any(), any()) } just runs
                 },
-                mockk {
-                    every { add(any()) } just runs
-                })
+                mockk{
+                    every { write(any()) } just runs
+                }
+        )
         downloadThread.run()
         Assert.assertEquals((5 * MB).toDouble(), downloadThread.downloadedBytes.toDouble(), 10 * KB.toDouble())
     }
@@ -59,9 +60,10 @@ internal class DownloadThreadTest {
                     every { show(any()) } just runs
                     every { showProgress(any(), any()) } just runs
                 },
-                mockk {
-                    every { add(any()) } just runs
+                mockk{
+                    every { write(any()) } just runs
                 }
+
         )
 
         downloadThread.run()

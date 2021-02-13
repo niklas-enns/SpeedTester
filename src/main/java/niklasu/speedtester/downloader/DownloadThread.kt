@@ -2,7 +2,7 @@ package niklasu.speedtester.downloader
 
 import com.google.inject.Inject
 import niklasu.speedtester.MB
-import niklasu.speedtester.measurements.Measurements
+import niklasu.speedtester.influx.InfluxModule
 import niklasu.speedtester.ui.ConsoleResultPrinter
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -10,7 +10,7 @@ import java.net.URL
 import java.util.*
 
 open class DownloadThread @Inject
-constructor(private val targetFile: URL, private val downloadsizeInMB: Long, private val consoleResultPrinter: ConsoleResultPrinter, val measurements: Measurements) : Thread() {
+constructor(private val targetFile: URL, private val downloadsizeInMB: Long, private val consoleResultPrinter: ConsoleResultPrinter, private val influxConnector: InfluxModule.InfluxWriter) : Thread() {
     //for testing purposes
     var downloadedBytes: Long = 0
 
@@ -26,7 +26,7 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
             val runtime = Date().time - startTime
             val resultSpeed = (downloadedBytes.toDouble() / MB) / (runtime.toDouble() / 1000.0) * 8.0
             consoleResultPrinter.show(resultSpeed)
-            measurements.add(resultSpeed)
+            influxConnector.write(resultSpeed)
         } catch (e: DownloadException) {
             logger.error("Download failed, because", e)
         }
@@ -44,7 +44,7 @@ constructor(private val targetFile: URL, private val downloadsizeInMB: Long, pri
                 downloadedBytes += read
                 consoleResultPrinter.showProgress(downloadedBytes, downloadsizeInMB * MB)
             }
-            logger.debug("Downloaded ${downloadedBytes} Bytes ~ ${downloadedBytes / MB} MB")
+            logger.debug("Downloaded $downloadedBytes Bytes ~ ${downloadedBytes / MB} MB")
         } catch (e: IOException) {
             throw DownloadException("", e)
         }
