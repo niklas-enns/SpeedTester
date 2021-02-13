@@ -2,8 +2,8 @@ package niklasu.speedtester.downloader
 
 import com.google.inject.Inject
 import niklasu.speedtester.MB
+import niklasu.speedtester.influx.InfluxModule
 import niklasu.speedtester.logger
-import niklasu.speedtester.measurements.Measurements
 import niklasu.speedtester.ui.ConsoleResultPrinter
 import java.io.IOException
 import java.net.URL
