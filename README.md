@@ -34,7 +34,7 @@ Moreover, the results can be sent to an influxDB. Inside `./infra`, you can find
 java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/path/to/file.mp4
 ``
 
-### InfluxDB & Grafana
+## InfluxDB & Grafana
 
 Based on [DockerGrafanaInfluxKit](https://github.com/BushnevYuri/DockerGrafanaInfluxKit)
 
