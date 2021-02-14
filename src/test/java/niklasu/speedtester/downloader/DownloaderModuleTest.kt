@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Provides
 import niklasu.speedtester.config.ConfigProvider
+import niklasu.speedtester.influx.InfluxModule
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -14,7 +15,7 @@ import kotlin.test.assertEquals
 internal class DownloaderModuleTest {
     private val mockWebServer = MockWebServer()
 
-    private val injector = Guice.createInjector(DownloaderModule(), MockConfigProvider(mockWebServer.url("")))
+    private val injector = Guice.createInjector(DownloaderModule(), MockConfigProvider(mockWebServer.url("")), InfluxModule())
 
     class MockConfigProvider(val url: HttpUrl) : AbstractModule() {
         @Provides

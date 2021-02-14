@@ -14,7 +14,6 @@ The results will be printed to the console and will look like
 Moreover, the results can be sent to an influxDB. Inside `./infra`, you can find a docker compose file which sets up influxDB and Grafana. The dashboard will look like this:
 ![alt text](grafana.png)
  
-
 ## Configuration Parameters
 ### Mandatory
 * `url`: The target file url
@@ -45,4 +44,9 @@ Based on [DockerGrafanaInfluxKit](https://github.com/BushnevYuri/DockerGrafanaIn
 * select InfluxDB as data source
 
 `docker-compose up -d ` will create a volume where influxDB and Grafana persist data. In order to stop influxDB and Grafana, run `docker-compose down`.
-However, this will leave the created volumes. You can remove them by searching them via `docker volume ls` and then remove via `docker volume rm <volume_name>` 
+However, this will leave the created volumes. You can remove them by searching them via `docker volume ls` and then remove via `docker volume rm <volume_name>`
+
+## Changelog
+### 3.0
+* added support for pushing measurement results to influxDB
+* added docker-compose for influxDB and grafana 
