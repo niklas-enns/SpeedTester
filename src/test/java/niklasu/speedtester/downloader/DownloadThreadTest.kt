@@ -4,8 +4,8 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
-import niklasu.speedtester.KB
-import niklasu.speedtester.MB
+import niklasu.speedtester.Constants.KB
+import niklasu.speedtester.Constants.MB
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert
