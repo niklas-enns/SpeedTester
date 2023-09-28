@@ -1,6 +1,5 @@
 package niklasu.speedtester.config;
 
-
 import static niklasu.speedtester.Constants.MB;
 
 import com.google.inject.Inject;
@@ -9,11 +8,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-class ParamValidator{
+class ParamValidator {
 
     private final FileSizeChecker fileSizeChecker;
 
-    @Inject ParamValidator( FileSizeChecker fileSizeChecker) {
+    @Inject
+    ParamValidator(FileSizeChecker fileSizeChecker) {
         this.fileSizeChecker = fileSizeChecker;
     }
 
@@ -30,13 +30,13 @@ class ParamValidator{
             throw new ValidationException("Unable to get the file size for $url", e);
         }
         if (realFileSize < MB) {
-            throw new ValidationException("The size of $url was $realFileSize and is < $MB");
+            throw new ValidationException("The size of " + url + " was " + realFileSize + " and is < " + MB + " byte");
         }
         if (realFileSize < size) {
             throw new ValidationException("$url has a size of $realFileSize while ${size * MB} is required");
         }
         if (interval < 1) {
-            throw new ValidationException("Interval must be >= 1. Your input was $interval");
+            throw new ValidationException("Interval must be >= 1. Your input was " + interval);
         }
     }
 }
