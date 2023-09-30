@@ -50,3 +50,7 @@ However, this will leave the created volumes. You can remove them by searching t
 ### 3.0
 * added support for pushing measurement results to influxDB
 * added docker-compose for influxDB and grafana 
+
+## Backlog
+* Migrate to Java 21
+* Upgrade or remove Google Guice
