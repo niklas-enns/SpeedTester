@@ -45,7 +45,7 @@ class FileSizeCheckerTest {
         assertThrows(ValidationException.class, () -> fileSizeChecker.getFileSize(mockWebServer.url("nix").url()));
     }
 
-    IntStream invalidResponseCodes() {
+    private static IntStream invalidResponseCodes() {
         return IntStream.of(400, 404);
     }
 
