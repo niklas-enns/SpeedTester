@@ -55,3 +55,8 @@ However, this will leave the created volumes. You can remove them by searching t
 
 ## Backlog
 * Upgrade or remove Google Guice
+
+## Try out
+* Java 21
+  * String Templates `--enable-preview`
+  * Virtual Threads
