@@ -8,7 +8,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Date;
 
-import com.google.inject.Inject;
 import niklasu.speedtester.influx.InfluxModule;
 import niklasu.speedtester.ui.ConsoleResultPrinter;
 import org.slf4j.Logger;
@@ -21,7 +20,6 @@ class DownloadThread extends Thread {
     private final InfluxModule.InfluxWriter influxWriter;
     Logger logger = LoggerFactory.getLogger("DownloadThread");
 
-    @Inject
     DownloadThread(URL targetFile, long downloadsizeInMB, ConsoleResultPrinter consoleResultPrinter,
             InfluxModule.InfluxWriter influxWriter) {
         this.targetFile = targetFile;

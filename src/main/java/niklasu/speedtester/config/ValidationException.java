@@ -1,6 +1,6 @@
 package niklasu.speedtester.config;
 
-class ValidationException extends Exception {
+public class ValidationException extends Exception {
     ValidationException(String s) {
         super(s);
     }

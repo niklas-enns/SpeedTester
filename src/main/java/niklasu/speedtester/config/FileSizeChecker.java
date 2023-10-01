@@ -1,6 +1,5 @@
 package niklasu.speedtester.config;
 
-import com.google.inject.Inject;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -11,7 +10,6 @@ import java.net.URL;
 class FileSizeChecker {
     private final OkHttpClient client;
 
-    @Inject
     FileSizeChecker(OkHttpClient client) {
         this.client = client;
     }

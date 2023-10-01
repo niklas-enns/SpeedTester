@@ -2,7 +2,6 @@ package niklasu.speedtester.config;
 
 import static niklasu.speedtester.Constants.MB;
 
-import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -12,7 +11,6 @@ class ParamValidator {
 
     private final FileSizeChecker fileSizeChecker;
 
-    @Inject
     ParamValidator(FileSizeChecker fileSizeChecker) {
         this.fileSizeChecker = fileSizeChecker;
     }

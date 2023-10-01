@@ -6,7 +6,7 @@
 
     <groupId>niklasu</groupId>
     <artifactId>SpeedTester</artifactId>
-    <version>3.1</version>
+    <version>3.2</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -37,11 +37,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>7.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

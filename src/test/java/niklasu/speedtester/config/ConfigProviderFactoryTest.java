@@ -2,29 +2,24 @@ package niklasu.speedtester.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.ProvisionException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.Test;
 
-class ConfigModuleTest {
+class ConfigProviderFactoryTest {
     private MockWebServer mockWebServer = new MockWebServer();
     @Test
-    void networkError() {
+    void networkError() throws ValidationException {
         String[] args = { "-url", "http://x", "-interval", "1", "-size", "10" };
-        Injector injector = Guice.createInjector(new ConfigModule(args));
-        org.junit.jupiter.api.Assertions.assertThrows(ProvisionException.class,
-                () -> injector.getInstance(ConfigProvider.class));
+        org.junit.jupiter.api.Assertions.assertThrows(ValidationException.class,
+                () -> ConfigProviderFactory.getConfigProvider(args));
     }
 
     @Test
     void malformedURL() {
         String[] args = { "-url", "httpppp://x", "-interval", "1", "-size", "10" };
-        Injector injector = Guice.createInjector(new ConfigModule(args));
-        org.junit.jupiter.api.Assertions.assertThrows(ProvisionException.class,
-                () -> injector.getInstance(ConfigProvider.class));
+        org.junit.jupiter.api.Assertions.assertThrows(ValidationException.class,
+                () -> ConfigProviderFactory.getConfigProvider(args));
     }
 
 
@@ -34,12 +29,10 @@ class ConfigModuleTest {
 
         String url = mockWebServer.url("").toString();
         String[] args = { "-url", url, "-interval", "1", "-size", "10" };
-        Injector injector = Guice.createInjector(new ConfigModule(args));
-
         try {
-            injector.getInstance(ConfigProvider.class);
+            ConfigProviderFactory.getConfigProvider(args);
         } catch (Exception e) {
-            assertEquals("The size of " + url +" was 13 and is < 1000000 byte", e.getCause().getMessage());
+            assertEquals("The size of " + url +" was 13 and is < 1000000 byte", e.getMessage());
         }
     }
 
@@ -49,10 +42,9 @@ class ConfigModuleTest {
 
         String url = mockWebServer.url("").toString();
         String[] args = { "-url", url, "-interval", "1", "-size", "10" };
-        Injector injector = Guice.createInjector(new ConfigModule(args));
 
         try {
-            injector.getInstance(ConfigProvider.class);
+            ConfigProviderFactory.getConfigProvider(args);
         } catch (Exception e) {
             assertEquals("${url} has a size of 13 while ${10 * MB} is required", e.getMessage());
         }
@@ -62,11 +54,10 @@ class ConfigModuleTest {
     void intervalSmaller1() {
         mockWebServer.enqueue(new MockResponse().setHeader("Content-Length", "999999999999999"));
         String[] args = { "-url", mockWebServer.url("").toString(), "-interval", "-1", "-size", "10" };
-        Injector injector = Guice.createInjector(new ConfigModule(args));
         try {
-            injector.getInstance(ConfigProvider.class);
-        } catch (ProvisionException e) {
-            assertEquals("Interval must be >= 1. Your input was -1", e.getCause().getMessage());
+            ConfigProviderFactory.getConfigProvider(args);
+        } catch (ValidationException e) {
+            assertEquals("Interval must be >= 1. Your input was -1", e.getMessage());
         }
     }
 

@@ -2,16 +2,13 @@ package niklasu.speedtester.influx;
 
 import java.net.UnknownHostException;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 import niklasu.speedtester.config.ConfigProvider;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 
-public class InfluxModule extends AbstractModule{
+public class InfluxModule{
 
-    @Provides
-    private InfluxWriter getInfluxConnector(ConfigProvider configProvider){
+    public static InfluxWriter getInfluxWriter(ConfigProvider configProvider){
         String influxHost = configProvider.influxHost;
         if (influxHost == "") {
             return speed -> {
