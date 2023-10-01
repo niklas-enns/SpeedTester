@@ -41,7 +41,7 @@ class DownloadThread extends Thread {
             double resultSpeed = ((double) downloadedBytes / MB) / ((double) runtime / 1000.0) * 8.0;
             consoleResultPrinter.show(resultSpeed);
             influxWriter.write(resultSpeed);
-        } catch (DownloadException e){
+        } catch (DownloadException e) {
             logger.error("Download failed, because", e);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
@@ -59,8 +59,8 @@ class DownloadThread extends Thread {
                 downloadedBytes += read;
                 consoleResultPrinter.showProgress(downloadedBytes, downloadsizeInMB * MB);
             }
-            logger.debug("Downloaded $downloadedBytes Bytes ~ ${downloadedBytes / MB} MB");
-        } catch (IOException e){
+            logger.debug("Downloaded " + downloadedBytes + " Bytes ~ " + downloadedBytes / MB + " MB");
+        } catch (IOException e) {
             throw new DownloadException("", e);
         }
 
