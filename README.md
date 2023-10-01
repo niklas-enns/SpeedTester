@@ -58,6 +58,7 @@ However, this will leave the created volumes. You can remove them by searching t
 ## Backlog
 * Upgrade or remove Google Guice
 * Provide release as docker image
+* Provide release as k8s job
 ## Try out
 * Java 21
   * String Templates `--enable-preview`
