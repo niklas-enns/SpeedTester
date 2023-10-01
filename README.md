@@ -1,10 +1,10 @@
 # SpeedTester
 
-SpeedTester is a tool which tests the speed of your internet connection periodically by downloading a file and measuring the elapsed time
+SpeedTester is a tool which tests the speed of a network connection periodically by downloading data and measuring the elapsed time
 
-SpeedTester can run as a normal command-line application which can be called with ``java -jar SpeedTester.jar``.
+SpeedTester can run as a normal command-line application which can be called with `java -jar SpeedTester.jar`.
 
-The results will be printed to the console and will look like
+The results are be printed to stdout and look like
 ```
 17:47:11.728 [pool-1-thread-1] INFO  n.s.ui.ConsoleResultPrinter - 90,02 MBit/s
 17:48:11.686 [pool-1-thread-1] INFO  n.s.ui.ConsoleResultPrinter - 90,73 MBit/s
@@ -15,19 +15,20 @@ Moreover, the results can be sent to an influxDB. Inside `./infra`, you can find
 ![alt text](grafana.png)
  
 ## Configuration Parameters
-### Mandatory
-* `url`: The target file url
-### Optional
-* `size`: The download size of the file which is used to calculcate your connection speed, in MB
-  * default: 50MB
-* `interval`: The download interval in minutes
-  * default: 1min
-* `influx-host`
-    * example: `-influx-host http://localhost:8086`
-    * hard-coded config:
-        * db-name: `influx`
-        * measurement: `speed`
-        * value: `value`
+
+| Parameter     | Description                                           | Default |
+|---------------|-------------------------------------------------------|---------|
+| `url`         | The target url where the data will be downloaded from |         |
+| `size`        | The amount of Megabytebytes that should be downloaded | 50      |
+| `interval`    | The download interval in minutes                      | 1       | 
+| `influx-host` | URL of the influxDB, e.g. `http://localhost:8086`     |         | 
+
+
+### InfluxDB
+  * The current InfluxDB integration uses a few hard-coded parameters
+      * db-name: `influx`
+      * measurement: `speed`
+      * value: `value`
 
 ## Example
 ``
@@ -58,6 +59,7 @@ However, this will leave the created volumes. You can remove them by searching t
 ## Backlog
 * Upgrade or remove Google Guice
 * Provide release as docker image
+  * Support ENV-based configuration
 * Provide release as k8s job
 ## Try out
 * Java 21
