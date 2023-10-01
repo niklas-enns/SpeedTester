@@ -49,10 +49,9 @@ class DownloadThread extends Thread {
     }
 
     private void download() throws DownloadException {
-        try {
-            int bufferSize = 1 * MB;
-            byte[] byteBuffer = new byte[bufferSize];
-            InputStream stream = targetFile.openStream();
+        int bufferSize = 1 * MB;
+        byte[] byteBuffer = new byte[bufferSize];
+        try (InputStream stream = targetFile.openStream()){
 
             while (downloadedBytes < downloadsizeInMB * MB) {
                 int read = stream.read(byteBuffer, 0, bufferSize);
