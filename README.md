@@ -49,7 +49,7 @@ However, this will leave the created volumes. You can remove them by searching t
 
 ## Changelog
 ### 3.2
-* Replaced Google Guice with Manual Depedency Injection
+* Replaced Google Guice with Manual Dependency Injection
 ### 3.1
 * Migrated to java 21
 ### 3.0
