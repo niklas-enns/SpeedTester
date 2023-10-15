@@ -23,9 +23,9 @@ class InfluxConnector implements InfluxWriter {
         Point point1 = Point.measurement("speed")
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .addField("value", speed)
-                .addField("download_size", configProvider.size)
+                .addField("download_size", configProvider.size())
                 .tag("hostname", InetAddress.getLocalHost().getHostName())
-                .tag("download_url", configProvider.url)
+                .tag("download_url", configProvider.url())
                 .build();
         influxDB.write(point1);
     }

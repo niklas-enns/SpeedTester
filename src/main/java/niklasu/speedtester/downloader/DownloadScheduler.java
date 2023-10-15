@@ -21,7 +21,7 @@ public class DownloadScheduler {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
                 downloadThread,
                 0,
-                configProvider.interval,
+                configProvider.interval(),
                 MINUTES);
     }
 }

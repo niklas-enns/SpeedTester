@@ -9,7 +9,7 @@ import org.influxdb.InfluxDBFactory;
 public class InfluxModule{
 
     public static InfluxWriter getInfluxWriter(ConfigProvider configProvider){
-        String influxHost = configProvider.influxHost;
+        String influxHost = configProvider.influxHost();
         if (influxHost == "") {
             return speed -> {
                 // noop

@@ -13,7 +13,7 @@ public class DownloadSchedulerFactory{
             InfluxModule.InfluxWriter influxConnector)
             throws MalformedURLException {
         final DownloadThread downloadThread =
-                new DownloadThread(new URL(configProvider.url), configProvider.size, consoleResultPrinter,
+                new DownloadThread(new URL(configProvider.url()), configProvider.size(), consoleResultPrinter,
                         influxConnector);
         return new DownloadScheduler(downloadThread, configProvider);
     }
