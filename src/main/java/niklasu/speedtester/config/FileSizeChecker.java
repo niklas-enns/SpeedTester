@@ -32,15 +32,12 @@ class FileSizeChecker {
         }
         String contentLength = response.headers().get("Content-Length");
         if (contentLength == null) {
-            throw new NoFileSizeException("Unable to determine URL file size. Content-Length header missing");
+            throw new NoFileSizeException();
         }
         return Long.parseLong(contentLength);
     }
 
     static class NoFileSizeException extends Exception {
-        public NoFileSizeException(final String string) {
-        }
-
     }
 }
 
