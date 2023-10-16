@@ -56,13 +56,8 @@ However, this will leave the created volumes. You can remove them by searching t
 * added support for pushing measurement results to influxDB
 * added docker-compose for influxDB and grafana 
 
-## Backlog
-* Upgrade or remove Google Guice
-* Provide release as docker image
-  * Support ENV-based configuration
-* Provide release as k8s job
-## Try out
-* Java 21
-  * String Templates `--enable-preview`
-  * Virtual Threads
-  
+## Feature backlog
+[x] added ENV-based config
+[x] Upgrade or remove Google Guice
+[ ] Provide release as docker image
+[ ] Provide release as k8s job
