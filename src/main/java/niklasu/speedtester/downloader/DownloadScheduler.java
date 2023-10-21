@@ -18,10 +18,14 @@ public class DownloadScheduler {
     }
 
     public void start() {
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
-                downloadThread,
-                0,
-                configProvider.interval(),
-                MINUTES);
+        if (configProvider.interval() == 0) {
+            downloadThread.start();
+        } else {
+            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
+                    downloadThread,
+                    0,
+                    configProvider.interval(),
+                    MINUTES);
+        }
     }
 }

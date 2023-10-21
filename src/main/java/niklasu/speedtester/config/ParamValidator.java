@@ -33,8 +33,5 @@ class ParamValidator {
         if (realFileSize < size) {
             throw new ValidationException("$url has a size of $realFileSize while ${size * MB} is required");
         }
-        if (interval < 1) {
-            throw new ValidationException("Interval must be >= 1. Your input was " + interval);
-        }
     }
 }

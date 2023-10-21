@@ -40,12 +40,4 @@ class ParamValidatorTest {
         assertThrows(ValidationException.class, () -> paramValidator.validate(100L, 2, "http://fred.de"));
     }
 
-    @Test
-    void intervalLessThanOne() throws FileSizeChecker.NoFileSizeException, ValidationException, IOException {
-        FileSizeChecker fileSizeChecker = mock(FileSizeChecker.class);
-        when(fileSizeChecker.getFileSize(any())).thenReturn(99999999999999L);
-        ParamValidator paramValidator = new ParamValidator(fileSizeChecker);
-
-        assertThrows(ValidationException.class, () -> paramValidator.validate(100L, 0, "http://fred.de"));
-    }
 }
