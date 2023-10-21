@@ -1,5 +1,7 @@
 package niklasu.speedtester.config;
 
+import java.util.Arrays;
+
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,12 +44,11 @@ public class ConfigProviderFactory {
     }
 
     private static String getString(final String[] args, final String searchTerm) {
-        int indexOfSearchTerm = -1;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals(searchTerm)) {
-                indexOfSearchTerm = i;
+                return args[i + 1];
             }
         }
-        return args[indexOfSearchTerm + 1];
+        throw new RuntimeException(searchTerm + " not found in " + Arrays.toString(args));
     }
 }

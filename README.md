@@ -48,6 +48,9 @@ Based on [DockerGrafanaInfluxKit](https://github.com/BushnevYuri/DockerGrafanaIn
 However, this will leave the created volumes. You can remove them by searching them via `docker volume ls` and then remove via `docker volume rm <volume_name>`
 
 ## Changelog
+### 3.3
+* added ENV-based config
+* removed dependency JCommander
 ### 3.2
 * Replaced Google Guice with Manual Dependency Injection
 ### 3.1
@@ -59,5 +62,6 @@ However, this will leave the created volumes. You can remove them by searching t
 ## Feature backlog
 [x] added ENV-based config
 [x] Upgrade or remove Google Guice
+[x] removed dependency JCommander
 [ ] Provide release as docker image
 [ ] Provide release as k8s job
