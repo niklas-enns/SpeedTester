@@ -1,8 +1,10 @@
 # SpeedTester
 
-SpeedTester is a tool which tests the speed of a network connection periodically by downloading data and measuring the elapsed time
+SpeedTester is a tool which tests the speed of a network connection periodically by downloading data and measuring the elapsed time.
 
-SpeedTester can run as a normal command-line application which can be called with `java -jar SpeedTester.jar`.
+SpeedTester is available as a
+* downloadable jar file (see `./release jars`)
+* docker image https://hub.docker.com/r/niklasu/speedtester 
 
 The results are be printed to stdout and look like
 ```
