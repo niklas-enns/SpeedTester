@@ -1,6 +1,7 @@
 package niklasu.speedtester.downloader;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import niklasu.speedtester.config.ConfigProvider;
 
@@ -25,7 +26,7 @@ public class DownloadScheduler {
                     downloadThread,
                     0,
                     configProvider.interval(),
-                    MINUTES);
+                    SECONDS);
         }
     }
 }

@@ -22,7 +22,7 @@ Moreover, the results can be sent to an influxDB. Inside `./infra`, you can find
 |---------------|------------------------------------------------------------------|---------|
 | `url`         | The target url where the data will be downloaded from            |         |
 | `size`        | The amount of Megabytebytes that should be downloaded            | 50      |
-| `interval`    | The download interval in minutes (or `0` for single measurement) | 1       | 
+| `interval`    | The download interval in seconds (or `0` for single measurement) | 1       | 
 | `influx-host` | URL of the influxDB, e.g. `http://localhost:8086`                |         | 
 
 
@@ -50,11 +50,11 @@ Based on [DockerGrafanaInfluxKit](https://github.com/BushnevYuri/DockerGrafanaIn
 However, this will leave the created volumes. You can remove them by searching them via `docker volume ls` and then remove via `docker volume rm <volume_name>`
 
 ## Changelog
-
+### 3.5
+* Provider docker image
+* change unit of interval from minutes to seconds
 ### 3.4
-
 * Allow interval to be set to 0 which will execute only a single measurement
-
 ### 3.3
 * added ENV-based config
 * removed dependency JCommander
@@ -70,5 +70,5 @@ However, this will leave the created volumes. You can remove them by searching t
 [x] added ENV-based config
 [x] Upgrade or remove Google Guice
 [x] removed dependency JCommander
-[ ] Provide release as docker image
+[x] Provide release as docker image
 [ ] Provide release as k8s job
