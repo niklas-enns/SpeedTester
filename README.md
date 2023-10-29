@@ -53,8 +53,9 @@ java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/
 * added docker-compose for influxDB and grafana 
 
 ## Feature backlog
-[x] added ENV-based config
-[x] Upgrade or remove Google Guice
-[x] removed dependency JCommander
-[x] Provide release as docker image
-[ ] Provide release as k8s job
+- [x] added ENV-based config
+- [x] Upgrade or remove Google Guice
+- [x] removed dependency JCommander
+- [x] Provide release as docker image
+- [x] InfluxDB integration
+- [ ] Provide release as k8s job
