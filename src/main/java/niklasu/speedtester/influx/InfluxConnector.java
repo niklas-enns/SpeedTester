@@ -1,32 +1,32 @@
 package niklasu.speedtester.influx;
 
+import com.influxdb.client.WriteApiBlocking;
+import com.influxdb.client.domain.WritePrecision;
+import com.influxdb.client.write.Point;
 import niklasu.speedtester.config.ConfigProvider;
 import niklasu.speedtester.influx.InfluxModule.InfluxWriter;
-import org.influxdb.InfluxDB;
-import org.influxdb.dto.Point;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.TimeUnit;
+import java.time.Instant;
 
 class InfluxConnector implements InfluxWriter {
     private final ConfigProvider configProvider;
-    private final InfluxDB influxDB;
+    private final WriteApiBlocking api;
 
-    public InfluxConnector(InfluxDB influxDB, ConfigProvider configProvider) {
+    public InfluxConnector(WriteApiBlocking api, ConfigProvider configProvider) {
         this.configProvider = configProvider;
-        this.influxDB = influxDB;
+        this.api = api;
     }
 
     @Override
     public void write(final double speed) throws UnknownHostException {
         Point point1 = Point.measurement("speed")
-                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .time(Instant.now(), WritePrecision.MS)
                 .addField("value", speed)
                 .addField("download_size", configProvider.size())
-                .tag("hostname", InetAddress.getLocalHost().getHostName())
-                .tag("download_url", configProvider.url())
-                .build();
-        influxDB.write(point1);
+                .addTag("hostname", InetAddress.getLocalHost().getHostName())
+                .addTag("download_url", configProvider.url());
+        api.writePoint(point1);
     }
 }

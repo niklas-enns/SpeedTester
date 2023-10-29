@@ -1,23 +1,18 @@
-version: '3.2'
-
+version: '2'
 services:
   influxdb:
-    build: influxdb
-    env_file: configuration.env
+    image: influxdb:2.7.3-alpine
     ports:
       - '8086:8086'
     volumes:
-      - influxdb_data:/var/lib/influxdb
-  grafana:
-    build: grafana
-    env_file: configuration.env
-    links:
-      - influxdb
-    ports:
-      - '3000:3000'
-    volumes:
-      - grafana_data:/var/lib/grafana
-
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=my-user
+      - DOCKER_INFLUXDB_INIT_PASSWORD=my-password
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
+      - DOCKER_INFLUXDB_INIT_RETENTION=1w
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
 volumes:
-  grafana_data: {}
-  influxdb_data: {}
+  influxdb-storage:

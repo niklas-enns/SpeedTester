@@ -17,7 +17,8 @@ public class Main {
         DownloadSchedulerFactory.getDownloadScheduler(
                 configProvider,
                 new ConsoleResultPrinter(),
-                InfluxModule.getInfluxWriter(configProvider)
+                InfluxModule.getInfluxWriter(configProvider
+                )
         ).start();
     }
 }

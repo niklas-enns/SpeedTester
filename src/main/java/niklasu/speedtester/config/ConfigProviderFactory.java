@@ -30,7 +30,37 @@ public class ConfigProviderFactory {
         } else {
             size = getInt(args, "-size");
         }
-        var configProvider = new ConfigProvider(size, interval, url, "");
+
+        String influxUrl = null;
+        String influxToken = null;
+        String influxOrg = null;
+        String influxBucket = null;
+        try {
+            influxUrl = System.getenv("INFLUX_URL");
+            if (influxUrl == null) {
+                influxUrl = getString(args, "-influx-url");
+            }
+
+            influxToken = System.getenv("INFLUX_TOKEN");
+            if (influxToken == null) {
+                influxToken = getString(args, "-influx-token");
+            }
+
+            influxOrg = System.getenv("INFLUX_ORG");
+            if (influxOrg == null) {
+                influxOrg = getString(args, "-influx-org");
+            }
+
+            influxBucket = System.getenv("INFLUX_BUCKET");
+            if (influxBucket == null) {
+                influxBucket = getString(args, "-influx-bucket");
+            }
+        } catch (Exception e) {
+            logger.info("InfluxDB config broken but let's ignore that for now and just measure", e);
+            influxUrl = influxToken = influxOrg = influxBucket = "";
+        }
+
+        var configProvider = new ConfigProvider(size, interval, url, influxUrl, influxToken, influxOrg, influxBucket);
 
         var paramValidator = new ParamValidator(new FileSizeChecker(new OkHttpClient()));
 

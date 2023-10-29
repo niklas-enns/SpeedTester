@@ -6,7 +6,7 @@
 
     <groupId>niklasu</groupId>
     <artifactId>SpeedTester</artifactId>
-    <version>3.5</version>
+    <version>3.6</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -40,9 +40,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.influxdb</groupId>
-            <artifactId>influxdb-java</artifactId>
-            <version>2.23</version>
+            <groupId>com.influxdb</groupId>
+            <artifactId>influxdb-client-java</artifactId>
+            <version>6.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
