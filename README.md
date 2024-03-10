@@ -59,3 +59,4 @@ java -jar SpeedTester.jar -size 20 -interval 1 -url http://www.downloadhost.com/
 - [x] Provide release as docker image
 - [x] InfluxDB integration
 - [ ] Provide release as k8s job
+- [ ] Support upload speed testing
