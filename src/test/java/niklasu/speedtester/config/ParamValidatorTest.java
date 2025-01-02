@@ -20,7 +20,7 @@ class ParamValidatorTest {
 
         ParamValidator paramValidator = new ParamValidator(fileSizeChecker);
 
-        assertThrows(ValidationException.class, () -> paramValidator.validate(100L, 2, url.toString()));
+        assertThrows(ValidationException.class, () -> paramValidator.validate(100L, url.toString()));
     }
 
     @Test
@@ -28,7 +28,7 @@ class ParamValidatorTest {
         FileSizeChecker fileSizeChecker = mock(FileSizeChecker.class);
         ParamValidator paramValidator = new ParamValidator(fileSizeChecker);
 
-        assertThrows(ValidationException.class, () -> paramValidator.validate(100L, 2, "httasdddasdp://fred.de"));
+        assertThrows(ValidationException.class, () -> paramValidator.validate(100L, "httasdddasdp://fred.de"));
 
     }
 
@@ -37,7 +37,7 @@ class ParamValidatorTest {
         FileSizeChecker fileSizeChecker = mock(FileSizeChecker.class);
         when(fileSizeChecker.getFileSize(any())).thenReturn(1L);
         ParamValidator paramValidator = new ParamValidator(fileSizeChecker);
-        assertThrows(ValidationException.class, () -> paramValidator.validate(100L, 2, "http://fred.de"));
+        assertThrows(ValidationException.class, () -> paramValidator.validate(100L, "http://fred.de"));
     }
 
 }

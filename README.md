@@ -21,7 +21,7 @@ SpeedTester supports InfluxDB as a sink for measurements. The `./infra/docker-co
 | Parameter       | Description                                                      | Default |
 |-----------------|------------------------------------------------------------------|---------|
 | `url`           | The target url where the data will be downloaded from            |         |
-| `size`          | The amount of Megabytebytes that should be downloaded            | 50      |
+| `size`          | The amount of Megabytes that should be downloaded                | 50      |
 | `interval`      | The download interval in seconds (or `0` for single measurement) | 1       | 
 | `influx-host`   | URL of the influxDB, e.g. `http://localhost:8086`                |         | 
 | `influx-bucket` | Influx bucket e.g. `my-bucket`                                   |         | 

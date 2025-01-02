@@ -64,7 +64,7 @@ public class ConfigProviderFactory {
 
         var paramValidator = new ParamValidator(new FileSizeChecker(new OkHttpClient()));
 
-        paramValidator.validate(configProvider.size(), configProvider.interval(), configProvider.url());
+        paramValidator.validate(configProvider.size(), configProvider.url());
         logger.info(configProvider.toString());
         return configProvider;
     }
